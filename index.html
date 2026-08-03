@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDATA 3.0 LV3 查詢系統</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI','Microsoft JhengHei',Arial,sans-serif;font-size:13px;background:#f0f2f5;color:#222;min-height:100vh;}
+.top-bar{background:linear-gradient(135deg,#1a3a5c,#0d6efd);color:#fff;padding:12px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.25);}
+.top-bar .logo{font-size:22px;}.top-bar h1{font-size:17px;font-weight:600;}.top-bar .sub{font-size:11px;opacity:.75;margin-top:2px;}
+.tab-bar{background:#fff;border-bottom:2px solid #dde3ec;padding:0 24px;display:flex;gap:0;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.tab-btn{padding:11px 22px;font-size:13px;font-weight:600;color:#666;border:none;background:transparent;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s;}
+.tab-btn:hover{color:#0d6efd;}
+.tab-btn.active{color:#0d6efd;border-bottom-color:#0d6efd;}
+.tab-page{display:none;}
+.tab-page.active{display:block;}
+.qbar{background:#fff;border-bottom:1px solid #dde3ec;padding:12px 24px;display:flex;align-items:center;flex-wrap:wrap;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.qbar label{font-weight:600;color:#444;font-size:12px;white-space:nowrap;}
+.qbar input[type=date]{border:1px solid #c5cdd8;border-radius:6px;padding:6px 10px;font-size:13px;color:#222;background:#f8fafc;cursor:pointer;}
+.qbar input[type=date]:focus{outline:none;border-color:#0d6efd;}
+.sep{color:#aaa;font-size:15px;}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,transform .1s;}
+.btn:active{transform:scale(.97);}
+.btn-q{background:#0d6efd;color:#fff;box-shadow:0 2px 8px rgba(13,110,253,.3);}
+.btn-q:hover{background:#0b5ed7;}.btn-q:disabled{background:#90b4f8;cursor:not-allowed;box-shadow:none;}
+.btn-c{background:#f4f6f9;color:#444;border:1px solid #c5cdd8;font-size:12px;}
+.btn-c:hover{background:#e2e6ea;}
+.col-wrap{position:relative;display:inline-block;}
+#cpanel{display:none;position:absolute;top:calc(100% + 6px);left:0;z-index:600;background:#fff;border:1px solid #c5cdd8;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.15);padding:14px 16px;min-width:200px;white-space:nowrap;}
+#cpanel.open{display:block;}
+.cp-title{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.cp-row{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:5px;cursor:pointer;font-size:12.5px;color:#333;user-select:none;}
+.cp-row:hover{background:#f0f6ff;color:#0d6efd;}
+.cp-row input{width:14px;height:14px;accent-color:#0d6efd;cursor:pointer;flex-shrink:0;}
+.cp-divider{border:none;border-top:1px solid #eee;margin:8px 0;}
+.cp-btns{display:flex;gap:6px;}
+.cp-small{flex:1;padding:4px;border:1px solid #dde3ec;border-radius:4px;font-size:11px;cursor:pointer;background:#f8fafc;color:#555;}
+.cp-small:hover{background:#e8f0fe;color:#0d6efd;border-color:#0d6efd;}
+.badge-stat{background:#e8f0fe;color:#1a56db;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;display:none;margin-left:auto;}
+.badge-filt{background:#fff3cd;color:#856404;border:1px solid #f0c040;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;display:none;}
+#ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:18px;}
+#ov.show{display:flex;}
+.spin{width:52px;height:52px;border:5px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg);}}
+.ov-t{color:#fff;font-size:15px;font-weight:600;}.ov-s{color:rgba(255,255,255,.7);font-size:12px;}
+.main{padding:16px 24px;}
+.alert{border-radius:8px;padding:12px 16px;margin-bottom:12px;font-size:13px;display:none;}
+.alert.show{display:flex;align-items:center;gap:8px;}
+.a-err{background:#fde8e8;border:1px solid #f5a0a0;color:#b91c1c;}
+.a-emp{background:#fef9ec;border:1px solid #f9d76c;color:#92660a;}
+.ctrl{display:none;flex-wrap:wrap;align-items:center;gap:10px;background:#fff;border:1px solid #dde3ec;border-radius:8px;padding:10px 16px;margin-bottom:14px;}
+.ctrl.show{display:flex;}
+.cg{display:flex;align-items:center;gap:5px;}
+.cg label{font-size:12px;font-weight:600;color:#444;white-space:nowrap;}
+.csel{border:1px solid #c5cdd8;border-radius:5px;padding:4px 8px;font-size:12px;color:#222;background:#f8fafc;cursor:pointer;min-width:70px;}
+.csel:focus{outline:none;border-color:#0d6efd;}.csel:disabled{opacity:.4;cursor:not-allowed;}
+.cdiv{width:1px;height:20px;background:#dde3ec;flex-shrink:0;}
+.lgd{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-left:10px;border-left:2px solid #dde3ec;}
+.lgd-t{font-weight:700;color:#444;font-size:12px;}
+.lgd-i{display:inline-flex;align-items:center;gap:4px;font-size:12px;background:#f5f7fa;border-radius:4px;padding:2px 8px;}
+.lgd-d{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.tw{background:#fff;border:1px solid #dde3ec;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);display:none;}
+.tw.show{display:block;}.ts{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+thead tr{background:#1a3a5c;color:#fff;position:sticky;top:0;z-index:10;}
+thead th{padding:9px 12px;text-align:left;white-space:nowrap;font-weight:600;}
+tr.grp-top td{border-top:2px solid #9dc5e0!important;}
+td.c-prod{background:#deeaf7;color:#0d3a5c;font-weight:700;vertical-align:top;border-right:2px solid #9dc5e0;}
+td.c-tool{background:#eaf3fb;color:#1a3a5c;font-weight:600;vertical-align:top;border-right:1px solid #c8dcf0;}
+td.c-def{background:#f4f8ff;vertical-align:top;border-right:1px solid #d8e6f5;}
+td.c-val{background:#f4f8ff;text-align:center;vertical-align:top;border-right:1px solid #d8e6f5;width:55px;max-width:55px;}
+td.c-chip,td.c-cst,td.c-fu,td.c-fc{background:#fff;border-bottom:1px solid #edf0f5;}
+td[rowspan]{border-bottom:2px solid #9dc5e0;}
+tr.drow:hover td{background:#f0f6ff!important;}
+tr.drow.ev td.c-chip,tr.drow.ev td.c-cst,tr.drow.ev td.c-fu,tr.drow.ev td.c-fc{background:#fafbfd;}
+tr.drow.ev:hover td{background:#f0f6ff!important;}
+.chip{font-weight:700;font-family:'Consolas',monospace;}
+.nc{text-align:center;}
+.mt{color:#bbb;font-style:italic;}
+.ch{display:none!important;}
+.footer{text-align:center;padding:16px;color:#999;font-size:11px;}
+.scrp-bar{background:#fff;border-bottom:1px solid #dde3ec;padding:12px 24px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.scrp-bar label{font-weight:600;color:#444;font-size:12px;white-space:nowrap;}
+.scrp-input{border:1px solid #c5cdd8;border-radius:6px;padding:6px 12px;font-size:13px;color:#222;background:#f8fafc;width:260px;font-family:'Consolas',monospace;}
+.scrp-input:focus{outline:none;border-color:#0d6efd;box-shadow:0 0 0 3px rgba(13,110,253,.12);}
+.scrp-main{padding:16px 24px;}
+.scrp-result{background:#fff;border:1px solid #dde3ec;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);display:none;}
+.scrp-result.show{display:block;}
+.scrp-result .ts{overflow-x:auto;}
+.scrp-result table thead tr{background:#1a3a5c;}
+.scrp-badge{background:#e8f0fe;color:#1a56db;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;display:none;margin-left:auto;}
+td.sc-ts{font-family:'Consolas',monospace;font-size:12px;white-space:nowrap;}
+td.sc-chip{font-weight:700;font-family:'Consolas',monospace;color:#0d3a5c;}
+td.sc-cst{color:#1a3a5c;}
+td.sc-op{color:#555;}
+tr.sr:hover td{background:#f0f6ff!important;}
+tr.sr.ev td{background:#fafbfd;}
+tr.sr.ev:hover td{background:#f0f6ff!important;}
+td{padding:8px 12px;border-bottom:1px solid #edf0f5;}
+/* ── 連線狀態指示燈 ── */
+.srv-status{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:3px 10px;border-radius:20px;margin-left:auto;}
+.srv-status.ok{background:#d1fae5;color:#065f46;}
+.srv-status.err{background:#fde8e8;color:#b91c1c;}
+.srv-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.srv-status.ok .srv-dot{background:#10b981;}
+.srv-status.err .srv-dot{background:#ef4444;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+</style>
+</head>
+<body>
+<div id="ov"><div class="spin"></div><div class="ov-t">資料查詢中，請稍候…</div><div class="ov-s" id="ovs">正在連接 WebService</div></div>
+<div class="top-bar">
+  <div class="logo">🔬</div>
+  <div><h1>SDATA 3.0 — LV3 查詢系統</h1><div class="sub">L8B · BEOL · OCT · GRADE V/S/K</div></div>
+  <!-- ✅ 新增：右上角 Server 連線狀態燈 -->
+  <div id="srv-status" class="srv-status err" style="margin-left:auto">
+    <span class="srv-dot"></span><span id="srv-txt">連線中…</span>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('p1',this)">📊 LV3 日期查詢</button>
+  <button class="tab-btn" onclick="switchTab('p2',this)">🔍 除帳資訊查詢</button>
+</div>
+
+<!-- P1 -->
+<div id="p1" class="tab-page active">
+  <div class="qbar">
+    <label>起始日期</label><input type="date" id="sd">
+    <span class="sep">～</span>
+    <label>結束日期</label><input type="date" id="ed">
+    <button class="btn btn-q" id="qbtn" onclick="doQuery()">🔍 查詢</button>
+    <div class="col-wrap">
+      <button class="btn btn-c" onclick="toggleCP(event)">⚙️ 欄位設定 ▾</button>
+      <div id="cpanel">
+        <div class="cp-title">顯示欄位</div>
+        <label class="cp-row"><input type="checkbox" data-ci="0" checked onchange="applyCV()">PRODUCT_CODE</label>
+        <label class="cp-row"><input type="checkbox" data-ci="1" checked onchange="applyCV()">TOOL_ID</label>
+        <label class="cp-row"><input type="checkbox" data-ci="2" checked onchange="applyCV()">DEFECT_CODE_DESC</label>
+        <label class="cp-row"><input type="checkbox" data-ci="3" checked onchange="applyCV()">DEFECT_VALUE</label>
+        <label class="cp-row"><input type="checkbox" data-ci="4" checked onchange="applyCV()">TFT_CHIP_ID</label>
+        <label class="cp-row"><input type="checkbox" data-ci="5" checked onchange="applyCV()">CASSETTE_ID</label>
+        <label class="cp-row"><input type="checkbox" data-ci="6" checked onchange="applyCV()">FMA USER2</label>
+        <label class="cp-row"><input type="checkbox" data-ci="7" checked onchange="applyCV()">FMA CODE</label>
+        <hr class="cp-divider">
+        <div class="cp-btns">
+          <button class="cp-small" onclick="colAll(true)">全選</button>
+          <button class="cp-small" onclick="colAll(false)">全不選</button>
+        </div>
+      </div>
+    </div>
+    <span class="badge-stat" id="sb"></span>
+    <span class="badge-filt" id="fb"></span>
+  </div>
+  <div class="main">
+    <div class="alert a-err" id="ae"><span>⚠️</span><span id="aem"></span></div>
+    <div class="alert a-emp" id="aw"><span>📭</span><span>查詢區間內無符合條件的資料。</span></div>
+    <div class="ctrl" id="ctrl">
+      <div class="cg"><label>GRADE</label>
+        <select class="csel" id="sg" disabled onchange="applyF()"><option value="">全部</option></select></div>
+      <div class="cdiv"></div>
+      <div class="cg"><label>SHIFT</label>
+        <select class="csel" id="ss" disabled onchange="applyF()"><option value="">全部</option></select></div>
+      <div class="cdiv"></div>
+      <div class="cg"><label>FIRST_YIELD_FLAG</label>
+        <select class="csel" id="sf" disabled onchange="applyF()"><option value="">全部</option></select></div>
+      <div class="cdiv"></div>
+      <div class="lgd" id="lgd"><span class="lgd-t">LV3 看過：</span></div>
+    </div>
+    <div class="tw" id="tw"><div class="ts">
+      <table id="mt">
+        <thead><tr>
+          <th data-ci="0" style="width:130px">PRODUCT_CODE</th>
+          <th data-ci="1" style="width:110px">TOOL_ID</th>
+          <th data-ci="2" style="width:210px">DEFECT_CODE_DESC</th>
+          <th data-ci="3" style="width:50px" class="nc">VAL</th>
+          <th data-ci="4" style="width:150px">TFT_CHIP_ID</th>
+          <th data-ci="5" style="width:120px">CASSETTE_ID</th>
+          <th data-ci="6" style="width:95px">FMA USER2</th>
+          <th data-ci="7" style="width:170px">FMA CODE</th>
+        </tr></thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div id="p2" class="tab-page">
+  <div class="scrp-bar">
+    <label>片 ID（SHEET_ID_CHIP_ID）</label>
+    <input type="text" id="scrp-id" class="scrp-input" placeholder="輸入片 ID，按 Enter 或點查詢" autocomplete="off" spellcheck="false">
+    <button class="btn btn-q" id="scrp-btn" onclick="doScrpQuery()">🔍 查詢</button>
+    <span class="scrp-badge" id="scrp-badge"></span>
+  </div>
+  <div class="scrp-main">
+    <div class="alert a-err" id="scrp-ae"><span>⚠️</span><span id="scrp-aem"></span></div>
+    <div class="alert a-emp" id="scrp-aw"><span>📭</span><span>查無此片 ID 的 SCRP 報廢記錄。</span></div>
+    <div class="scrp-result" id="scrp-result"><div class="ts">
+      <table id="scrp-table">
+        <thead><tr>
+          <th style="width:160px">SHEET_ID_CHIP_ID</th>
+          <th style="width:175px">TRANS_TIMESTAMP</th>
+          <th style="width:130px">CASSETTE_ID</th>
+          <th style="width:130px">SHEET_ID</th>
+          <th style="width:120px">OP_ID</th>
+          <th style="width:130px">WO_ID</th>
+          <th style="width:70px;text-align:center">TRANS_ID</th>
+          <th style="width:100px">TRANS_USER</th>
+          <th style="width:100px">MODEL_NO</th>
+        </tr></thead>
+        <tbody id="scrp-tb"></tbody>
+      </table>
+    </div></div>
+  </div>
+</div>
+
+<div class="footer">SDATA 3.0 LV3 Web · L8B Production</div>
+<script>
+"use strict";
+
+// ✅ 關鍵修正：API 一律打絕對路徑，不管 HTML 從哪裡開啟都能連到 server
+var API_BASE = 'http://localhost:5000';
+
+var COLOR_POOL = [
+  "#FF6B35","#0096C7","#2DC653","#9B5DE5","#E5446D",
+  "#F4A100","#00B4D8","#FF6B6B","#5C4033","#00838F"
+];
+var NO_LV3_COLOR = "#999";
+var _all = [];
+var _personColorMap = {};
+
+function getPersonColor(person) {
+  if (!person) return NO_LV3_COLOR;
+  if (!_personColorMap[person]) {
+    var idx = Object.keys(_personColorMap).length % COLOR_POOL.length;
+    _personColorMap[person] = COLOR_POOL[idx];
+  }
+  return _personColorMap[person];
+}
+
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function mk(v){return v?esc(v):'<span class="mt">—</span>';}
+function setOv(show,step){document.getElementById('ov').classList.toggle('show',show);if(step)document.getElementById('ovs').textContent=step;}
+function showErr(m){document.getElementById('aem').textContent=m;document.getElementById('ae').classList.add('show');}
+function hideA(){document.getElementById('ae').classList.remove('show');document.getElementById('aw').classList.remove('show');}
+function setBtn(d){document.getElementById('qbtn').disabled=d;}
+
+// ✅ 新增：啟動時自動檢查 server 是否在線，顯示右上角狀態燈
+function checkServer(){
+  fetch(API_BASE+'/api/ping',{method:'GET'})
+    .then(function(r){return r.json();})
+    .then(function(){
+      var el=document.getElementById('srv-status');
+      el.className='srv-status ok';
+      document.getElementById('srv-txt').textContent='Server 已連線';
+    })
+    .catch(function(){
+      var el=document.getElementById('srv-status');
+      el.className='srv-status err';
+      document.getElementById('srv-txt').textContent='Server 未啟動！';
+    });
+}
+// 頁面載入時檢查，之後每 10 秒重檢一次
+checkServer();
+setInterval(checkServer, 10000);
+
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById(tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+(function(){var t=new Date().toISOString().slice(0,10);document.getElementById('sd').value=t;document.getElementById('ed').value=t;})();
+
+function toggleCP(e){e.stopPropagation();document.getElementById('cpanel').classList.toggle('open');}
+document.addEventListener('click',function(e){
+  var p=document.getElementById('cpanel');
+  if(p.classList.contains('open')&&!p.contains(e.target)&&!e.target.closest('.col-wrap'))p.classList.remove('open');
+});
+function applyCV(){
+  document.querySelectorAll('#cpanel input[data-ci]').forEach(function(cb){
+    var ci=cb.getAttribute('data-ci'),hide=!cb.checked;
+    var th=document.querySelector('thead th[data-ci="'+ci+'"]');
+    if(th)th.classList.toggle('ch',hide);
+    document.querySelectorAll('#tb [data-ci="'+ci+'"]').forEach(function(el){el.classList.toggle('ch',hide);});
+  });
+}
+function colAll(v){document.querySelectorAll('#cpanel input[data-ci]').forEach(function(cb){cb.checked=v;});applyCV();}
+
+function buildSels(data){
+  var g={},s={},f={};
+  data.forEach(function(r){if(r.GRADE)g[r.GRADE]=1;if(r.SHIFT)s[r.SHIFT]=1;if(r.FIRST_YIELD_FLAG)f[r.FIRST_YIELD_FLAG]=1;});
+  fillS('sg',Object.keys(g).sort(),'S');
+  fillS('ss',Object.keys(s).sort(),'');
+  fillS('sf',Object.keys(f).sort(),'Y');
+  ['sg','ss','sf'].forEach(function(id){document.getElementById(id).disabled=false;});
+}
+function fillS(id,vals,def){
+  var s=document.getElementById(id);s.options.length=0;
+  var o=document.createElement('option');o.value='';o.textContent='全部';s.appendChild(o);
+  vals.forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o);});
+  if(def&&Array.from(s.options).some(function(o){return o.value===def;}))s.value=def;
+}
+function resetSels(){
+  ['sg','ss','sf'].forEach(function(id){var s=document.getElementById(id);s.options.length=1;s.value='';s.disabled=true;});
+  document.getElementById('fb').style.display='none';
+}
+
+function buildLgd(persons){
+  var lw=document.getElementById('lgd');
+  lw.querySelectorAll('.lgd-i').forEach(function(el){el.remove();});
+  var seen={};
+  persons.forEach(function(p){if(p)seen[p]=1;});
+  Object.keys(seen).forEach(function(person){
+    var color=getPersonColor(person);
+    var item=document.createElement('div');item.className='lgd-i';
+    item.innerHTML='<span class="lgd-d" style="background:'+color+'"></span>'
+      +'<span style="color:'+color+';font-weight:700">'+esc(person)+'</span>';
+    lw.appendChild(item);
+  });
+}
+
+function applyF(){
+  var grade=document.getElementById('sg').value;
+  var shift=document.getElementById('ss').value;
+  var flag =document.getElementById('sf').value;
+  var fil=_all.filter(function(r){
+    if(grade&&r.GRADE!==grade)return false;
+    if(shift&&r.SHIFT!==shift)return false;
+    if(flag&&r.FIRST_YIELD_FLAG!==flag)return false;
+    return true;
+  });
+  renderTable(fil);
+  applyCV();
+  buildLgd(fil.map(function(r){return r.LV3_PERSON;}));
+  var sb=document.getElementById('sb');
+  sb.textContent='共 '+fil.length.toLocaleString()+' 筆';sb.style.display='inline-block';
+  var isF=grade||shift||flag,fb=document.getElementById('fb');
+  if(isF){fb.textContent='已篩選（原 '+_all.length.toLocaleString()+' 筆）';fb.style.display='inline-block';}
+  else{fb.style.display='none';}
+  document.getElementById('aw').classList.toggle('show',fil.length===0);
+  document.getElementById('tw').classList.toggle('show',fil.length>0);
+}
+
+function renderTable(rows){
+  var tb=document.getElementById('tb');tb.innerHTML='';
+  var pMap=[],pIdx={};
+  rows.forEach(function(r){
+    var pk=r.PRODUCT_CODE||'';
+    if(!(pk in pIdx)){pIdx[pk]=pMap.length;pMap.push({k:pk,tools:[],ti:{}});}
+    var pO=pMap[pIdx[pk]];
+    var tk=r.TOOL_ID||'';
+    if(!(tk in pO.ti)){pO.ti[tk]=pO.tools.length;pO.tools.push({k:tk,defs:[],di:{}});}
+    var tO=pO.tools[pO.ti[tk]];
+    var dk=(r.DEFECT_CODE_DESC||'')+'|'+(r.DEFECT_VALUE||'');
+    if(!(dk in tO.di)){tO.di[dk]=tO.defs.length;tO.defs.push({dc:r.DEFECT_CODE_DESC||'',dv:r.DEFECT_VALUE||'',chips:[]});}
+    tO.defs[tO.di[dk]].chips.push(r);
+  });
+  var chipIdx=0;
+  pMap.forEach(function(pO){
+    var pSpan=0;
+    pO.tools.forEach(function(tO){tO.defs.forEach(function(dO){pSpan+=dO.chips.length;});});
+    var pFirst=true;
+    pO.tools.forEach(function(tO){
+      var tSpan=0;
+      tO.defs.forEach(function(dO){tSpan+=dO.chips.length;});
+      var tFirst=true;
+      tO.defs.forEach(function(dO){
+        var dSpan=dO.chips.length;
+        var dFirst=true;
+        dO.chips.forEach(function(r){
+          var color = getPersonColor(r.LV3_PERSON);
+          var tr=document.createElement('tr');
+          tr.className='drow'+(chipIdx%2===1?' ev':'');
+          if(pFirst&&tFirst&&dFirst) tr.classList.add('grp-top');
+          var html='';
+          if(pFirst&&tFirst&&dFirst){html+='<td data-ci="0" class="c-prod" rowspan="'+pSpan+'">'+esc(pO.k)+'</td>';}
+          if(tFirst&&dFirst){html+='<td data-ci="1" class="c-tool" rowspan="'+tSpan+'">'+esc(tO.k)+'</td>';}
+          if(dFirst){
+            html+='<td data-ci="2" class="c-def" rowspan="'+dSpan+'">'+mk(dO.dc)+'</td>';
+            html+='<td data-ci="3" class="c-val" rowspan="'+dSpan+'">'+mk(dO.dv)+'</td>';
+          }
+          html+='<td data-ci="4" class="c-chip chip" style="color:'+color+'">'+mk(r.TFT_CHIP_ID)+'</td>';
+          html+='<td data-ci="5" class="c-cst">'+mk(r.CASSETTE_ID)+'</td>';
+          html+='<td data-ci="6" class="c-fu">'+mk(r.FMA_USER2)+'</td>';
+          html+='<td data-ci="7" class="c-fc">'+mk(r.FMA_CODE)+'</td>';
+          tr.innerHTML=html;
+          tb.appendChild(tr);
+          pFirst=false;tFirst=false;dFirst=false;chipIdx++;
+        });
+      });
+    });
+  });
+}
+
+// ✅ 修正：fetch 改用 API_BASE 絕對路徑
+async function doQuery(){
+  hideA();
+  document.getElementById('tw').classList.remove('show');
+  document.getElementById('ctrl').classList.remove('show');
+  document.getElementById('sb').style.display='none';
+  document.getElementById('fb').style.display='none';
+  resetSels();
+  _personColorMap = {};
+  var s=document.getElementById('sd').value,e=document.getElementById('ed').value;
+  if(!s||!e){showErr('請選擇起始與結束日期');return;}
+  if(s>e){showErr('起始日期不可晚於結束日期');return;}
+  setBtn(true);setOv(true,'正在連接 WebService，查詢主資料…');
+  try{
+    var resp=await fetch(API_BASE+'/api/query',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({start_date:s,end_date:e})
+    });
+    setOv(true,'正在整合 FMA / LV3 資料…');
+    var json=await resp.json();
+    if(!resp.ok||json.error){showErr(json.error||'伺服器錯誤');return;}
+    var rows=json.data||[];
+    if(rows.length===0){document.getElementById('aw').classList.add('show');return;}
+    _all=rows;
+    buildSels(rows);
+    document.getElementById('ctrl').classList.add('show');
+    applyF();
+  }catch(err){showErr('連線失敗：'+err.message+'（請確認 Server 是否啟動）');}
+  finally{setOv(false);setBtn(false);}
+}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&!document.getElementById('qbtn').disabled){
+    if(document.getElementById('p1').classList.contains('active')) doQuery();
+  }
+});
+
+/* P2 除帳查詢 */
+function scrpHideAll(){
+  document.getElementById('scrp-ae').classList.remove('show');
+  document.getElementById('scrp-aw').classList.remove('show');
+  document.getElementById('scrp-result').classList.remove('show');
+  document.getElementById('scrp-badge').style.display='none';
+}
+
+// ✅ 修正：fetch 改用 API_BASE 絕對路徑
+async function doScrpQuery(){
+  scrpHideAll();
+  var chipId = document.getElementById('scrp-id').value.trim();
+  if(!chipId){
+    document.getElementById('scrp-aem').textContent='請輸入片 ID';
+    document.getElementById('scrp-ae').classList.add('show');
+    return;
+  }
+  var btn = document.getElementById('scrp-btn');
+  btn.disabled = true;
+  setOv(true, '正在查詢除帳資訊…');
+  try{
+    var resp = await fetch(API_BASE+'/api/chip-scrp',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chip_id: chipId})
+    });
+    var json = await resp.json();
+    if(!resp.ok || json.error){
+      document.getElementById('scrp-aem').textContent = json.error || '伺服器錯誤';
+      document.getElementById('scrp-ae').classList.add('show');
+      return;
+    }
+    var rows = json.data || [];
+    if(rows.length === 0){document.getElementById('scrp-aw').classList.add('show');return;}
+    renderScrpTable(rows);
+    var badge = document.getElementById('scrp-badge');
+    badge.textContent = '共 ' + rows.length + ' 筆';
+    badge.style.display = 'inline-block';
+    document.getElementById('scrp-result').classList.add('show');
+  }catch(err){
+    document.getElementById('scrp-aem').textContent = '連線失敗：' + err.message + '（請確認 Server 是否啟動）';
+    document.getElementById('scrp-ae').classList.add('show');
+  }finally{
+    setOv(false);
+    btn.disabled = false;
+  }
+}
+
+function renderScrpTable(rows){
+  var tb = document.getElementById('scrp-tb');
+  tb.innerHTML = '';
+  rows.forEach(function(r, i){
+    var tr = document.createElement('tr');
+    tr.className = 'sr' + (i % 2 === 1 ? ' ev' : '');
+    tr.innerHTML =
+      '<td class="sc-chip">'+mk(r.SHEET_ID_CHIP_ID)+'</td>'+
+      '<td class="sc-ts">'+mk(r.TRANS_TIMESTAMP)+'</td>'+
+      '<td class="sc-cst">'+mk(r.CASSETTE_ID)+'</td>'+
+      '<td class="sc-op">'+mk(r.SHEET_ID)+'</td>'+
+      '<td class="sc-op">'+mk(r.OP_ID)+'</td>'+
+      '<td class="sc-op">'+mk(r.WO_ID)+'</td>'+
+      '<td style="text-align:center;font-weight:700;color:#0d6efd">'+mk(r.TRANS_ID)+'</td>'+
+      '<td>'+mk(r.TRANS_USER)+'</td>'+
+      '<td>'+mk(r.MODEL_NO)+'</td>';
+    tb.appendChild(tr);
+  });
+}
+
+document.getElementById('scrp-id').addEventListener('keydown', function(e){
+  if(e.key === 'Enter') doScrpQuery();
+});
+</script>
+</body>
+</html>
