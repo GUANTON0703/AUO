@@ -1,0 +1,246 @@
+
+====================================================
+[ 啟動於 2026-09-23 13:12:35 ]
+====================================================
+[13:12:47] [hta_logger] 'lv3keyin' → U:\GPT\小工具轉換\後端總控台\LOG\hta_access.db
+[13:12:47] Traceback (most recent call last):
+[13:12:47]   File "\\tw100049089\00_MyAgent\LV3Keyin\app.py", line 1196, in <module>
+[13:12:47]     _hta_logger.register(app)  # HTA auto-middleware
+[13:12:47]                          ^^^
+[13:12:47] NameError: name 'app' is not defined
+
+====================================================
+[ 啟動於 2026-09-23 13:28:29 ]
+====================================================
+[15:38:38] [hta_logger] 'lv3keyin' → U:\GPT\小工具轉換\後端總控台\LOG\hta_access.db
+[15:38:38] ====================================================
+[15:38:38]   LV3 快速 KEYIN 系統  v202608051800
+[15:38:38]   (SQLite 版本 - 按月份放置)
+[15:38:38] ====================================================
+[15:38:38] ✓ 伺服器啟動於 http://localhost:5104/
+[15:38:38]   HTML 路徑：\\tw100049089\00_MyAgent\LV3Keyin\index_lv3.html
+[15:38:38]   資料庫路徑：\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔
+[15:38:38]   DEFECT.txt：\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\DEFECT.txt
+[15:38:38] [DB] 報告查詢: 大寶 20260923 — 回傳 0 筆
+[15:38:38] [DB] 報告查詢: 大寶 20260923 — 回傳 0 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 12 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 12 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 12 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 12 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 12 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 12 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 12 筆
+[15:38:38] [DB] 報告查詢: 大寶 20260923 — 回傳 0 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 12 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 12 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 12 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 12 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 12 筆
+[15:38:38] [SQL] SELECT DISTINCT TFT_CHIP_ID, PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, SHIFT FROM CELODS.H_DAX_FBK_TEST_ODS WHERE SITE_ID =...
+[15:38:38] [SQL] 回傳 67 筆
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 12 筆
+[15:38:38] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...
+[15:38:38] [SQL] 回傳 1 筆
+[15:38:38] [SQL] SELECT TEST_SIGNAL_NO, TEST_GATE_NO FROM (  SELECT TEST_SIGNAL_NO, TEST_GATE_NO   FROM CELODS.H_DAX_FBK_DEFECT_ODS   WHE...
+[15:38:38] [SQL] 回傳 1 筆
+[15:38:38] [DEFECT] 讀取完成，共 158 筆
+[15:38:38] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 13 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 13 筆
+[15:38:38] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...
+[15:38:38] [SQL] 回傳 1 筆
+[15:38:38] [SQL] SELECT TEST_SIGNAL_NO, TEST_GATE_NO FROM (  SELECT TEST_SIGNAL_NO, TEST_GATE_NO   FROM CELODS.H_DAX_FBK_DEFECT_ODS   WHE...
+[15:38:38] [SQL] 回傳 1 筆
+[15:38:38] [DEFECT] 讀取完成，共 158 筆
+[15:38:38] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 14 筆
+[15:38:38] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...
+[15:38:38] [SQL] 回傳 1 筆
+[15:38:38] [SQL] SELECT TEST_SIGNAL_NO, TEST_GATE_NO FROM (  SELECT TEST_SIGNAL_NO, TEST_GATE_NO   FROM CELODS.H_DAX_FBK_DEFECT_ODS   WHE...
+[15:38:38] [SQL] 回傳 1 筆
+[15:38:38] [DEFECT] 讀取完成，共 158 筆
+[15:38:38] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 15 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 15 筆
+[15:38:38] [SQL] SELECT DISTINCT TFT_CHIP_ID, PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, SHIFT FROM CELODS.H_DAX_FBK_TEST_ODS WHERE SITE_ID =...
+[15:38:38] [SQL] 回傳 103 筆
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 15 筆
+[15:38:38] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...
+[15:38:38] [SQL] 回傳 1 筆
+[15:38:38] [SQL] SELECT TEST_SIGNAL_NO, TEST_GATE_NO FROM (  SELECT TEST_SIGNAL_NO, TEST_GATE_NO   FROM CELODS.H_DAX_FBK_DEFECT_ODS   WHE...
+[15:38:38] [SQL] 回傳 1 筆
+[15:38:38] [DEFECT] 讀取完成，共 158 筆
+[15:38:38] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 16 筆
+[15:38:38] [DB] 報告查詢: 大寶 20260923 — 回傳 0 筆
+[15:38:38] [SQL] SELECT DISTINCT TFT_CHIP_ID, PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, SHIFT FROM CELODS.H_DAX_FBK_TEST_ODS WHERE SITE_ID =...
+[15:38:38] [SQL] 回傳 127 筆
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 16 筆
+[15:38:38] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...
+[15:38:38] [SQL] 回傳 1 筆
+[15:38:38] [SQL] SELECT TEST_SIGNAL_NO, TEST_GATE_NO FROM (  SELECT TEST_SIGNAL_NO, TEST_GATE_NO   FROM CELODS.H_DAX_FBK_DEFECT_ODS   WHE...
+[15:38:38] [SQL] 回傳 1 筆
+[15:38:38] [DEFECT] 讀取完成，共 158 筆
+[15:38:38] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 17 筆
+[15:38:38] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...
+[15:38:38] [SQL] 回傳 1 筆
+[15:38:38] [SQL] SELECT TEST_SIGNAL_NO, TEST_GATE_NO FROM (  SELECT TEST_SIGNAL_NO, TEST_GATE_NO   FROM CELODS.H_DAX_FBK_DEFECT_ODS   WHE...
+[15:38:38] [SQL] 回傳 1 筆
+[15:38:38] [DEFECT] 讀取完成，共 158 筆
+[15:38:38] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 陳凱年 20260923 — 回傳 18 筆
+[15:38:38] [DB] 報告查詢: 大寶 20260923 — 回傳 0 筆
+[15:38:38] [DB] 報告查詢: 大寶 20260923 — 回傳 0 筆
+[15:38:38] [DB] 報告查詢: 大寶 20260923 — 回傳 0 筆
+[15:38:38] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:38:38] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 大寶 20260922 — 回傳 1 筆
+[15:38:38] [DB] 報告查詢: 大寶 20260923 — 回傳 0 筆
+[15:38:38] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:38:38] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 大寶 20260922 — 回傳 2 筆
+[15:38:38] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:38:38] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 大寶 20260922 — 回傳 3 筆
+[15:38:38] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:38:38] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:38:38] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:38:38] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 大寶 20260922 — 回傳 4 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 大寶 20260922 — 回傳 5 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 大寶 20260922 — 回傳 6 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 大寶 20260922 — 回傳 6 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 大寶 20260922 — 回傳 7 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 大寶 20260922 — 回傳 8 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 大寶 20260922 — 回傳 9 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 大寶 20260922 — 回傳 10 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 大寶 20260922 — 回傳 10 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [DB] ✓ 記錄已更新 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [SQL] SELECT TEST_SIGNAL_NO, TEST_GATE_NO FROM (  SELECT TEST_SIGNAL_NO, TEST_GATE_NO   FROM CELODS.H_DAX_FBK_DEFECT_ODS   WHE...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [DEFECT] 讀取完成，共 158 筆
+[15:49:54] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 陳凱年 20260923 — 回傳 19 筆
+[15:49:54] [DB] 報告查詢: 大寶 20260923 — 回傳 0 筆
+[15:49:54] [SQL] SELECT DISTINCT TFT_CHIP_ID, PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, SHIFT FROM CELODS.H_DAX_FBK_TEST_ODS WHERE SITE_ID =...
+[15:49:54] [SQL] 回傳 170 筆
+[15:49:54] [DB] 報告查詢: 陳凱年 20260923 — 回傳 19 筆
+[15:49:54] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [SQL] SELECT TEST_SIGNAL_NO, TEST_GATE_NO FROM (  SELECT TEST_SIGNAL_NO, TEST_GATE_NO   FROM CELODS.H_DAX_FBK_DEFECT_ODS   WHE...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [DEFECT] 讀取完成，共 158 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260922 — 回傳 54 筆
+[15:49:54] [SQL] WITH latest AS (    SELECT cassette_id, MAX(trans_timestamp) AS latest_time    FROM celods.h_chip_trans_ods    WHERE she...
+[15:49:54] [SQL] 回傳 0 筆
+[15:49:54] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 陳凱年 20260923 — 回傳 20 筆
+[15:49:54] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [SQL] SELECT TEST_SIGNAL_NO, TEST_GATE_NO FROM (  SELECT TEST_SIGNAL_NO, TEST_GATE_NO   FROM CELODS.H_DAX_FBK_DEFECT_ODS   WHE...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [DEFECT] 讀取完成，共 158 筆
+[15:49:54] [DB] 報告查詢: 大寶 20260923 — 回傳 0 筆
+[15:49:54] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 陳凱年 20260923 — 回傳 21 筆
+[15:49:54] [DB] 報告查詢: 陳凱年 20260923 — 回傳 21 筆
+[15:49:54] [DB] 報告查詢: 李奕寬 20260923 — 回傳 0 筆
+[15:49:54] [DB] 報告查詢: 陳怡君 20260923 — 回傳 0 筆
+[15:49:54] [DB] 報告查詢: 林千 20260923 — 回傳 0 筆
+[15:49:54] [DB] 報告查詢: 余秋月 20260923 — 回傳 0 筆
+[15:49:54] [DB] 報告查詢: 黃美珠 20260923 — 回傳 0 筆
+[15:49:54] [DB] 報告查詢: 大寶 20260923 — 回傳 0 筆
+[15:49:54] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [SQL] SELECT TEST_SIGNAL_NO, TEST_GATE_NO FROM (  SELECT TEST_SIGNAL_NO, TEST_GATE_NO   FROM CELODS.H_DAX_FBK_DEFECT_ODS   WHE...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [DEFECT] 讀取完成，共 158 筆
+[15:49:54] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 陳凱年 20260923 — 回傳 22 筆
+[15:49:54] [DB] 報告查詢: 大寶 20260923 — 回傳 0 筆
+[15:49:54] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [SQL] SELECT TEST_SIGNAL_NO, TEST_GATE_NO FROM (  SELECT TEST_SIGNAL_NO, TEST_GATE_NO   FROM CELODS.H_DAX_FBK_DEFECT_ODS   WHE...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [DEFECT] 讀取完成，共 158 筆
+[15:49:54] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 陳凱年 20260923 — 回傳 23 筆
+[15:49:54] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [SQL] SELECT TEST_SIGNAL_NO, TEST_GATE_NO FROM (  SELECT TEST_SIGNAL_NO, TEST_GATE_NO   FROM CELODS.H_DAX_FBK_DEFECT_ODS   WHE...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [DEFECT] 讀取完成，共 158 筆
+[15:49:54] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 陳凱年 20260923 — 回傳 24 筆
+[15:49:54] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [SQL] SELECT TEST_SIGNAL_NO, TEST_GATE_NO FROM (  SELECT TEST_SIGNAL_NO, TEST_GATE_NO   FROM CELODS.H_DAX_FBK_DEFECT_ODS   WHE...
+[15:49:54] [SQL] 回傳 1 筆
+[15:49:54] [DEFECT] 讀取完成，共 158 筆
+[15:49:54] [DB] ✓ 記錄已新增 (\\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔\2026\202609.db)
+[15:49:54] [DB] 報告查詢: 陳凱年 20260923 — 回傳 25 筆
+[15:49:54] [SQL] SELECT PRODUCT_CODE, GRADE, DEFECT_CODE_DESC, DEFECT_VALUE, TOOL_ID, OP_ID FROM (  SELECT PRODUCT_CODE, GRADE, DEFECT_CO...

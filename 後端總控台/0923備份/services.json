@@ -1,0 +1,111 @@
+{
+  "services": [
+    {
+      "id": "wish_pool",
+      "name": "許願池",
+      "port": 5101,
+      "script": "\\\\tw100049089\\00_MyAgent\\Wishing Well\\app.py",
+      "cwd": "\\\\tw100049089\\00_MyAgent\\Wishing Well",
+      "url": "http://localhost:5101",
+      "python": "auto",
+      "auto_start": true
+    },
+    {
+      "id": "roller_mark",
+      "name": "Roller Mark 背污逐站檢",
+      "port": 5102,
+      "script": "\\\\tw100049089\\00_MyAgent\\Roller Mark 背污逐站檢\\前後段拆分版\\HTA版本\\APP.PY",
+      "cwd": "\\\\tw100049089\\00_MyAgent\\Roller Mark 背污逐站檢\\前後段拆分版\\HTA版本",
+      "url": "http://localhost:5102",
+      "python": "auto",
+      "auto_start": true
+    },
+    {
+      "id": "lv3",
+      "name": "LV3 資料查詢系統",
+      "port": 5103,
+      "script": "\\\\tw100049089\\00_MyAgent\\LV3\\後端與程式\\app.py",
+      "cwd": "\\\\tw100049089\\00_MyAgent\\LV3\\後端與程式",
+      "url": "http://localhost:5103",
+      "python": "auto",
+      "auto_start": true
+    },
+    {
+      "id": "lv3keyin",
+      "name": "新LV3報告 KEY IN 系統",
+      "port": 5104,
+      "script": "\\\\tw100049089\\00_MyAgent\\LV3Keyin\\app.py",
+      "cwd": "\\\\tw100049089\\00_MyAgent\\LV3Keyin",
+      "url": "http://localhost:5104",
+      "python": "auto",
+      "auto_start": true
+    },
+    {
+      "id": "yield_query",
+      "name": "良率查詢",
+      "port": 5105,
+      "script": "\\\\tw100049089\\00_MyAgent\\LV3\\良率\\app.py",
+      "cwd": "\\\\tw100049089\\00_MyAgent\\LV3\\良率",
+      "url": "http://10.36.38.240:5105",
+      "python": "auto",
+      "auto_start": true
+    },
+    {
+      "id":        "pi_insp",
+      "name":      "PI 點位映射工具",
+      "port":      5106,
+      "real_port": 5106,
+      "script":    "\\\\tw100049089\\00_MyAgent\\PI INSP\\PI_proxy_PIINSP.py",
+      "cwd":       "\\\\tw100049089\\00_MyAgent\\PI INSP",
+      "url":       "http://10.36.38.240:5106",
+      "python":    "auto",
+      "proxy_log": false,
+      "auto_start": true
+    },
+    {
+      "id":     "id_convert",
+      "name":   "大片換中小片ID",
+      "port":   5110,
+      "script": "\\\\tw100049089\\00_MyAgent\\ID轉換\\api.py",
+      "cwd":    "\\\\tw100049089\\00_MyAgent\\ID轉換",
+      "url":    "http://10.36.38.240:5110",
+      "python": "auto",
+      "auto_start": true
+    },
+    {
+      "id":     "boss_site",
+      "name":   "Boss SITE_百分比計算工具",
+      "port":   5731,
+      "script": "\\\\tw100049089\\00_MyAgent\\Boss SITE_百分比計算工具\\C1_bridge.py",
+      "cwd":    "\\\\tw100049089\\00_MyAgent\\Boss SITE_百分比計算工具",
+      "url":    "http://10.36.38.240:5731",
+      "python": "auto",
+      "proxy_log": false,
+      "auto_start": true
+    },
+    {
+      "id":     "fma_trend",
+      "name":   "分責Trend資料分析",
+      "port":   5050,
+      "real_port": 5050,
+      "script": "\\\\tw100049089\\00_MyAgent\\分責Trend資料分析\\統一後端\\app.py",
+      "cwd":    "\\\\tw100049089\\00_MyAgent\\分責Trend資料分析\\統一後端",
+      "url":    "http://10.36.38.240:5050",
+      "python": "auto",
+      "proxy_log": false,
+      "auto_start": true
+    },
+    {
+      "id":     "yield_dashboard",
+      "name":   "LCD良率分析儀表板",
+      "port":   5203,
+      "real_port": 5203,
+      "script": "\\\\tw100049089\\00_MyAgent\\THS\\yield_dashboard.py",
+      "cwd":    "\\\\tw100049089\\00_MyAgent\\THS",
+      "url":    "http://10.36.38.240:5203",
+      "python": "auto",
+      "proxy_log": false,
+      "auto_start": true
+    }
+  ]
+}

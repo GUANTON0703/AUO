@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>大中小片 ID 轉換</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI','微軟正黑體',sans-serif;background:#f0f2f5;color:#333}
+header{background:#005087;color:#fff;padding:16px 28px}header h1{font-size:1.2rem;font-weight:600}header p{font-size:.8rem;opacity:.7;margin-top:3px}
+.main{max-width:1200px;margin:24px auto;padding:0 16px;display:flex;flex-direction:column;gap:16px}
+.tab-bar{display:flex;gap:6px;flex-wrap:wrap}
+.tab-btn{padding:8px 18px;border:2px solid #005087;border-radius:6px;background:#fff;color:#005087;font-size:.88rem;cursor:pointer;font-weight:500;transition:.15s}
+.tab-btn:hover{background:#e8f0f7}.tab-btn.active{background:#005087;color:#fff}
+.card{background:#fff;border-radius:10px;padding:20px 24px;box-shadow:0 1px 6px #0001}
+.card-title{font-size:.92rem;font-weight:700;color:#005087;margin-bottom:14px}
+.input-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.input-group{display:flex;flex-direction:column;gap:5px;flex:1;min-width:220px}
+.input-group label{font-size:.8rem;color:#666;font-weight:500}
+.input-group textarea{padding:9px 14px;border:1.5px solid #ccc;border-radius:6px;font-size:.9rem;font-family:monospace;resize:vertical;min-height:110px;line-height:1.7}
+.input-group textarea:focus{outline:none;border-color:#005087;box-shadow:0 0 0 3px #00508720}
+.btn-primary{padding:9px 22px;background:#005087;color:#fff;border:none;border-radius:6px;font-size:.9rem;cursor:pointer;font-weight:700;height:40px;white-space:nowrap}
+.btn-primary:hover{background:#003f6b}.btn-primary:disabled{background:#7aa8c7;cursor:not-allowed}
+.btn-ghost{padding:9px 16px;background:#eee;color:#555;border:none;border-radius:6px;font-size:.88rem;cursor:pointer;height:40px}
+.btn-ghost:hover{background:#ddd}
+.btn-export{padding:9px 18px;background:#1a7a3c;color:#fff;border:none;border-radius:6px;font-size:.88rem;cursor:pointer;font-weight:600;height:40px}
+.btn-export:hover{background:#156030}
+.err-msg{color:#e05050;font-size:.82rem;margin-top:6px;display:none}
+.example-area{margin-top:12px}
+.example-label{font-size:.78rem;color:#888;margin-bottom:7px;font-weight:500}
+.example-btns{display:flex;gap:6px;flex-wrap:wrap}
+.ex-btn{padding:5px 13px;border:1.5px solid #a0c8ef;border-radius:16px;background:#f0f7ff;color:#005087;font-size:.78rem;cursor:pointer;font-family:monospace;font-weight:600;transition:.12s}
+.ex-btn:hover{background:#005087;color:#fff;border-color:#005087}
+.ex-hint{font-size:.75rem;color:#aaa;margin-top:8px;line-height:1.6}
+.filter-row{display:flex;gap:28px;flex-wrap:wrap}
+.filter-group{flex:1;min-width:180px}
+.filter-group h3{font-size:.77rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.pos-tags{display:flex;flex-wrap:wrap;gap:5px}
+.pos-tag{padding:5px 14px;border:1.5px solid #ccc;border-radius:20px;font-size:.82rem;cursor:pointer;user-select:none;background:#fafafa;font-family:monospace;font-weight:600}
+.pos-tag:hover{border-color:#005087;color:#005087}.pos-tag.sel{background:#005087;color:#fff;border-color:#005087}
+.filter-actions{display:flex;gap:6px;margin-top:8px}
+.btn-sm{padding:4px 12px;border:1.5px solid #ccc;border-radius:4px;font-size:.78rem;cursor:pointer;background:#fff}
+.btn-sm.p{border-color:#005087;color:#005087}.btn-sm:hover{background:#f0f2f5}
+.result-header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.result-header .title{font-size:.92rem;font-weight:700;color:#005087}
+.badge{background:#e8f0f7;color:#005087;padding:3px 12px;border-radius:12px;font-size:.8rem;font-weight:700}
+.result-header .spacer{flex:1}
+.excel-wrap{overflow-x:auto}
+table.excel{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+table.excel col.c-big{width:22%}table.excel col.c-mid{width:18%}table.excel col.c-midp{width:9%}table.excel col.c-sml{width:30%}table.excel col.c-smlp{width:9%}
+table.excel thead th{background:#005087;color:#fff;padding:10px 14px;text-align:center;font-weight:600;font-size:.85rem;border:1px solid #00406e;white-space:nowrap}
+table.excel tbody td{border:1px solid #d8e6f0;padding:8px 14px;vertical-align:middle;font-family:monospace;font-size:.85rem}
+td.td-big{background:#fff8f0;color:#b35900;font-weight:700;font-size:.88rem;text-align:center;border-right:2px solid #f5c06e;border-left:2px solid #f5c06e}
+td.td-big.hl{background:#fde8cc}
+td.td-mid{background:#f0f7ff;color:#005087;font-weight:700;text-align:center;border-right:2px solid #a0c8ef}
+td.td-mid.hl{background:#cce8fd}
+td.td-midp{background:#f0f7ff;text-align:center;font-weight:700;color:#6a1aaa;border-right:2px solid #a0c8ef}
+td.td-midp.hl{background:#cce8fd}
+td.td-sml{background:#fff;color:#1a7a3c;font-weight:600;text-align:center}
+td.td-sml.hl{background:#d4f0dc;font-weight:700;color:#0f5828}
+td.td-smlp{background:#fff;color:#6a1aaa;text-align:center;font-weight:600}
+td.td-smlp.hl{background:#f0e8fd}
+tr.last-of-mid td{border-bottom:2px solid #b0ccdf}
+.multi-item{margin-bottom:20px}
+.multi-item-header{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#f5f8fb;padding:8px 14px;border-radius:6px 6px 0 0;border:1px solid #d8e6f0;border-bottom:none;font-size:.84rem}
+.multi-item-idx{background:#005087;color:#fff;padding:2px 8px;border-radius:10px;font-size:.75rem;font-weight:700}
+.multi-item-body{border:1px solid #d8e6f0;border-radius:0 0 6px 6px;overflow:hidden}
+.id-type-badge{padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:700}
+.type-big{background:#fde8cc;color:#b35900}.type-mid{background:#cce8fd;color:#005087}.type-small{background:#d4f0dc;color:#1a7a3c}
+.no-data{text-align:center;padding:40px;color:#bbb;font-size:.92rem}
+.no-data .icon{font-size:2rem;display:block;margin-bottom:8px}
+.fail-item{background:#fff2f2;border:1px solid #f5c6cb;border-radius:6px;padding:10px 14px;margin-bottom:8px;font-size:.85rem;font-family:monospace;color:#c0392b}
+</style></head>
+<body>
+<header><h1>大 / 中 / 小片 ID 轉換</h1><p>輸入大片、中片或小片 ID（可多筆），依命名規則自動轉換對應的大中小片 ID；或輸入 TFT_CHIP_ID 自動查詢大片 ID 後轉換</p></header>
+<div class="main">
+
+<!-- ① 頂部 Tab 列（系列） -->
+<div class="card">
+  <div class="card-title">① 選擇功能 / 產品系列</div>
+  <div class="tab-bar" id="tabBar"></div>
+</div>
+
+<!-- ── 轉換功能區塊 ── -->
+<div id="convertSection">
+  <div class="card" id="inputCard" style="display:none">
+    <div class="card-title">② 輸入 ID</div>
+    <div class="input-row">
+      <div class="input-group">
+        <label>每行輸入一筆 ID（大片 / 中片 / 小片 皆可，可混合輸入；輸入 TFT_CHIP_ID 將自動查詢大片 ID）</label>
+        <textarea id="multiInput" placeholder="每行一筆 ID"></textarea>
+      </div>
+    </div>
+    <div class="input-row" style="margin-top:10px">
+      <button class="btn-primary" id="convertBtn" onclick="doConvert()">轉換</button>
+      <button class="btn-ghost" onclick="clearAll()">清除</button>
+    </div>
+    <div class="err-msg" id="errMsg"></div>
+    <div class="example-area">
+      <div class="example-label">📌 範例（點選後自動填入，點轉換即可查看）</div>
+      <div class="example-btns" id="exampleBtns"></div>
+      <div class="ex-hint" id="exHint"></div>
+    </div>
+  </div>
+  <div class="card" id="filterCard" style="display:none">
+    <div class="card-title">③ POS 篩選（選取後只顯示指定位置的 ID）</div>
+    <div class="filter-row">
+      <div class="filter-group"><h3>中片 POS</h3><div class="pos-tags" id="midPosTags"></div>
+        <div class="filter-actions"><button class="btn-sm p" onclick="selAll('mid')">全選</button><button class="btn-sm" onclick="clrAll('mid')">清除</button></div>
+      </div>
+      <div class="filter-group"><h3>小片 POS</h3><div class="pos-tags" id="smallPosTags"></div>
+        <div class="filter-actions"><button class="btn-sm p" onclick="selAll('small')">全選</button><button class="btn-sm" onclick="clrAll('small')">清除</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="card" id="resultCard" style="display:none">
+    <div class="result-header">
+      <span class="title" id="resultTitle">轉換結果</span>
+      <span class="badge" id="resultBadge"></span>
+      <span class="spacer"></span>
+      <button class="btn-export" onclick="exportCSV()">⬇ 匯出 CSV</button>
+    </div>
+    <div class="excel-wrap" id="resultArea"></div>
+  </div>
+</div>
+
+</div>
+<script>
+const SERIES={
+"M27系列":{prefixLen:3,coreLen:6,midInfix:"",smallBase:"core",sposLen:1,
+  hint:"大片=9碼（3前綴+6核心）｜中片=7碼（核心+POS）｜小片=7碼（核心+POS）",
+  example:{ids:["N26K5QT84"],note:"點選後填入大片 ID，再按轉換即可展開所有中片與小片"},
+  midToSmall:{"B":["A","B","G","H","C","D","J","K"],"D":["C","D","J","K","E","F","L","M"],"F":["E","F","L","M","N","P","U","V"],"P":["N","P","U","V","Q","R","W","X"],"R":["Q","R","W","X","S","T","Y","Z"],"T":["S","T","Y","Z"]}},
+"M315系列":{prefixLen:3,coreLen:6,midInfix:"",smallBase:"core",sposLen:1,
+  hint:"大片=9碼（3前綴+6核心）｜中片=7碼（核心+POS）｜小片=7碼（核心+POS）",
+  example:{ids:["N26K5QT84"],note:"點選後填入大片 ID，再按轉換即可展開所有中片與小片"},
+  midToSmall:{"B":["A","B","G","H","C","D","J","K"],"D":["C","D","J","K","E","F","L","M"],"F":["E","F","L","M","N","P","U","V"],"P":["N","P","U","V","Q","R","W","X"],"R":["Q","R","W","X","S","T","Y","Z"],"T":["S","T","Y","Z"]}},
+"M238系列":{prefixLen:3,coreLen:6,midInfix:"",smallBase:"core",sposLen:1,
+  hint:"大片=9碼（3前綴+6核心）｜中片=7碼（核心+POS）｜小片=7碼（核心+POS）",
+  example:{ids:["N26K5QT84"],note:"點選後填入大片 ID，再按轉換即可展開所有中片與小片"},
+  midToSmall:{"B":["A","B","G","H","C","D","J","K"],"D":["C","D","J","K","E","F","L","M"],"F":["E","F","L","M","N","P","U","V"],"P":["N","P","U","V","Q","R","W","X"],"R":["Q","R","W","X","S","T","Y","Z"],"T":["S","T","Y","Z"]}},
+"M215系列":{prefixLen:3,coreLen:6,midInfix:"",smallBase:"core",sposLen:1,
+  hint:"大片=9碼（3前綴+6核心）｜中片=7碼（核心+POS）｜小片=7碼（核心+POS）",
+  example:{ids:["N26K5QT84"],note:"點選後填入大片 ID，再按轉換即可展開所有中片與小片"},
+  midToSmall:{"B":["A","B","G","H","C","D","J","K"],"D":["C","D","J","K","E","F","L","M"],"F":["E","F","L","M","N","P","U","V"],"P":["N","P","U","V","Q","R","W","X"],"R":["Q","R","W","X","S","T","Y","Z"],"T":["S","T","Y","Z"]}},
+"B156系列":{prefixLen:3,coreLen:6,midInfix:"",smallBase:"big",sposLen:3,
+  hint:"大片=9碼（3前綴+6核心）｜中片=7碼（核心+POS）｜小片=12碼（大片+3碼POS，格式0XX）",
+  example:{ids:["P15KA774A"],note:"點選後填入大片 ID，再按轉換即可展開所有中片與小片"},
+  midToSmall:{"A":["0AA","0AB","0AC","0AD","0BA","0BB","0BC","0BD","0CA","0CB","0CC","0CD"],"B":["0AE","0AF","0BE","0BF","0CE","0CF"],"C":["0AE","0AF","0BE","0BF","0CE","0CF"],"G":["0GA","0GB","0HA","0HB","0JA","0JB","0KA","0KB","0LA","0LB","0MA","0MB"],"H":["0GC","0GD","0HC","0HD","0JC","0JD","0KC","0KD","0LC","0LD","0MC","0MD"],"J":["0GE","0GF","0HE","0HF","0JE","0JF","0KE","0KF","0LE","0LF","0ME","0MF"]}},
+"M236系列":{prefixLen:3,coreLen:6,midInfix:"",smallBase:"core",sposLen:1,
+  hint:"大片=9碼（3前綴+6核心）｜中片=7碼（核心+POS）｜小片=7碼（核心+POS）",
+  example:{ids:["K15K9M12F"],note:"點選後填入大片 ID，再按轉換即可展開所有中片與小片"},
+  midToSmall:{"A":["A","B","E","F"],"C":["C","D","G","H"],"J":["J","K","N","P"],"L":["L","M","Q","R"],"S":["S","T","W","X"],"U":["U","V","Y","Z"],"2":["2","3","6","7"],"4":["4","5","8","9"]}},
+"B160系列":{prefixLen:3,coreLen:6,midInfix:"",smallBase:"big",sposLen:3,
+  hint:"大片=9碼（3前綴+6核心）｜中片=7碼（核心+POS）｜小片=12碼（大片+3碼POS，格式0XX）",
+  example:{ids:["P15KA774A"],note:"點選後填入大片 ID，再按轉換即可展開所有中片與小片"},
+  midToSmall:{"A":["0AA","0AB","0BA","0BB","0CA","0CB"],"B":["0AC","0AD","0BC","0BD","0CC","0CD"],"C":["0AE","0AF","0BE","0BF","0CE","0CF"],"D":["0DA","0DB","0EA","0EB","0FA","0FB","0GA","0GB"],"E":["0DC","0DD","0EC","0ED","0FC","0FD","0GC","0GD"],"F":["0DE","0DF","0EE","0EF","0FE","0FF","0GE","0GF"],"G":["0HA","0HB","0JA","0JB","0KA","0KB","0LA","0LB"],"H":["0HC","0HD","0JC","0JD","0KC","0KD","0LC","0LD"],"J":["0HE","0HF","0JE","0JF","0KE","0KF","0LE","0LF"]}}
+};
+Object.keys(SERIES).forEach(n=>{const r=SERIES[n];r.midPos=Object.keys(r.midToSmall);const sp=new Set();Object.values(r.midToSmall).forEach(a=>a.forEach(s=>sp.add(s)));r.allSmallPos=[...sp];r.bigLen=r.prefixLen+r.coreLen;r.midLen=r.coreLen+r.midInfix.length+1;r.smallLen=(r.smallBase==='big'?r.bigLen:r.coreLen)+r.sposLen;});
+
+const bigIdCache={};
+function detectId(raw,name){
+  const r=SERIES[name],s=raw.toUpperCase().trim();
+  if(s.length===r.bigLen){const core=s.slice(r.prefixLen,r.prefixLen+r.coreLen);return{type:'big',bigId:s,core,matchMid:null,matchSmall:null};}
+  if(s.length===r.midLen){const core=s.slice(0,r.coreLen),suffix=s.slice(r.coreLen);if(suffix.startsWith(r.midInfix)){const mpos=suffix.slice(r.midInfix.length);if(r.midPos.includes(mpos)){const bigId=bigIdCache[name]||('???'+core);return{type:'mid',bigId,core,matchMid:mpos,matchSmall:null};}}}
+  if(s.length===r.smallLen){const prefEnd=r.smallBase==='big'?r.bigLen:r.coreLen;const pre=s.slice(0,prefEnd),spos=s.slice(prefEnd);if(r.allSmallPos.includes(spos)){let core,bigId;if(r.smallBase==='big'){bigId=pre;core=pre.slice(r.prefixLen,r.prefixLen+r.coreLen);}else{core=pre;bigId=bigIdCache[name]||('???'+core);}return{type:'small',bigId,core,matchMid:findMid(r,spos),matchSmall:spos};}}
+  return null;
+}
+function findMid(r,sp){for(const[mp,sl]of Object.entries(r.midToSmall))if(sl.includes(sp))return mp;return null;}
+
+let curSeries=null,multiResults=[],selMid=new Set(),selSmall=new Set();
+
+function initTabs(){
+  const bar=document.getElementById('tabBar');
+  Object.keys(SERIES).forEach(n=>{
+    const btn=document.createElement('button');
+    btn.className='tab-btn';btn.textContent=n;btn.dataset.key=n;
+    btn.onclick=()=>switchToConvert(n,btn);
+    bar.appendChild(btn);
+  });
+}
+
+function switchToConvert(n,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(curSeries===n)return;
+  curSeries=n;multiResults=[];
+  const r=SERIES[n];
+  document.getElementById('inputCard').style.display='block';
+  document.getElementById('filterCard').style.display='none';
+  document.getElementById('resultCard').style.display='none';
+  document.getElementById('multiInput').value='';
+  document.getElementById('errMsg').style.display='none';
+  buildExample(r);
+}
+
+function buildExample(r){
+  const btns=document.getElementById('exampleBtns');
+  const hint=document.getElementById('exHint');
+  btns.innerHTML='';
+  const ex=r.example;
+  const btn=document.createElement('button');
+  btn.className='ex-btn';
+  btn.textContent='範例大片 ID：'+ex.ids[0];
+  btn.onclick=()=>{
+    document.getElementById('multiInput').value=ex.ids.join('\n');
+    hint.textContent='→ '+ex.note;
+    document.getElementById('multiInput').focus();
+  };
+  btns.appendChild(btn);
+  hint.textContent='格式提示：'+r.hint;
+}
+
+async function doConvert(){
+  if(!curSeries){showErr('請先選擇產品系列');return;}
+  const lines=document.getElementById('multiInput').value.split('\n').map(l=>l.trim()).filter(l=>l);
+  if(!lines.length){showErr('請至少輸入一筆 ID');return;}
+  clearErr();
+
+  const r=SERIES[curSeries];
+  const normalItems=[];   // 已知大片 ID，可直接轉換
+  const lookupQueue=[];   // 需查 DB，格式：{inputId, kind:'unrecognized'|'needBig', item:null|{input,detected}}
+
+  lines.forEach(id=>{
+    const d=detectId(id,curSeries);
+    if(!d){
+      // 格式完全識別不到 → 視為 TFT_CHIP_ID 送查
+      lookupQueue.push({inputId:id.trim().toUpperCase(), kind:'unrecognized', item:null});
+    } else if(d.type==='big'){
+      bigIdCache[curSeries]=d.bigId;
+      normalItems.push({input:id,detected:d});
+    } else {
+      // 中片或小片：若 bigId 已知（非 ??? 前綴）直接用；否則送查 DB 補大片 ID
+      if(d.bigId.startsWith('???')){
+        lookupQueue.push({inputId:id.trim().toUpperCase(), kind:'needBig', item:{input:id,detected:d}});
+      } else {
+        normalItems.push({input:id,detected:d});
+      }
+    }
+  });
+
+  let resolvedItems=[];
+
+  if(lookupQueue.length>0){
+    const btn=document.getElementById('convertBtn');
+    btn.textContent='查詢中…';btn.disabled=true;
+
+    try{
+      const resp = await fetch('/api/lookup', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({chip_ids:lookupQueue.map(x=>x.inputId)})
+      });
+      const json=await resp.json();
+      const results=json.results||[];
+
+      // 任何一筆查不到 → alert 並中止
+      const notFound=results.filter(x=>!x.found);
+      if(notFound.length>0){
+        alert('以下 ID 查無大片 ID，無法轉換：\n'+notFound.map(x=>x.chip_id).join('\n'));
+        btn.textContent='轉換';btn.disabled=false;
+        return;
+      }
+
+      // 建立回傳結果 map
+      const resultMap={};
+      results.forEach(res=>{resultMap[res.chip_id]=(res.TFT_GLASS_ID||'').trim().toUpperCase();});
+
+      lookupQueue.forEach(q=>{
+        const bigId=resultMap[q.inputId]||'';
+        if(q.kind==='unrecognized'){
+          // 原格式識別不到 → 用 TFT_GLASS_ID 重新 detectId
+          const d=detectId(bigId,curSeries);
+          if(!d||d.type!=='big'){
+            resolvedItems.push({input:q.inputId,detected:null,formatError:true,bigId:bigId||'(空白)'});
+          } else {
+            bigIdCache[curSeries]=d.bigId;
+            resolvedItems.push({input:q.inputId,detected:d});
+          }
+        } else {
+          // 'needBig'：格式已識別（中片/小片），補上真實大片 ID
+          const d=q.item.detected;
+          d.bigId=bigId;
+          bigIdCache[curSeries]=bigId;
+          resolvedItems.push({input:q.item.input,detected:d});
+        }
+      });
+
+    }catch(e){
+      alert('DB 查詢失敗：'+e.message);
+      document.getElementById('convertBtn').textContent='轉換';
+      document.getElementById('convertBtn').disabled=false;
+      return;
+    }
+
+    document.getElementById('convertBtn').textContent='轉換';
+    document.getElementById('convertBtn').disabled=false;
+  }
+
+  multiResults=[...normalItems,...resolvedItems];
+  selMid=new Set(r.midPos);selSmall=new Set(r.allSmallPos);
+  buildPF(r);
+  document.getElementById('filterCard').style.display='block';
+  document.getElementById('resultCard').style.display='block';
+  renderResults();
+}
+
+function buildPF(r){buildPG('midPosTags',r.midPos,selMid);buildPG('smallPosTags',r.allSmallPos,selSmall);}
+function buildPG(cid,list,set){const c=document.getElementById(cid);c.innerHTML='';list.forEach(p=>{const t=document.createElement('span');t.className='pos-tag'+(set.has(p)?' sel':'');t.textContent=p;t.onclick=()=>{set.has(p)?(set.delete(p),t.classList.remove('sel')):(set.add(p),t.classList.add('sel'));renderResults();};c.appendChild(t);});}
+function selAll(tp){const r=SERIES[curSeries],set=tp==='mid'?selMid:selSmall,id=tp==='mid'?'midPosTags':'smallPosTags';(tp==='mid'?r.midPos:r.allSmallPos).forEach(p=>set.add(p));document.querySelectorAll(`#${id} .pos-tag`).forEach(t=>t.classList.add('sel'));renderResults();}
+function clrAll(tp){const set=tp==='mid'?selMid:selSmall,id=tp==='mid'?'midPosTags':'smallPosTags';set.clear();document.querySelectorAll(`#${id} .pos-tag`).forEach(t=>t.classList.remove('sel'));renderResults();}
+
+function buildTable(r,d){
+  const rows=[];
+  r.midPos.forEach(mpos=>{if(!selMid.has(mpos))return;const midId=d.core+r.midInfix+mpos;(r.midToSmall[mpos]||[]).forEach(spos=>{if(!selSmall.has(spos))return;const smlId=r.smallBase==='big'?d.bigId+spos:d.core+spos;rows.push({mid:mpos,midId,spos,smlId,hlMid:(d.type==='mid'||d.type==='small')&&mpos===d.matchMid,hlSmall:d.type==='small'&&spos===d.matchSmall});});});
+  if(!rows.length)return{html:'<div class="no-data" style="padding:20px"><span style="color:#bbb">POS 篩選後無符合資料</span></div>',count:0,midCount:0};
+  const fc={},fi={};rows.forEach((row,i)=>{if(!fc[row.mid]){fc[row.mid]=0;fi[row.mid]=i;}fc[row.mid]++;});
+  const tot=rows.length,bHl=d.type==='big'?' hl':'';let trs='',bw=false;
+  rows.forEach((row,i)=>{const k=row.mid,isF=(fi[k]===i),isL=(fi[k]+fc[k]-1===i);const lc=isL?' class="last-of-mid"':'',mH=row.hlMid?' hl':'',sH=row.hlSmall?' hl':'';const bCell=!bw?`<td class="td-big${bHl}" rowspan="${tot}">${d.bigId}</td>`:'';if(!bw)bw=true;const mCell=isF?`<td class="td-mid${mH}" rowspan="${fc[k]}">${row.midId}</td>`:'';const pCell=isF?`<td class="td-midp${mH}" rowspan="${fc[k]}">${row.mid}</td>`:'';trs+=`<tr${lc}>${bCell}${mCell}${pCell}<td class="td-sml${sH}">${row.smlId}</td><td class="td-smlp${sH}">${row.spos}</td></tr>`;});
+  return{html:`<table class="excel"><colgroup><col class="c-big"><col class="c-mid"><col class="c-midp"><col class="c-sml"><col class="c-smlp"></colgroup><thead><tr><th>大片 ID</th><th>中片 ID</th><th>中片 POS</th><th>小片 ID</th><th>小片 POS</th></tr></thead><tbody>${trs}</tbody></table>`,count:tot,midCount:Object.keys(fc).length};
+}
+
+function renderResults(){
+  if(!multiResults.length)return;
+  const r=SERIES[curSeries];
+  const ok=multiResults.filter(x=>x.detected),fail=multiResults.filter(x=>!x.detected);
+  let totalMid=0,totalSmall=0,html='';
+
+  if(fail.length){
+    html+=`<div style="margin-bottom:16px"><div style="font-size:.82rem;font-weight:700;color:#c0392b;margin-bottom:8px">⚠ 無法識別的 ID（${fail.length} 筆）</div>`;
+    fail.forEach(x=>{
+      const msg=x.formatError
+        ?`查得大片 ID「${x.bigId}」，但格式不符目前系列（${curSeries}），已跳過`
+        :`格式提示：${r.hint}`;
+      html+=`<div class="fail-item">✗ ${x.input}　<span style="font-size:.75rem;font-weight:400;color:#aaa">${msg}</span></div>`;
+    });
+    html+='</div>';
+  }
+
+  ok.forEach((x,i)=>{
+    const d=x.detected;
+    const res=buildTable(r,d);
+    totalMid+=res.midCount;totalSmall+=res.count;
+    const tl={big:'大片',mid:'中片',small:'小片'}[d.type],tc={big:'type-big',mid:'type-mid',small:'type-small'}[d.type];
+    html+=`<div class="multi-item"><div class="multi-item-header"><span class="multi-item-idx">${i+1}</span><strong>${x.input.toUpperCase()}</strong><span class="id-type-badge ${tc}">識別為 ${tl}</span><span>大片：<strong>${d.bigId}</strong></span><span style="margin-left:auto;font-size:.8rem;color:#888">${res.midCount} 中片 / ${res.count} 小片</span></div><div class="multi-item-body">${res.html}</div></div>`;
+  });
+
+  document.getElementById('resultTitle').textContent=`${curSeries} 轉換結果`;
+  document.getElementById('resultBadge').textContent=`${ok.length} 筆・${totalMid} 中片 / ${totalSmall} 小片`;
+  document.getElementById('resultArea').innerHTML=html||'<div class="no-data"><span class="icon">📭</span>無符合結果</div>';
+}
+
+function clearAll(){
+  document.getElementById('multiInput').value='';
+  document.getElementById('errMsg').style.display='none';
+  multiResults=[];
+  document.getElementById('filterCard').style.display='none';
+  document.getElementById('resultCard').style.display='none';
+}
+function showErr(m){const e=document.getElementById('errMsg');e.textContent='⚠ '+m;e.style.display='block';}
+function clearErr(){document.getElementById('errMsg').style.display='none';}
+
+function exportCSV(){
+  if(!multiResults.length){alert('無資料可匯出');return;}
+  const r=SERIES[curSeries];
+  const csv=[['輸入ID','大片ID','中片ID','中片POS','小片ID','小片POS']];
+  multiResults.forEach(x=>{
+    if(!x.detected)return;
+    const d=x.detected;
+    r.midPos.forEach(mpos=>{
+      if(!selMid.has(mpos))return;
+      const midId=d.core+r.midInfix+mpos;
+      (r.midToSmall[mpos]||[]).forEach(spos=>{
+        if(!selSmall.has(spos))return;
+        const smlId=r.smallBase==='big'?d.bigId+spos:d.core+spos;
+        csv.push([x.input.toUpperCase(),d.bigId,midId,mpos,smlId,spos]);
+      });
+    });
+  });
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob(['\uFEFF'+csv.map(r=>r.map(c=>`"${c}"`).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8;'})),download:`${curSeries}_轉換結果.csv`});a.click();
+}
+
+initTabs();
+</script></body></html>

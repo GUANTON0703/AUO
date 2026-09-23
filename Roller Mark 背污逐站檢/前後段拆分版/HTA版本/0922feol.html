@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-TW">
+
+
+<head>
+
+
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+
+<title>FEOL 背汙檢 Key In 系統</title>
+
+
+<!-- SheetJS：用於匯出 Excel -->
+
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+
+<link rel="stylesheet" href="feol/feol.css">
+</head>
+
+
+<body>
+
+
+<div style="background:#0d3d6e;padding:8px 24px;display:flex;align-items:center;gap:16px;"><a href="index.html" style="color:rgba(255,255,255,.85);text-decoration:none;font-size:13px;padding:5px 14px;border:1px solid rgba(255,255,255,.35);border-radius:5px;font-weight:600;">&#8592; 返回首頁</a></div>
+
+
+<div class="hd"><span style="font-size:22px">📍</span><h1>FEOL 背汙檢 Key In 系統</h1></div>
+
+
+<div class="tb">
+
+
+  <div class="t" onclick="sw('ki')">📝 Key In 錄入</div>
+
+
+  <div class="t on" onclick="sw('sr')">🔎 搜尋 / 匯出</div>
+
+
+  <div class="t" onclick="sw('im')">📥 舊資料匯入</div>
+
+
+  <div class="t" onclick="sw('sm')">📊 Summary</div>
+
+
+</div>
+
+
+<!-- KEY IN（第一頁：結構與原始版完全一致，只在按鈕列新增「同ID」） -->
+
+
+<div class="pg" id="pg-ki">
+
+
+  <div id="pb"></div>
+
+
+  <div class="sc"><div class="sh">🗂 共用條件（同一批 Key In 選一次即可）</div><div class="sb">
+
+
+<div style="display:flex;gap:28px;align-items:flex-start;">
+
+
+  <!-- 左側：條件輸入 -->
+
+
+  <div style="flex:1;min-width:0;">
+
+
+    <!-- 第一行：日期 / Model / 工號 橫排 -->
+
+
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;margin-bottom:14px;">
+
+
+      <div class="fg"><label>📅 日期</label><input type="date" id="sd"/></div>
+
+
+      <div class="fg"><label>🖥 Model</label><select id="sm"><option value="">-- 請選擇 --</option>
+
+
+      <option>Y156HAN08</option><option>W270QAN02</option><option>W270DAN06</option>
+
+
+      <option>T850QVN08</option><option>T850QVN06</option><option>T850QVN04</option><option>T850QVN07</option>
+
+
+      <option>T650QVR08</option><option>T550QVR06</option><option>T550QVN11</option><option>T550QVN10</option>
+
+
+      <option>T550QVN09</option><option>T550QVN07</option><option>T550QVN05</option><option>T550QVN03</option>
+
+
+      <option>T550HVN08</option><option>T430QVN05</option><option>T430QVN04</option><option>T430QVN03</option>
+
+
+      <option>T430HVN03</option><option>T430HVN01</option><option>T215HVN05</option><option>T215HVN03</option>
+
+
+      <option>P650QVN02</option><option>P550QVR04</option><option>P550QVR01</option><option>P550QVN06</option>
+
+
+      <option>P550QVN05</option><option>P550QVN01</option><option>P550QAR01</option><option>P550HVN09</option>
+
+
+      <option>P550HVN07</option><option>P550HVN06</option><option>P550HVN03</option><option>P490QAR01</option>
+
+
+      <option>P430QVN04</option><option>M490AVR01</option><option>M430QVN02</option><option>M315HVR01</option>
+
+
+      <option>M315DVR06</option><option>M315DVR01</option><option>M270QAN11</option><option>M270HVR03</option>
+
+
+      <option>M270HVR01</option><option>M270HAN01</option><option>M270DAN13</option><option>M270DAN12</option>
+
+
+      <option>M270DAN11</option><option>M270DAN07</option><option>M238HAN05</option><option>M238HAN03</option>
+
+
+      <option>M236HVR01</option><option>M215HVN02</option><option>L7B_T850QVN03</option><option>L7B_T750QVN04</option>
+
+
+      <option>G430ZAN01</option><option>B160UAN04</option><option>B156HAN02</option>
+
+
+    </select></div>
+
+
+      <div class="fg"><label>👤 工號</label><input type="text" id="emp" placeholder="請輸入工號" style="min-width:130px;border:1px solid var(--bd);border-radius:5px;padding:7px 10px;font-size:14px;background:#fff;color:#2c3e50;outline:none;"/></div>
+
+
+    </div>
+
+
+    <!-- 第二行：站點 -->
+
+
+    <div style="margin-bottom:8px;">
+
+
+      <div class="slbl">站點</div>
+
+
+      <div class="cg" id="ss">
+
+
+        <div class="ch" onclick="selSt(this,'PI 前')">PI 前</div>
+
+
+        <div class="ch" onclick="selSt(this,'PI 後')">PI 後</div>
+
+
+        <div class="ch" onclick="selSt(this,'PA 後')">PA 後</div>
+
+
+        <div class="ch" onclick="selSt(this,'ODF 後')">ODF 後</div>
+
+
+      </div>
+
+
+    </div>
+
+
+    <!-- 第三行：LINE -->
+
+
+    <div>
+
+
+      <div class="slbl">LINE</div>
+
+
+      <div class="lg" id="sl"><span class="lp">請先選站點</span></div>
+
+
+    </div>
+
+
+  </div><!-- end 左側 -->
+
+
+  <!-- 右側：規格參考表 -->
+
+
+  <div style="flex-shrink:0;align-self:flex-start;">
+
+
+    <table style="border-collapse:collapse;font-size:13px;white-space:nowrap;">
+
+
+      <thead>
+
+
+        <tr>
+
+
+          <th style="background:#f39c12;color:#fff;padding:5px 14px;border:1px solid #e0c070;font-weight:600;">等級</th>
+
+
+          <th style="background:#f39c12;color:#fff;padding:5px 14px;border:1px solid #e0c070;font-weight:600;">程度</th>
+
+
+          <th style="background:#f39c12;color:#fff;padding:5px 14px;border:1px solid #e0c070;font-weight:600;">NOTE</th>
+
+
+        </tr>
+
+
+      </thead>
+
+
+      <tbody>
+
+
+        <tr>
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">0</td>
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">乾可擦</td>
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;"></td>
+
+
+        </tr>
+
+
+        <tr style="background:#f9fbff;">
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">1.0</td>
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">濕可擦</td>
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;">單點輕微拖曳痕</td>
+
+
+        </tr>
+
+
+        <tr>
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">1.5</td>
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">濕可擦</td>
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;">Roller 痕</td>
+
+
+        </tr>
+
+
+        <tr style="background:#f9fbff;">
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">2.0</td>
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">乾溼不可擦</td>
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;"></td>
+
+
+        </tr>
+
+
+        <tr>
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">3.0</td>
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">乾溼不可擦+寬版&gt;1cm</td>
+
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;">非使用刮刀判別</td>
+
+
+        </tr>
+
+
+      </tbody>
+
+
+    </table>
+
+
+  </div>
+
+
+</div><!-- end flex -->
+
+
+</div></div>
+
+
+  <div class="sc"><div class="sh">📋 背汙明細（可多筆同時 Key In）</div><div class="sb">
+
+
+    <div style="overflow-x:auto"><table class="et"><thead><tr>
+
+
+      <th style="width:32px">#</th><th>Sheet ID</th><th>T/C 側</th>
+
+
+      <th>X (cm)<div class="ch2">可輸入 24~27</div></th>
+
+
+      <th>Y (cm)<div class="ch2">可輸入 24~27</div></th>
+
+
+      <th>程度 (LV)</th><th>Note</th><th>照片</th><th>刪除</th>
+
+
+    </tr></thead><tbody id="eb"></tbody></table></div>
+
+
+    <!-- ★ 新增「同ID」按鈕，其他不動 -->
+
+
+    <div class="ab">
+
+
+      <button class="bn bo" onclick="addRow()">＋ 新增一筆</button>
+
+
+      <button class="bn bo" onclick="addRowSameID()">＋ 新增一筆 同ID</button>
+
+
+      <button class="bn bs" onclick="saveAll()">💾 統一儲存</button>
+
+
+      <span id="si" style="color:var(--gr);font-size:12px;"></span>
+
+
+    </div>
+
+
+  </div></div>
+
+
+</div>
+
+
+<!-- SEARCH（第二頁：與原始版完全一致） -->
+
+
+<div class="pg on" id="pg-sr">
+
+
+  <div class="sc"><div class="sh">🔎 篩選條件</div><div class="sb"><div class="fr">
+
+
+    <div class="fg"><label>FROM 日期</label><input type="date" id="ff"/></div>
+
+
+    <div class="fg"><label>TO 日期</label><input type="date" id="ft"/></div>
+
+
+    <div class="fg"><label>Model</label><select id="fm"><option value="">全部</option>
+
+
+      <option>M270DAN11</option><option>M270DAN07</option><option>M270QAN11</option>
+
+
+      <option>M238HAN05</option><option>M238HAN03</option><option>Y156HAN08</option>
+
+
+      <option>W270QAN02</option><option>W270DAN06</option><option>T850QVN08</option>
+
+
+      <option>T850QVN06</option><option>T850QVN07</option><option>T650QVR08</option>
+
+
+      <option>T550QVR06</option><option>T550QVN11</option><option>T550QVN10</option>
+
+
+      <option>T550QVN09</option><option>T550QVN07</option><option>T550QVN05</option>
+
+
+      <option>T550QVN03</option><option>T550HVN08</option><option>T430QVN05</option>
+
+
+      <option>T430QVN04</option><option>T430QVN03</option><option>T430HVN03</option>
+
+
+      <option>T430HVN01</option><option>T215HVN05</option><option>T215HVN03</option>
+
+
+      <option>P650QVN02</option><option>P550QVR04</option><option>P550QVR01</option>
+
+
+      <option>P550QVN06</option><option>P550QVN05</option><option>P550QVN01</option>
+
+
+      <option>P550QAR01</option><option>P550HVN09</option><option>P550HVN07</option>
+
+
+      <option>P550HVN06</option><option>P550HVN03</option><option>P490QAR01</option>
+
+
+      <option>P430QVN04</option><option>M490AVR01</option><option>M430QVN02</option>
+
+
+      <option>M315HVR01</option><option>M315DVR06</option><option>M315DVR01</option>
+
+
+      <option>M270HVR03</option><option>M270HVR01</option><option>M270HAN01</option>
+
+
+      <option>M270DAN13</option><option>M270DAN12</option><option>M236HVR01</option>
+
+
+      <option>M215HVN02</option><option>L7B_T850QVN03</option><option>L7B_T750QVN04</option>
+
+
+      <option>G430ZAN01</option><option>B160UAN04</option><option>B156HAN02</option>
+
+
+    </select></div>
+
+
+    <div class="fg"><label>站點</label><select id="fst" onchange="updFL()"><option value="">全部</option>
+
+
+      <option>PI 前</option><option>PI 後</option><option>PA 後</option>
+
+
+      <option>ODF 後</option>
+
+
+    </select></div>
+
+
+    <div class="fg"><label>LINE</label><select id="fl"><option value="">全部</option></select></div>
+
+
+    <div class="fg"><label>T/C</label><select id="ftc"><option value="">全部</option><option>T</option><option>C</option></select></div>
+
+
+    <div class="fg"><label>程度</label><select id="flv"><option value="">全部</option>
+
+
+      <option>0</option><option>1</option><option>1.5</option><option>2.0</option><option>3.0</option>
+
+
+    </select></div>
+
+
+    <div class="fg"><label>👤 工號</label><input type="text" id="femp" placeholder="工號" style="min-width:110px"/></div>
+
+
+    <div class="fg"><label>🏷 Sheet ID</label><input type="text" id="fsheetid" placeholder="輸入 Sheet ID（完整或部分）" style="min-width:140px" title="輸入 Sheet ID 進行篩選，留空則不篩選"/></div>
+
+
+    <div class="fg"><label>🎯 機台比對容差 (cm)</label><input type="number" id="ftol_machine" value="1" min="0.1" step="0.1" style="min-width:80px"/></div>
+
+
+    <div class="fg"><label>🎯 是否新增容差 (cm)</label><input type="number" id="ftol_isnew" value="1" min="0.1" step="0.1" style="min-width:80px"/></div>
+
+
+    <div class="fg"><label>&nbsp;</label><div style="display:flex;gap:8px;flex-wrap:wrap;">
+
+
+      <button class="bn bp" onclick="doSrch()">🔍 搜尋</button>
+
+
+      <button class="bn bo" onclick="clrF()">清除</button>
+
+
+      <button class="bn bs" onclick="expXLSX()">📊 匯出 Excel</button>
+
+
+      <button class="bn bd2" id="delBtn" style="display:none" onclick="delChecked()">🗑️ 刪除勾選</button>
+
+
+      <span id="delMsg" style="font-size:12px;color:var(--gr);margin-left:6px;"></span>
+
+
+      <button class="bn" id="bulkEditBtn" style="background:#8e44ad;color:#fff;display:none" onclick="openBulkEdit()">&#9998; 統一修改</button>
+
+
+    </div></div>
+
+
+  </div></div></div>
+
+
+  <div class="sc"><div class="sh">📊 搜尋結果
+
+
+    <span style="font-size:11px;color:var(--gr);font-weight:400;margin-left:8px;">（點擊照片縮圖可放大）</span>
+
+
+  </div><div class="sb">
+
+
+    <div id="rs2" class="rs"></div>
+
+
+    <div class="srw"><table class="st"><thead><tr>
+
+
+      <th style="width:32px"><input type="checkbox" id="chkAll" onchange="togChkAll()" title="全選"></th>
+
+
+      <th>#</th><th>日期</th><th>Model</th><th>站點</th><th>LINE</th>
+
+
+      <th>Sheet ID</th><th>T/C</th><th>X (cm)</th><th>Y (cm)</th><th>程度 (LV)</th><th>Note</th>
+
+
+      <th>照片<br><span style="font-size:10px;font-weight:400;">（點縮圖放大）</span></th>
+
+
+      <th>工號</th>
+
+
+      <th>機台比對</th>
+
+
+      <th>是否新增</th>
+
+
+      <th>操作</th>
+
+
+    </tr></thead><tbody id="sb2"><tr><td colspan="17" class="nd">請先設定篩選條件後按「搜尋」</td></tr></tbody></table></div>
+
+
+  </div></div>
+
+
+</div>
+
+
+<!-- IMPORT（第三頁：含圖片匯入，對齊 BEOL） -->
+
+
+<div class="pg" id="pg-im">
+
+
+  <div class="sc"><div class="sh">📥 舊資料匯入（含圖片）</div><div class="sb">
+
+
+    <p style="color:var(--gr);font-size:13px;margin-bottom:12px;">
+
+
+      <button class="bn bp bsm" onclick="window.open('\\\\\\\\tw100049089\\\\ML8BC1\\\\逐站檢資料\\\\FEOL SAMPLE 01.xlsm')" style="font-size:12px;padding:4px 12px;">📥 下載範例檔 (FEOL SAMPLE 01.xlsm)</button>
+
+
+    </p>
+
+
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+
+
+      <label class="bn bp" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;">📂 選擇檔案
+
+
+        <input type="file" id="if3" accept=".xlsx,.xls,.xlsm,.csv" onchange="hdImpPic(this)" style="display:none"/>
+
+
+      </label>
+
+
+      <span id="impPicStatus" style="font-size:13px;color:var(--gr);"></span>
+
+
+    </div>
+
+
+    <div id="is3" class="sg" style="margin-top:12px;"></div>
+
+
+    <div id="ip3" style="display:none;margin-top:12px;">
+
+
+      <div style="overflow-x:auto;max-height:320px;"><table class="st"><thead><tr id="ih3"></tr></thead><tbody id="ib3"></tbody></table></div>
+
+
+      <div class="ab" style="margin-top:10px;">
+
+
+        <button class="bn bs" onclick="cfImpPic()">✅ 確認匯入</button>
+
+
+        <button class="bn bo" onclick="cnImpPic()">取消</button>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div></div>
+
+
+</div>
+
+
+<!-- SUMMARY -->
+
+
+<div class="pg" id="pg-sm">
+
+
+  <div class="sm-gf">
+
+
+    <div class="sm-gf-title">🌐 全域篩選（套用後更新全部站點圖表）</div>
+
+
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;">
+
+
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">FROM</label><input type="date" id="sm-g-from"/></div>
+
+
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">TO</label><input type="date" id="sm-g-to"/></div>
+
+
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">Model</label><select id="sm-g-model"><option value="">全部</option></select></div>
+
+
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">T/C</label><select id="sm-g-tc"><option value="">全部</option><option>T</option><option>C</option></select></div>
+
+
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">程度</label><select id="sm-g-lv"><option value="">全部</option><option>0</option><option>1</option><option>1.5</option><option>2.0</option><option>3.0</option></select></div>
+
+
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">新增線容差(cm)</label><input type="number" id="sm-g-tol" value="" min="0" step="0.5" placeholder="各站各設"/></div>
+
+
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">顯示模式</label><select id="sm-g-show"><option value="">各站各設</option><option value="new">🔶 新增線</option><option value="all">全部 All</option></select></div>
+
+
+            <div class="fg"><label style="color:rgba(255,255,255,.9);">🎨 圖表主題</label><select id="sm-g-theme" onchange="smApplyTheme()" style="min-width:120px;"><option value="earth">大地色系（預設）</option><option value="pink">粉色系</option><option value="blue">藍色系</option><option value="green">綠色系</option><option value="warm">暖色系</option><option value="purple">紫色系</option><option value="cool">冷色系</option><option value="neutral">中性色系</option><option value="morandi">莫蘭迪色系</option></select></div>
+
+
+      <div class="fg"><label>&nbsp;</label><button class="bn" style="background:#f39c12;color:#fff;padding:7px 16px;font-size:13px;" onclick="smApplyGlobal()">🔄 套用全部</button></div>
+
+
+    </div>
+
+
+  </div>
+
+
+  <!-- T/C 上下兩排 Summary 佈局 -->
+
+
+<!-- 上排：T 側（藍色） -->
+
+
+<div class="sm-band sm-band-T">
+
+
+  <div><span class="sm-band-label">▲ T 側</span></div>
+
+
+  <div class="sm-row4">
+
+
+    <!-- PI 前 T -->
+
+
+    <div class="sm-cell4">
+
+
+      <div class="sm-ctitle">📍 PI 前 T 側 <span style="font-size:9px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div>
+
+
+      <div class="chart-wrap"><canvas id="smc-pi1-T" class="smc"></canvas></div>
+
+
+    </div>
+
+
+    <!-- PI 後 T -->
+
+
+    <div class="sm-cell4">
+
+
+      <div class="sm-ctitle">📍 PI 後 T 側 <span style="font-size:9px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div>
+
+
+      <div class="chart-wrap"><canvas id="smc-pi2-T" class="smc"></canvas></div>
+
+
+    </div>
+
+
+    <!-- PA 後 T -->
+
+
+    <div class="sm-cell4">
+
+
+      <div class="sm-ctitle">📍 PA 後 T 側 <span style="font-size:9px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div>
+
+
+      <div class="chart-wrap"><canvas id="smc-pa-T" class="smc"></canvas></div>
+
+
+    </div>
+
+
+    <!-- ODF 後 T -->
+
+
+    <div class="sm-cell4">
+
+
+      <div class="sm-ctitle">📍 ODF 後 T 側 <span style="font-size:9px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div>
+
+
+      <div class="chart-wrap"><canvas id="smc-odf-T" class="smc"></canvas></div>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+<!-- 下排：C 側（黃色） -->
+
+
+<div class="sm-band sm-band-C">
+
+
+  <div><span class="sm-band-label">▼ C 側</span></div>
+
+
+  <div class="sm-row4">
+
+
+    <!-- PI 前 C -->
+
+
+    <div class="sm-cell4">
+
+
+      <div class="sm-ctitle">📍 PI 前 C 側 <span style="font-size:9px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div>
+
+
+      <div class="chart-wrap"><canvas id="smc-pi1-C" class="smc"></canvas></div>
+
+
+    </div>
+
+
+    <!-- PI 後 C -->
+
+
+    <div class="sm-cell4">
+
+
+      <div class="sm-ctitle">📍 PI 後 C 側 <span style="font-size:9px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div>
+
+
+      <div class="chart-wrap"><canvas id="smc-pi2-C" class="smc"></canvas></div>
+
+
+    </div>
+
+
+    <!-- PA 後 C -->
+
+
+    <div class="sm-cell4">
+
+
+      <div class="sm-ctitle">📍 PA 後 C 側 <span style="font-size:9px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div>
+
+
+      <div class="chart-wrap"><canvas id="smc-pa-C" class="smc"></canvas></div>
+
+
+    </div>
+
+
+    <!-- ODF 後 C -->
+
+
+    <div class="sm-cell4">
+
+
+      <div class="sm-ctitle">📍 ODF 後 C 側 <span style="font-size:9px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div>
+
+
+      <div class="chart-wrap"><canvas id="smc-odf-C" class="smc"></canvas></div>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+<!-- 照片放大 Modal（與原始版完全一致） -->
+
+
+<div class="mo" id="pmo" onclick="clPM(event)">
+
+
+  <div class="md" onclick="event.stopPropagation()">
+
+
+    <button class="mc2" onclick="clPM()" title="關閉">✕</button>
+
+
+    <img id="pmi" src="" alt="照片放大">
+
+
+    <div id="pmt" style="margin-top:8px;color:#fff;font-size:12px;text-align:center;opacity:.8;"></div>
+
+
+  </div>
+
+
+</div>
+
+
+<!-- 統一修改 Modal -->
+
+
+<div id="bulkEditModal" style="display:none;z-index:9999;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;align-items:center;justify-content:center;">
+
+
+  <div style="background:#fff;border-radius:10px;padding:28px 24px;min-width:340px;box-shadow:0 8px 40px rgba(0,0,0,.35);">
+
+
+    <h3 style="margin-bottom:10px;color:#8e44ad;">&#9998; 統一修改</h3>
+
+
+    <p id="beHint" style="color:#666;font-size:13px;margin-bottom:16px;"></p>
+
+
+    <div style="margin-bottom:12px;">
+
+
+      <label style="font-size:12px;color:#888;font-weight:600;">修改欄位</label><br>
+
+
+      <select id="beField" onchange="beFieldChange()" style="width:100%;margin-top:4px;padding:7px;border:1px solid #ccc;border-radius:5px;font-size:14px;">
+
+
+        <option value="line">LINE</option>
+
+
+        <option value="model">Model</option>
+
+
+        <option value="station">站點</option>
+
+
+        <option value="tc">T/C側</option>
+
+
+        <option value="lv">程度(LV)</option>
+
+
+        <option value="note">Note</option>
+
+
+        <option value="empId">工號</option>
+
+
+      </select>
+
+
+    </div>
+
+
+    <div style="margin-bottom:20px;">
+
+
+      <label style="font-size:12px;color:#888;font-weight:600;">修改為</label>
+
+
+      <div id="beValueArea" style="margin-top:4px;"></div>
+
+
+    </div>
+
+
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+
+
+      <button onclick="closeBulkEdit()" style="padding:8px 18px;border:1px solid #ccc;border-radius:5px;background:#fff;cursor:pointer;font-size:14px;">取消</button>
+
+
+      <button onclick="bulkEditConfirm()" style="padding:8px 18px;background:#8e44ad;color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:600;font-size:14px;">確認修改</button>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+<!-- ★ Machine Map Modal -->
+
+
+<div id="mcMapModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:3000;align-items:center;justify-content:center;" onclick="closeMcMapModal(event)">
+
+
+  <div style="position:relative;" onclick="event.stopPropagation()">
+
+
+    <canvas id="mcMapModalCanvas" width="600" height="682" style="border-radius:8px;display:block;box-shadow:0 8px 40px rgba(0,0,0,.5);"></canvas>
+
+
+    <div id="mcMapModalLabel" style="position:absolute;top:8px;left:10px;background:rgba(255,255,255,.85);border-radius:4px;padding:3px 8px;font-size:12px;color:#1a3a6b;font-weight:600;max-width:580px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;pointer-events:none;"></div>
+
+
+    <button onclick="closeMcMapModal()" style="position:absolute;top:-12px;right:-12px;width:28px;height:28px;border-radius:50%;background:#fff;border:none;cursor:pointer;font-size:16px;font-weight:700;color:#555;box-shadow:0 2px 8px rgba(0,0,0,.3);">&#10005;</button>
+
+
+    <div style="position:absolute;bottom:8px;left:10px;background:rgba(255,255,255,.8);border-radius:4px;padding:3px 10px;font-size:11px;color:#333;display:flex;gap:14px;align-items:center;pointer-events:none;">
+
+
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1a3a6b;margin-right:4px;"></span>所有位置</span>
+
+
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e74c3c;margin-right:4px;"></span>比對到</span>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+<!-- 機台圖 hover tooltip -->
+
+
+<div id="mcMapTooltip" style="display:none;position:fixed;background:rgba(15,25,55,0.97);color:#fff;font-size:12px;padding:10px 14px;border-radius:8px;pointer-events:none;z-index:10000;max-width:320px;line-height:1.6;box-shadow:0 4px 20px rgba(0,0,0,.6);border:1px solid rgba(100,160,255,.3);"></div>
+
+
+<div id="toast"></div>
+
+<!-- ★ Summary 圖表 Y 分布 Panel -->
+<div id="smYMapPanel" style="display:none;position:fixed;z-index:9500;background:#f7f9ff;border:1px solid #c5d5ee;border-radius:10px;padding:10px 12px 8px;box-shadow:0 6px 24px rgba(0,0,40,.18);pointer-events:auto;min-width:278px;">
+  <div id="smYMapTitle" style="font-size:11px;color:#2563a8;margin-bottom:6px;font-weight:700;letter-spacing:.3px;"></div>
+  <canvas id="smYMapCanvas" width="256" height="336" style="display:block;border-radius:4px;border:1px solid #dde8f8;"></canvas>
+  <div id="smYMapLegend" style="margin-top:7px;display:flex;flex-wrap:wrap;gap:4px 10px;font-size:10px;"></div>
+</div>
+
+
+<script src="feol/feol_common.js"></script>
+<script src="feol/feol_keyin.js"></script>
+<script src="feol/feol_photo.js"></script>
+<script src="feol/feol_search.js"></script>
+<script src="feol/feol_import.js"></script>
+<script src="feol/feol_summary.js"></script>
+<script src="feol/feol_mcmap.js"></script>
+<script src="feol/feol_bulkedit.js"></script>
+</body>
+
+
+</html>

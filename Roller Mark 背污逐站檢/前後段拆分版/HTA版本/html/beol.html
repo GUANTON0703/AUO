@@ -1,0 +1,3601 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+
+<head>
+
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>BEOL 背汙檢 Key In 系統</title>
+
+<!-- SheetJS：用於匯出 Excel -->
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
+<style>
+
+:root{--p:#1a6bb5;--pd:#145091;--ac:#e8f1fb;--bd:#d0dce9;--dg:#c0392b;--ok:#27ae60;--gr:#6c7a8d;--bg:#f4f7fc;--re:#f9fbff;--rh:#e4f0ff;}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{font-family:'Segoe UI','Microsoft JhengHei',Arial,sans-serif;background:var(--bg);color:#2c3e50;font-size:14px;}
+
+.hd{background:var(--p);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.15);}
+
+.hd h1{font-size:18px;font-weight:600;}
+
+.tb{display:flex;background:var(--pd);padding:0 24px;}
+
+.t{padding:10px 24px;color:rgba(255,255,255,.7);cursor:pointer;border-bottom:3px solid transparent;font-weight:500;transition:all .2s;user-select:none;}
+
+.t:hover{color:#fff;}.t.on{color:#fff;border-bottom-color:#f39c12;background:rgba(255,255,255,.1);}
+
+.pg{display:none;padding:20px 24px;}.pg.on{display:block;}
+
+.sc{background:#fff;border-radius:8px;border:1px solid var(--bd);margin-bottom:16px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+
+.sh{background:var(--ac);padding:10px 16px;font-weight:600;color:var(--p);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;}
+
+.sb{padding:16px;}
+
+.sr{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;}
+
+.fg{display:flex;flex-direction:column;gap:4px;}
+
+.fg label{font-size:12px;color:var(--gr);font-weight:600;text-transform:uppercase;letter-spacing:.4px;}
+
+select,input[type=date],input[type=text]{border:1px solid var(--bd);border-radius:5px;padding:7px 10px;font-size:14px;background:#fff;color:#2c3e50;outline:none;transition:border .2s;}
+
+select:focus,input:focus{border-color:var(--p);box-shadow:0 0 0 2px rgba(26,107,181,.12);}
+
+select{min-width:160px;}input[type=date]{min-width:140px;}
+
+.cg{display:flex;flex-wrap:wrap;gap:6px;}
+
+.ch{padding:5px 12px;border-radius:20px;border:1.5px solid var(--bd);background:#fff;cursor:pointer;font-size:13px;user-select:none;transition:all .15s;color:#445;}
+
+.ch:hover{border-color:var(--p);color:var(--p);}.ch.on{background:var(--p);border-color:var(--p);color:#fff;font-weight:600;}
+
+.lc{padding:4px 10px;border-radius:16px;border:1.5px solid #aac;background:#f5f7ff;cursor:pointer;font-size:12px;user-select:none;transition:all .15s;color:#334;}
+
+.lc:hover{border-color:#667eea;color:#667eea;}.lc.on{background:#667eea;border-color:#667eea;color:#fff;font-weight:600;}
+
+.lg{display:flex;flex-wrap:wrap;gap:5px;min-height:28px;}
+
+.lp{font-size:12px;color:#bbb;line-height:28px;font-style:italic;}
+
+.et{width:100%;border-collapse:collapse;}
+
+.et th{background:var(--ac);color:var(--p);font-weight:600;font-size:12px;padding:8px 10px;text-align:center;border:1px solid var(--bd);white-space:nowrap;}
+
+.et td{padding:6px;border:1px solid #e8edf3;text-align:center;vertical-align:middle;background:#fff;}
+
+.et tr:nth-child(even) td{background:var(--re);}.et tr:hover td{background:var(--rh);}
+
+.et input[type=text]{width:100%;padding:5px 6px;font-size:13px;border-radius:4px;}
+
+.et textarea{width:100%;min-width:100px;padding:5px 6px;font-size:13px;border-radius:4px;border:1px solid var(--bd);resize:vertical;font-family:inherit;}
+
+.mc{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;}
+
+.mi{padding:3px 8px;border-radius:12px;border:1.5px solid var(--bd);background:#fff;cursor:pointer;font-size:12px;user-select:none;transition:all .15s;}
+
+.mi:hover{border-color:var(--p);}.mi.on{background:var(--p);border-color:var(--p);color:#fff;font-weight:600;}
+
+.pub{display:flex;align-items:center;gap:4px;padding:4px 10px;border:1.5px dashed var(--bd);border-radius:5px;cursor:pointer;color:var(--gr);font-size:12px;background:var(--bg);transition:all .2s;white-space:nowrap;}
+
+.pub:hover{border-color:var(--p);color:var(--p);background:var(--ac);}
+
+/* 照片縮圖 */
+
+.pt{width:52px;height:40px;object-fit:cover;border-radius:4px;border:1px solid var(--bd);cursor:zoom-in;transition:transform .15s,box-shadow .15s;}
+
+.pt:hover{transform:scale(1.08);box-shadow:0 2px 8px rgba(0,0,0,.2);}
+
+.bn{padding:8px 18px;border-radius:5px;border:none;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s;}
+
+.bp{background:var(--p);color:#fff;}.bp:hover{background:var(--pd);}
+
+.bs{background:var(--ok);color:#fff;}.bs:hover{background:#219a52;}
+
+.bd2{background:var(--dg);color:#fff;}.bd2:hover{background:#a93226;}
+
+.bo{background:#fff;color:var(--p);border:1.5px solid var(--p);}.bo:hover{background:var(--ac);}
+
+.bsm{padding:4px 10px;font-size:12px;border-radius:4px;}
+
+.ab{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px;}
+
+.bdg{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;}
+
+.bl0{background:#ecf0f1;color:#555;}.bl1{background:#d5f0de;color:#196f3d;}
+
+.bl15{background:#fef9e7;color:#9a7d0a;}.bl2{background:#fde8d8;color:#a04000;}
+
+.bl3{background:#fad7d7;color:#922b21;}
+
+.fr{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;}
+
+.srw{overflow-x:auto;margin-top:16px;}
+
+.st{width:100%;border-collapse:collapse;min-width:1050px;}
+
+.st th{background:var(--p);color:#fff;padding:9px 12px;text-align:left;font-size:13px;white-space:nowrap;position:sticky;top:0;}
+
+.st td{padding:8px 12px;border-bottom:1px solid var(--bd);font-size:13px;vertical-align:middle;}
+
+.st tr:hover td{background:var(--rh);}.st tr:nth-child(even) td{background:var(--re);}
+
+.nd{text-align:center;color:var(--gr);padding:40px;font-size:14px;}
+
+.rs{color:var(--gr);font-size:13px;margin-top:8px;}
+
+/* 照片欄縮圖群 */
+
+.ph-cell{display:flex;flex-wrap:wrap;gap:4px;align-items:center;min-width:60px;}
+
+#toast{position:fixed;bottom:30px;right:30px;background:#27ae60;color:#fff;padding:12px 22px;border-radius:8px;font-weight:600;font-size:14px;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transition:opacity .3s;z-index:9999;pointer-events:none;}
+
+#toast.on{opacity:1;}#toast.err{background:#c0392b;}
+
+/* 放大照片 Modal */
+
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center;cursor:zoom-out;}
+
+.mo.on{display:flex;}
+
+.md{position:relative;max-width:90vw;max-height:90vh;cursor:default;}
+
+.md img{max-width:88vw;max-height:85vh;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.5);display:block;}
+
+.mc2{position:absolute;top:-14px;right:-14px;width:32px;height:32px;border-radius:50%;background:#fff;border:none;cursor:pointer;font-size:18px;font-weight:700;color:#555;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.3);}
+
+.mc2:hover{background:#f5f5f5;}
+
+.rn{color:var(--gr);font-weight:600;font-size:12px;width:32px;}
+
+.ia{border:2px dashed var(--bd);border-radius:8px;padding:24px;text-align:center;color:var(--gr);cursor:pointer;transition:all .2s;}
+
+.ia:hover{border-color:var(--p);background:var(--ac);}
+
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:12px;}
+
+.skd{background:var(--ac);border-radius:6px;padding:12px;text-align:center;}
+
+.skd .num{font-size:24px;font-weight:700;color:var(--p);}
+
+.skd .lbl{font-size:11px;color:var(--gr);margin-top:2px;}
+
+.slb{display:flex;flex-direction:column;gap:6px;}
+
+.slbl{font-size:11px;color:#888;font-weight:500;margin-bottom:2px;}
+
+.ch2{font-size:10px;color:#aaa;margin-top:2px;}
+
+#pb{background:#e8f8ee;border:1px solid #b2dfc4;border-radius:6px;padding:10px 16px;margin-bottom:12px;font-size:13px;color:#1a5c33;display:none;}
+
+
+.smf{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;padding:12px 14px;background:var(--ac);border-radius:6px;margin-bottom:14px;}
+.smf .fg label{font-size:11px;}
+.smf select,.smf input[type=date],.smf input[type=number]{font-size:13px;padding:5px 8px;min-width:unset;}
+.smf select{min-width:100px;}.smf input[type=date]{min-width:120px;}.smf input[type=number]{width:68px;}
+.smf select.show-mode{border:2px solid #e67e22;color:#a04000;font-weight:600;background:#fff8f2;}
+.smgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.smtitle{font-weight:600;color:var(--p);font-size:13px;margin-bottom:6px;}
+canvas.smc{cursor:pointer;}
+@media(max-width:900px){.smgrid{grid-template-columns:1fr;}}
+.sm-gf{background:linear-gradient(135deg,#1e3a8a,#1a6bb5);border-radius:8px;padding:14px 18px;margin-bottom:16px;box-shadow:0 2px 10px rgba(30,58,138,.2);}
+.sm-gf .fg label{color:rgba(255,255,255,.9);}
+.sm-gf select,.sm-gf input[type=date],.sm-gf input[type=number]{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.95);font-size:13px;padding:5px 8px;min-width:unset;}
+.sm-gf select{min-width:100px;}.sm-gf input[type=date]{min-width:120px;}
+.sm-gf-title{color:#fff;font-weight:700;font-size:13px;margin-bottom:10px;}
+.st tr.sid-grp0 td{background:#ffffff!important;}
+.st tr.sid-grp1 td{background:#c8d4de!important;}
+.st tr.sid-grp0:hover td,.st tr.sid-grp1:hover td{background:var(--rh)!important;}
+
+/* ===== FEOL/BEOL 段落切換 ===== */
+.seg-bar{display:flex;background:#0d3d6e;padding:0 24px;}
+.seg-btn{padding:9px 28px;color:rgba(255,255,255,.65);cursor:pointer;font-weight:700;font-size:14px;border-bottom:3px solid transparent;user-select:none;transition:all .2s;letter-spacing:.5px;}
+.seg-btn:hover{color:#fff;}
+.seg-btn.on{color:#fff;border-bottom-color:#f39c12;background:rgba(255,255,255,.08);}
+.seg-wrap{display:none;}.seg-wrap.on{display:block;}
+.other-input{display:none;border:1px solid var(--bd);border-radius:4px;padding:4px 8px;font-size:13px;width:130px;margin-left:6px;vertical-align:middle;}
+.other-input.show{display:inline-block;}
+
+/* ===== BEOL SUMMARY 新版 ===== */
+.bsm-global-bar{background:linear-gradient(135deg,#1e3a8a,#1a6bb5);border-radius:8px;padding:14px 18px;margin-bottom:16px;box-shadow:0 2px 10px rgba(30,58,138,.2);}
+.bsm-global-bar .fg label{color:rgba(255,255,255,.9);font-size:11px;}
+.bsm-global-bar select,.bsm-global-bar input[type=date]{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.95);font-size:13px;padding:5px 8px;min-width:unset;}
+.bsm-global-bar select{min-width:110px;}.bsm-global-bar input[type=date]{min-width:120px;}
+.bsm-chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:14px;}
+@media(max-width:900px){.bsm-chart-row{grid-template-columns:1fr;}}
+.bsm-chart-box{position:relative;background:#f8fafd;border-radius:6px;border:1px solid var(--bd);padding:10px;}
+.bsm-chart-title{font-weight:600;color:var(--p);font-size:12px;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.bsm-filter-row{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;padding:8px 10px;background:#eef3fa;border-radius:5px;margin-bottom:8px;}
+.bsm-filter-row label{font-size:11px;color:var(--gr);font-weight:600;}
+.bsm-filter-row select{font-size:12px;padding:4px 7px;min-width:90px;border-radius:4px;border:1px solid var(--bd);}
+.bsm-color-pick{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gr);}
+.bsm-color-pick input[type=color]{width:28px;height:22px;border:none;padding:0;cursor:pointer;border-radius:3px;}
+.bsm-tooltip{position:fixed;z-index:8000;background:#fff;border:2px solid #1a6bb5;border-radius:6px;box-shadow:0 4px 18px rgba(0,0,0,.18);padding:10px 12px;font-size:12px;min-width:340px;max-width:700px;pointer-events:none;display:none;}
+.bsm-tooltip table{border-collapse:collapse;width:100%;}
+.bsm-tooltip th{background:#1a6bb5;color:#fff;padding:4px 8px;font-size:11px;border:1px solid #145091;white-space:nowrap;}
+.bsm-tooltip td{padding:3px 8px;border:1px solid #ccd6e8;font-size:11px;white-space:nowrap;}
+.bsm-tooltip tr:nth-child(even) td{background:#f0f5ff;}
+.bsm-tt-model-hdr{background:#e8f1fb;color:#145091;font-weight:700;padding:4px 8px;font-size:11px;border:1px solid #c0cfe8;}
+
+
+/* ===== BEOL SUMMARY 新版 ===== */
+.bsm-global-bar{background:linear-gradient(135deg,#1e3a8a,#1a6bb5);border-radius:8px;padding:14px 18px;margin-bottom:16px;box-shadow:0 2px 10px rgba(30,58,138,.2);}
+.bsm-global-bar .fg label{color:rgba(255,255,255,.9);font-size:11px;}
+.bsm-global-bar select,.bsm-global-bar input[type=date]{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.95);font-size:13px;padding:5px 8px;min-width:unset;}
+.bsm-global-bar select{min-width:110px;}.bsm-global-bar input[type=date]{min-width:120px;}
+.bsm-chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:14px;}
+@media(max-width:900px){.bsm-chart-row{grid-template-columns:1fr;}}
+.bsm-chart-box{position:relative;background:#f8fafd;border-radius:6px;border:1px solid var(--bd);padding:10px;}
+.bsm-chart-title{font-weight:600;color:var(--p);font-size:12px;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.bsm-filter-row{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;padding:8px 10px;background:#eef3fa;border-radius:5px;margin-bottom:8px;}
+.bsm-filter-row label{font-size:11px;color:var(--gr);font-weight:600;}
+.bsm-filter-row select{font-size:12px;padding:4px 7px;min-width:90px;border-radius:4px;border:1px solid var(--bd);}
+.bsm-color-pick{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gr);}
+.bsm-color-pick input[type=color]{width:28px;height:22px;border:none;padding:0;cursor:pointer;border-radius:3px;}
+.bsm-tooltip{position:fixed;z-index:8000;background:#fff;border:2px solid #1a6bb5;border-radius:6px;box-shadow:0 4px 18px rgba(0,0,0,.18);padding:10px 12px;font-size:12px;min-width:340px;max-width:700px;pointer-events:none;display:none;}
+.bsm-tooltip table{border-collapse:collapse;width:100%;}
+.bsm-tooltip th{background:#1a6bb5;color:#fff;padding:4px 8px;font-size:11px;border:1px solid #145091;white-space:nowrap;}
+.bsm-tooltip td{padding:3px 8px;border:1px solid #ccd6e8;font-size:11px;white-space:nowrap;}
+.bsm-tooltip tr:nth-child(even) td{background:#f0f5ff;}
+.bsm-tt-model-hdr{background:#e8f1fb;color:#145091;font-weight:700;padding:4px 8px;font-size:11px;border:1px solid #c0cfe8;display:block;margin-top:4px;}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+</head>
+
+<body>
+<div class="seg-wrap" id="seg-feol">
+
+
+<div class="hd"><span style="font-size:22px">🔍</span><h1>背汙檢 Key In 系統</h1></div>
+
+<div class="tb">
+
+  <div class="t" onclick="sw('ki')">📝 Key In 錄入</div>
+
+  <div class="t on" onclick="sw('sr')">🔎 搜尋 / 匯出</div>
+
+  <div class="t" onclick="sw('im')">📥 舊資料匯入</div>
+  <div class="t" onclick="sw('sm')">📊 Summary</div>
+
+</div>
+
+
+
+<!-- KEY IN（第一頁：結構與原始版完全一致，只在按鈕列新增「同ID」） -->
+
+<div class="pg" id="pg-ki">
+
+  <div id="pb"></div>
+
+  <div class="sc"><div class="sh">🗂 共用條件（同一批 Key In 選一次即可）</div><div class="sb">
+
+<div style="display:flex;gap:28px;align-items:flex-start;">
+
+
+
+  <!-- 左側：條件輸入 -->
+
+  <div style="flex:1;min-width:0;">
+
+
+
+    <!-- 第一行：日期 / Model / 工號 橫排 -->
+
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;margin-bottom:14px;">
+
+      <div class="fg"><label>📅 日期</label><input type="date" id="sd"/></div>
+
+      <div class="fg"><label>🖥 Model</label><select id="sm"><option value="">-- 請選擇 --</option>
+
+      <option>Y156HAN08</option><option>W270QAN02</option><option>W270DAN06</option>
+
+      <option>T850QVN08</option><option>T850QVN06</option><option>T850QVN04</option><option>T850QVN07</option>
+
+      <option>T650QVR08</option><option>T550QVR06</option><option>T550QVN11</option><option>T550QVN10</option>
+
+      <option>T550QVN09</option><option>T550QVN07</option><option>T550QVN05</option><option>T550QVN03</option>
+
+      <option>T550HVN08</option><option>T430QVN05</option><option>T430QVN04</option><option>T430QVN03</option>
+
+      <option>T430HVN03</option><option>T430HVN01</option><option>T215HVN05</option><option>T215HVN03</option>
+
+      <option>P650QVN02</option><option>P550QVR04</option><option>P550QVR01</option><option>P550QVN06</option>
+
+      <option>P550QVN05</option><option>P550QVN01</option><option>P550QAR01</option><option>P550HVN09</option>
+
+      <option>P550HVN07</option><option>P550HVN06</option><option>P550HVN03</option><option>P490QAR01</option>
+
+      <option>P430QVN04</option><option>M490AVR01</option><option>M430QVN02</option><option>M315HVR01</option>
+
+      <option>M315DVR06</option><option>M315DVR01</option><option>M270QAN11</option><option>M270HVR03</option>
+
+      <option>M270HVR01</option><option>M270HAN01</option><option>M270DAN13</option><option>M270DAN12</option>
+
+      <option>M270DAN11</option><option>M270DAN07</option><option>M238HAN05</option><option>M238HAN03</option>
+
+      <option>M236HVR01</option><option>M215HVN02</option><option>L7B_T850QVN03</option><option>L7B_T750QVN04</option>
+
+      <option>G430ZAN01</option><option>B160UAN04</option><option>B156HAN02</option>
+
+    </select></div>
+
+      <div class="fg"><label>👤 工號</label><input type="text" id="emp" placeholder="請輸入工號" style="min-width:130px;border:1px solid var(--bd);border-radius:5px;padding:7px 10px;font-size:14px;background:#fff;color:#2c3e50;outline:none;"/></div>
+
+    </div>
+
+
+
+    <!-- 第二行：站點 -->
+
+    <div style="margin-bottom:8px;">
+
+      <div class="slbl">站點</div>
+
+      <div class="cg" id="ss">
+
+        <div class="ch" onclick="selSt(this,'PI 前')">PI 前</div>
+
+        <div class="ch" onclick="selSt(this,'PI 後')">PI 後</div>
+
+        <div class="ch" onclick="selSt(this,'PA 後')">PA 後</div>
+
+        <div class="ch" onclick="selSt(this,'ODF 後')">ODF 後</div>
+
+
+
+      </div>
+
+    </div>
+
+
+
+    <!-- 第三行：LINE -->
+
+    <div>
+
+      <div class="slbl">LINE</div>
+
+      <div class="lg" id="sl"><span class="lp">請先選站點</span></div>
+
+    </div>
+
+
+
+  </div><!-- end 左側 -->
+
+
+
+  <!-- 右側：規格參考表 -->
+
+  <div style="flex-shrink:0;align-self:flex-start;">
+
+    <table style="border-collapse:collapse;font-size:13px;white-space:nowrap;">
+
+      <thead>
+
+        <tr>
+
+          <th style="background:#f39c12;color:#fff;padding:5px 14px;border:1px solid #e0c070;font-weight:600;">等級</th>
+
+          <th style="background:#f39c12;color:#fff;padding:5px 14px;border:1px solid #e0c070;font-weight:600;">程度</th>
+
+          <th style="background:#f39c12;color:#fff;padding:5px 14px;border:1px solid #e0c070;font-weight:600;">NOTE</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr>
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">0</td>
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">乾可擦</td>
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;"></td>
+
+        </tr>
+
+        <tr style="background:#f9fbff;">
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">1.0</td>
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">濕可擦</td>
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;">單點輕微拖曳痕</td>
+
+        </tr>
+
+        <tr>
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">1.5</td>
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">濕可擦</td>
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;">Roller 痕</td>
+
+        </tr>
+
+        <tr style="background:#f9fbff;">
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">2.0</td>
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">乾溼不可擦</td>
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;"></td>
+
+        </tr>
+
+        <tr>
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">3.0</td>
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;text-align:center;">乾溼不可擦+寬版&gt;1cm</td>
+
+          <td style="padding:5px 14px;border:1px solid #e8edf3;">非使用刮刀判別</td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+
+</div><!-- end flex -->
+
+</div></div>
+
+
+
+  <div class="sc"><div class="sh">📋 背汙明細（可多筆同時 Key In）</div><div class="sb">
+
+    <div style="overflow-x:auto"><table class="et"><thead><tr>
+
+      <th style="width:32px">#</th><th>Sheet ID</th><th>T/C 側</th>
+
+      <th>X (cm)<div class="ch2">可輸入 24~27</div></th>
+
+      <th>Y (cm)<div class="ch2">可輸入 24~27</div></th>
+
+      <th>程度 (LV)</th><th>Note</th><th>照片</th><th>刪除</th>
+
+    </tr></thead><tbody id="eb"></tbody></table></div>
+
+    <!-- ★ 新增「同ID」按鈕，其他不動 -->
+
+    <div class="ab">
+
+      <button class="bn bo" onclick="addRow()">＋ 新增一筆</button>
+
+      <button class="bn bo" onclick="addRowSameID()">＋ 新增一筆 同ID</button>
+
+      <button class="bn bs" onclick="saveAll()">💾 統一儲存</button>
+
+      <span id="si" style="color:var(--gr);font-size:12px;"></span>
+
+    </div>
+
+  </div></div>
+
+</div>
+
+
+
+<!-- SEARCH（第二頁：與原始版完全一致） -->
+
+<div class="pg on" id="pg-sr">
+
+  <div class="sc"><div class="sh">🔎 篩選條件</div><div class="sb"><div class="fr">
+
+    <div class="fg"><label>FROM 日期</label><input type="date" id="ff"/></div>
+
+    <div class="fg"><label>TO 日期</label><input type="date" id="ft"/></div>
+
+    <div class="fg"><label>Model</label><select id="fm"><option value="">全部</option>
+
+      <option>M270DAN11</option><option>M270DAN07</option><option>M270QAN11</option>
+
+      <option>M238HAN05</option><option>M238HAN03</option><option>Y156HAN08</option>
+
+      <option>W270QAN02</option><option>W270DAN06</option><option>T850QVN08</option>
+
+      <option>T850QVN06</option><option>T850QVN07</option><option>T650QVR08</option>
+
+      <option>T550QVR06</option><option>T550QVN11</option><option>T550QVN10</option>
+
+      <option>T550QVN09</option><option>T550QVN07</option><option>T550QVN05</option>
+
+      <option>T550QVN03</option><option>T550HVN08</option><option>T430QVN05</option>
+
+      <option>T430QVN04</option><option>T430QVN03</option><option>T430HVN03</option>
+
+      <option>T430HVN01</option><option>T215HVN05</option><option>T215HVN03</option>
+
+      <option>P650QVN02</option><option>P550QVR04</option><option>P550QVR01</option>
+
+      <option>P550QVN06</option><option>P550QVN05</option><option>P550QVN01</option>
+
+      <option>P550QAR01</option><option>P550HVN09</option><option>P550HVN07</option>
+
+      <option>P550HVN06</option><option>P550HVN03</option><option>P490QAR01</option>
+
+      <option>P430QVN04</option><option>M490AVR01</option><option>M430QVN02</option>
+
+      <option>M315HVR01</option><option>M315DVR06</option><option>M315DVR01</option>
+
+      <option>M270HVR03</option><option>M270HVR01</option><option>M270HAN01</option>
+
+      <option>M270DAN13</option><option>M270DAN12</option><option>M236HVR01</option>
+
+      <option>M215HVN02</option><option>L7B_T850QVN03</option><option>L7B_T750QVN04</option>
+
+      <option>G430ZAN01</option><option>B160UAN04</option><option>B156HAN02</option>
+
+    </select></div>
+
+    <div class="fg"><label>站點</label><select id="fst" onchange="updFL()"><option value="">全部</option>
+
+      <option>PI 前</option><option>PI 後</option><option>PA 後</option>
+
+      <option>ODF 後</option>
+
+    </select></div>
+
+    <div class="fg"><label>LINE</label><select id="fl"><option value="">全部</option></select></div>
+
+    <div class="fg"><label>T/C</label><select id="ftc"><option value="">全部</option><option>T</option><option>C</option></select></div>
+
+    <div class="fg"><label>程度</label><select id="flv"><option value="">全部</option>
+
+      <option>0</option><option>1</option><option>1.5</option><option>2.0</option><option>3.0</option>
+
+    </select></div>
+
+    <div class="fg"><label>👤 工號</label><input type="text" id="femp" placeholder="工號" style="min-width:110px"/></div>
+    <div class="fg"><label>🏷 Sheet ID</label><input type="text" id="fsheetid" placeholder="輸入 Sheet ID（完整或部分）" style="min-width:140px" title="輸入 Sheet ID 進行篩選，留空則不篩選"/></div>
+
+    <div class="fg"><label>🎯 機台比對容差 (cm)</label><input type="number" id="ftol_machine" value="1" min="0.1" step="0.1" style="min-width:80px"/></div>
+
+    <div class="fg"><label>🎯 是否新增容差 (cm)</label><input type="number" id="ftol_isnew" value="1" min="0.1" step="0.1" style="min-width:80px"/></div>
+
+    <div class="fg"><label>&nbsp;</label><div style="display:flex;gap:8px;flex-wrap:wrap;">
+
+      <button class="bn bp" onclick="doSrch()">🔍 搜尋</button>
+
+      <button class="bn bo" onclick="clrF()">清除</button>
+
+      <button class="bn bs" onclick="expXLSX()">📊 匯出 Excel</button>
+
+      <button class="bn bd2" id="delBtn" style="display:none" onclick="delChecked()">🗑️ 刪除勾選</button>
+
+      <span id="delMsg" style="font-size:12px;color:var(--gr);margin-left:6px;"></span>
+
+    </div></div>
+
+  </div></div></div>
+
+
+
+  <div class="sc"><div class="sh">📊 搜尋結果
+
+    <span style="font-size:11px;color:var(--gr);font-weight:400;margin-left:8px;">（點擊照片縮圖可放大）</span>
+
+  </div><div class="sb">
+
+    <div id="rs2" class="rs"></div>
+
+    <div class="srw"><table class="st"><thead><tr>
+
+      <th style="width:32px"><input type="checkbox" id="chkAll" onchange="togChkAll()" title="全選"></th>
+
+      <th>#</th><th>日期</th><th>Model</th><th>站點</th><th>LINE</th>
+
+      <th>Sheet ID</th><th>T/C</th><th>X (cm)</th><th>Y (cm)</th><th>程度 (LV)</th><th>Note</th>
+
+      <th>照片<br><span style="font-size:10px;font-weight:400;">（點縮圖放大）</span></th>
+
+      <th>工號</th>
+
+      <th>機台比對</th>
+
+      <th>是否新增</th>
+
+      <th>操作</th>
+
+    </tr></thead><tbody id="sb2"><tr><td colspan="17" class="nd">請先設定篩選條件後按「搜尋」</td></tr></tbody></table></div>
+
+  </div></div>
+
+</div>
+
+
+
+<!-- IMPORT（第三頁：含圖片匯入，對齊 BEOL） -->
+
+<div class="pg" id="pg-im">
+  <div class="sc"><div class="sh">📥 舊資料匯入（含圖片）</div><div class="sb">
+    <p style="color:var(--gr);font-size:13px;margin-bottom:12px;">
+      <button class="bn bp bsm" onclick="window.location.href=API_BASE+'/api/download/template'" style="font-size:12px;padding:4px 12px;">📥 下載範例檔 (FEOL SAMPLE 01.xlsx)</button>
+    </p>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <label class="bn bp" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;">📂 選擇檔案
+        <input type="file" id="if3" accept=".xlsx,.xls,.csv" onchange="hdImpPic(this)" style="display:none"/>
+      </label>
+      <span id="impPicStatus" style="font-size:13px;color:var(--gr);"></span>
+    </div>
+    <div id="is3" class="sg" style="margin-top:12px;"></div>
+    <div id="ip3" style="display:none;margin-top:12px;">
+      <div style="overflow-x:auto;max-height:320px;"><table class="st"><thead><tr id="ih3"></tr></thead><tbody id="ib3"></tbody></table></div>
+      <div class="ab" style="margin-top:10px;">
+        <button class="bn bs" onclick="cfImpPic()">✅ 確認匯入</button>
+        <button class="bn bo" onclick="cnImpPic()">取消</button>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+
+<!-- SUMMARY -->
+<div class="pg" id="pg-sm">
+  <div class="sm-gf">
+    <div class="sm-gf-title">🌐 全域篩選（套用後更新全部站點圖表）</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;">
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">FROM</label><input type="date" id="sm-g-from"/></div>
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">TO</label><input type="date" id="sm-g-to"/></div>
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">Model</label><select id="sm-g-model"><option value="">全部</option></select></div>
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">T/C</label><select id="sm-g-tc"><option value="">全部</option><option>T</option><option>C</option></select></div>
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">程度</label><select id="sm-g-lv"><option value="">全部</option><option>0</option><option>1</option><option>1.5</option><option>2.0</option><option>3.0</option></select></div>
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">新增線容差(cm)</label><input type="number" id="sm-g-tol" value="" min="0" step="0.5" placeholder="各站各設"/></div>
+      <div class="fg"><label style="color:rgba(255,255,255,.9);">顯示模式</label><select id="sm-g-show"><option value="">各站各設</option><option value="new">🔶 新增線</option><option value="all">全部 All</option></select></div>
+            <div class="fg"><label style="color:rgba(255,255,255,.9);">🎨 圖表主題</label><select id="sm-g-theme" onchange="smApplyTheme()" style="min-width:120px;"><option value="earth">大地色系（預設）</option><option value="pink">粉色系</option><option value="blue">藍色系</option><option value="green">綠色系</option><option value="warm">暖色系</option><option value="purple">紫色系</option><option value="cool">冷色系</option><option value="neutral">中性色系</option><option value="morandi">莫蘭迪色系</option></select></div>
+      <div class="fg"><label>&nbsp;</label><button class="bn" style="background:#f39c12;color:#fff;padding:7px 16px;font-size:13px;" onclick="smApplyGlobal()">🔄 套用全部</button></div>
+    </div>
+  </div>
+  <div class="sc"><div class="sh">📍 PI 前</div><div class="sb">
+    <div class="smf">
+      <div class="fg"><label>FROM</label><input type="date" id="sm-pi1-from"/></div>
+      <div class="fg"><label>TO</label><input type="date" id="sm-pi1-to"/></div>
+      <div class="fg"><label>Model</label><select id="sm-pi1-model"><option value="">全部</option></select></div>
+      <div class="fg"><label>T/C</label><select id="sm-pi1-tc"><option value="">全部</option><option>T</option><option>C</option></select></div>
+      <div class="fg"><label>程度</label><select id="sm-pi1-lv"><option value="">全部</option><option>0</option><option>1</option><option>1.5</option><option>2.0</option><option>3.0</option></select></div>
+      <div class="fg"><label>&nbsp;</label><button class="bn bp" style="padding:6px 14px;font-size:13px;" onclick="smDraw('pi1')">🔄 更新</button></div>
+    </div>
+    <div class="smgrid">
+      <div><div class="smtitle">PI 前 / T 側 <span style="font-size:10px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div><canvas id="smc-pi1-T" class="smc" height="190"></canvas></div>
+      <div><div class="smtitle">PI 前 / C 側 <span style="font-size:10px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div><canvas id="smc-pi1-C" class="smc" height="190"></canvas></div>
+    </div>
+  </div></div>
+  <div class="sc"><div class="sh">📍 PI 後 <span style="font-size:11px;font-weight:400;margin-left:8px;color:#e67e22;">🔶 含新增線</span></div><div class="sb">
+    <div class="smf">
+      <div class="fg"><label>FROM</label><input type="date" id="sm-pi2-from"/></div>
+      <div class="fg"><label>TO</label><input type="date" id="sm-pi2-to"/></div>
+      <div class="fg"><label>Model</label><select id="sm-pi2-model"><option value="">全部</option></select></div>
+      <div class="fg"><label>LINE</label><select id="sm-pi2-line"><option value="">全部</option><option>CKPIC100</option><option>CKPIC200</option><option>CKPIC300</option><option>CKPIC400</option><option>CKPIC500</option></select></div>
+      <div class="fg"><label>T/C</label><select id="sm-pi2-tc"><option value="">全部</option><option>T</option><option>C</option></select></div>
+      <div class="fg"><label>程度</label><select id="sm-pi2-lv"><option value="">全部</option><option>0</option><option>1</option><option>1.5</option><option>2.0</option><option>3.0</option></select></div>
+      <div class="fg"><label>容差(cm)</label><input type="number" id="sm-pi2-tol" value="1" min="0" step="0.5" onchange="smDraw('pi2')"/></div>
+      <div class="fg"><label>顯示</label><select id="sm-pi2-show" class="show-mode" onchange="smDraw('pi2')"><option value="new" selected>🔶 新增線</option><option value="all">全部 All</option></select></div>
+      <div class="fg"><label>&nbsp;</label><button class="bn bp" style="padding:6px 14px;font-size:13px;" onclick="smDraw('pi2')">🔄 更新</button></div>
+    </div>
+    <div class="smgrid">
+      <div><div class="smtitle">PI 後 / T 側 <span style="font-size:10px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div><canvas id="smc-pi2-T" class="smc" height="190"></canvas></div>
+      <div><div class="smtitle">PI 後 / C 側 <span style="font-size:10px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div><canvas id="smc-pi2-C" class="smc" height="190"></canvas></div>
+    </div>
+  </div></div>
+  <div class="sc"><div class="sh">📍 PA 後 <span style="font-size:11px;font-weight:400;margin-left:8px;color:#e67e22;">🔶 含新增線</span></div><div class="sb">
+    <div class="smf">
+      <div class="fg"><label>FROM</label><input type="date" id="sm-pa-from"/></div>
+      <div class="fg"><label>TO</label><input type="date" id="sm-pa-to"/></div>
+      <div class="fg"><label>Model</label><select id="sm-pa-model"><option value="">全部</option></select></div>
+      <div class="fg"><label>LINE</label><select id="sm-pa-line"><option value="">全部</option><option>CKPAC100</option><option>CKPAC200</option></select></div>
+      <div class="fg"><label>T/C</label><select id="sm-pa-tc"><option value="">全部</option><option>T</option><option>C</option></select></div>
+      <div class="fg"><label>程度</label><select id="sm-pa-lv"><option value="">全部</option><option>0</option><option>1</option><option>1.5</option><option>2.0</option><option>3.0</option></select></div>
+      <div class="fg"><label>容差(cm)</label><input type="number" id="sm-pa-tol" value="1" min="0" step="0.5" onchange="smDraw('pa')"/></div>
+      <div class="fg"><label>顯示</label><select id="sm-pa-show" class="show-mode" onchange="smDraw('pa')"><option value="new" selected>🔶 新增線</option><option value="all">全部 All</option></select></div>
+      <div class="fg"><label>&nbsp;</label><button class="bn bp" style="padding:6px 14px;font-size:13px;" onclick="smDraw('pa')">🔄 更新</button></div>
+    </div>
+    <div class="smgrid">
+      <div><div class="smtitle">PA 後 / T 側 <span style="font-size:10px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div><canvas id="smc-pa-T" class="smc" height="190"></canvas></div>
+      <div><div class="smtitle">PA 後 / C 側 <span style="font-size:10px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div><canvas id="smc-pa-C" class="smc" height="190"></canvas></div>
+    </div>
+  </div></div>
+  <div class="sc"><div class="sh">📍 ODF 後 <span style="font-size:11px;font-weight:400;margin-left:8px;color:#e67e22;">🔶 含新增線</span></div><div class="sb">
+    <div class="smf">
+      <div class="fg"><label>FROM</label><input type="date" id="sm-odf-from"/></div>
+      <div class="fg"><label>TO</label><input type="date" id="sm-odf-to"/></div>
+      <div class="fg"><label>Model</label><select id="sm-odf-model"><option value="">全部</option></select></div>
+      <div class="fg"><label>LINE</label><select id="sm-odf-line"><option value="">全部</option><option>CKODF100</option><option>CKODF200</option><option>CKODF300</option><option>CKODF400</option><option>CKODF500</option></select></div>
+      <div class="fg"><label>T/C</label><select id="sm-odf-tc"><option value="">全部</option><option>T</option><option>C</option></select></div>
+      <div class="fg"><label>程度</label><select id="sm-odf-lv"><option value="">全部</option><option>0</option><option>1</option><option>1.5</option><option>2.0</option><option>3.0</option></select></div>
+      <div class="fg"><label>容差(cm)</label><input type="number" id="sm-odf-tol" value="1" min="0" step="0.5" onchange="smDraw('odf')"/></div>
+      <div class="fg"><label>顯示</label><select id="sm-odf-show" class="show-mode" onchange="smDraw('odf')"><option value="new" selected>🔶 新增線</option><option value="all">全部 All</option></select></div>
+      <div class="fg"><label>&nbsp;</label><button class="bn bp" style="padding:6px 14px;font-size:13px;" onclick="smDraw('odf')">🔄 更新</button></div>
+    </div>
+    <div class="smgrid">
+      <div><div class="smtitle">ODF 後 / T 側 <span style="font-size:10px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div><canvas id="smc-odf-T" class="smc" height="190"></canvas></div>
+      <div><div class="smtitle">ODF 後 / C 側 <span style="font-size:10px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span></div><canvas id="smc-odf-C" class="smc" height="190"></canvas></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 照片放大 Modal（與原始版完全一致） -->
+
+<div class="mo" id="pmo" onclick="clPM(event)">
+
+  <div class="md" onclick="event.stopPropagation()">
+
+    <button class="mc2" onclick="clPM()" title="關閉">✕</button>
+
+    <img id="pmi" src="" alt="照片放大">
+
+    <div id="pmt" style="margin-top:8px;color:#fff;font-size:12px;text-align:center;opacity:.8;"></div>
+
+  </div>
+
+</div>
+
+
+
+<div id="toast"></div>
+
+
+
+<script>
+
+// ===== ★ 新增：後端 API 位址 =====
+
+const API_BASE = 'http://127.0.0.1:8888';
+
+
+
+// ===== 基礎設定（與原始版完全一致） =====
+
+const SL={
+
+  'PI 前':['CKPIC100','CKPIC200','CKPIC300','CKPIC400','CKPIC500'],
+
+  'PI 後':['CKPIC100','CKPIC200','CKPIC300','CKPIC400','CKPIC500'],
+
+  'PA 後':['CKPAC100','CKPAC200'],
+
+  'ODF 後':['CKODF100','CKODF200','CKODF300','CKODF400','CKODF500']
+
+};
+
+const SK='beiwu_records';
+
+function lR(){try{return JSON.parse(localStorage.getItem(SK)||'[]');}catch(e){return[];}}
+
+function sR(r){localStorage.setItem(SK,JSON.stringify(r));}
+
+let ib=[];
+
+
+
+// ===== Tab 切換（與原始版完全一致） =====
+
+function sw(n){
+
+  document.querySelectorAll('.t').forEach((t,i)=>t.classList.toggle('on',['ki','sr','im','sm'][i]===n));
+
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+
+  document.getElementById('pg-'+n).classList.add('on');
+  if(n==='bsm') bsmInit();
+
+  // 切頁不自動搜尋
+
+}
+
+
+
+// ===== 站點 → LINE（與原始版完全一致） =====
+
+function selSt(el,st){
+
+  document.querySelectorAll('#ss .ch').forEach(c=>c.classList.remove('on'));
+
+  el.classList.add('on');rlC(st);
+
+}
+
+function rlC(st){
+
+  const c=document.getElementById('sl'),ls=SL[st]||[];
+
+  if(!ls.length){c.innerHTML='<span class="lp">此站點無 LINE</span>';return;}
+
+  c.innerHTML=ls.map(l=>`<div class="lc" onclick="togL(this)">${l}</div>`).join('');
+
+}
+
+function togL(el){document.querySelectorAll('#sl .lc').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
+
+function gL(){const s=document.querySelector('#sl .lc.on');return s?s.textContent.trim():'';}
+
+function updFL(){
+
+  const st=document.getElementById('fst').value,ls=st?(SL[st]||[]):[];
+
+  const sl=document.getElementById('fl');
+
+  sl.innerHTML='<option value="">全部</option>'+ls.map(l=>`<option>${l}</option>`).join('');
+
+}
+
+
+
+// ===== Key In 明細列（與原始版完全一致） =====
+
+let rc=0;const ps={};
+
+function addRow(){
+
+  rc++;const i=rc,tb=document.getElementById('eb'),tr=document.createElement('tr');
+
+  tr.id='r'+i;tr.innerHTML=`
+
+  <td class="rn">${i}</td>
+
+  <td><input type="text" class="sid" placeholder="Sheet ID" style="width:90px"/></td>
+
+  <td><div class="mc tc${i}">
+
+    <div class="mi" onclick="togM(this,'tc${i}')">T</div>
+
+    <div class="mi" onclick="togM(this,'tc${i}')">C</div>
+
+  </div></td>
+
+  <td><input type="text" class="cx" placeholder="X" style="width:72px"/></td>
+
+  <td><input type="text" class="cy" placeholder="Y" style="width:72px"/></td>
+
+  <td><div class="mc lv${i}">
+
+    <div class="mi" onclick="togM(this,'lv${i}')">0</div>
+
+    <div class="mi" onclick="togM(this,'lv${i}')">1</div>
+
+    <div class="mi" onclick="togM(this,'lv${i}')">1.5</div>
+
+    <div class="mi" onclick="togM(this,'lv${i}')">2.0</div>
+
+    <div class="mi" onclick="togM(this,'lv${i}')">3.0</div>
+
+  </div></td>
+
+  <td><textarea rows="2" placeholder="Note..."></textarea></td>
+
+  <td id="pc${i}">
+
+    <label class="pub">📷 上傳
+
+      <input type="file" accept="image/*" multiple onchange="hdP(this,${i})" style="display:none"/>
+
+    </label>
+
+  </td>
+
+  <td><button class="bn bd2 bsm" onclick="delR(${i})">✕</button></td>`;
+
+  tb.appendChild(tr);
+
+  scrollToRow(tr);
+
+}
+
+
+
+// ===== ★ 新增：新增一筆 同ID =====
+
+function addRowSameID(){
+
+  const rows=document.querySelectorAll('#eb tr');
+
+  if(!rows.length){toast('沒有上一筆資料，請先新增一筆','err');return;}
+
+  const lastRow=rows[rows.length-1];
+
+  const lastIdx=parseInt(lastRow.id.replace('r',''));
+
+  const lastSid=lastRow.querySelector('.sid').value.trim();
+
+  const lastTcSel=lastRow.querySelector('.tc'+lastIdx+' .mi.on');
+
+  const lastTc=lastTcSel?lastTcSel.textContent.trim():'';
+
+
+
+  rc++;const i=rc,tb=document.getElementById('eb'),tr=document.createElement('tr');
+
+  tr.id='r'+i;tr.innerHTML=`
+
+  <td class="rn">${i}</td>
+
+  <td><input type="text" class="sid" placeholder="Sheet ID" style="width:90px" value="${lastSid}"/></td>
+
+  <td><div class="mc tc${i}">
+
+    <div class="mi" onclick="togM(this,'tc${i}')">T</div>
+
+    <div class="mi" onclick="togM(this,'tc${i}')">C</div>
+
+  </div></td>
+
+  <td><input type="text" class="cx" placeholder="X" style="width:72px"/></td>
+
+  <td><input type="text" class="cy" placeholder="Y" style="width:72px"/></td>
+
+  <td><div class="mc lv${i}">
+
+    <div class="mi" onclick="togM(this,'lv${i}')">0</div>
+
+    <div class="mi" onclick="togM(this,'lv${i}')">1</div>
+
+    <div class="mi" onclick="togM(this,'lv${i}')">1.5</div>
+
+    <div class="mi" onclick="togM(this,'lv${i}')">2.0</div>
+
+    <div class="mi" onclick="togM(this,'lv${i}')">3.0</div>
+
+  </div></td>
+
+  <td><textarea rows="2" placeholder="Note..."></textarea></td>
+
+  <td id="pc${i}">
+
+    <label class="pub">📷 上傳
+
+      <input type="file" accept="image/*" multiple onchange="hdP(this,${i})" style="display:none"/>
+
+    </label>
+
+  </td>
+
+  <td><button class="bn bd2 bsm" onclick="delR(${i})">✕</button></td>`;
+
+  tb.appendChild(tr);
+
+  // 自動選取上一筆的 T/C
+
+  if(lastTc){
+
+    tr.querySelector('.tc'+i).querySelectorAll('.mi').forEach(m=>{
+
+      if(m.textContent.trim()===lastTc)togM(m,'tc'+i);
+
+    });
+
+  }
+
+  scrollToRow(tr);
+
+}
+
+
+
+// ===== 滾動到指定列 =====
+
+function scrollToRow(tr){
+
+  setTimeout(()=>{
+
+    const rect=tr.getBoundingClientRect();
+
+    const absTop=rect.top+window.pageYOffset;
+
+    window.scrollTo({top:absTop-100,behavior:'smooth'});
+
+  },50);
+
+}
+
+
+
+function delR(i){const r=document.getElementById('r'+i);if(r)r.remove();rnR();}
+
+function rnR(){document.querySelectorAll('#eb tr').forEach((t,i)=>{const c=t.querySelector('.rn');if(c)c.textContent=i+1;});}
+
+function togM(el,cls){el.closest('.'+cls).querySelectorAll('.mi').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
+
+function gM(c){const s=c?c.querySelector('.mi.on'):null;return s?s.textContent.trim():'';}
+
+function gCV(sel){const e=document.querySelector(sel);return e?e.textContent.trim():'';}
+
+
+
+// ===== 照片上傳（與原始版完全一致） =====
+
+function hdP(inp,i){
+
+  if(!inp.files.length)return;
+
+  if(!ps[i])ps[i]=[];
+
+  const cell=document.getElementById('pc'+i),files=Array.from(inp.files);
+
+  const dt=document.getElementById('sd').value.replace(/-/g,'');
+
+  const md=document.getElementById('sm').value||'MDL';
+
+  const st=gCV('#ss .ch.on')||'ST';
+
+  const tr=document.getElementById('r'+i);
+
+  const tc=gM(tr?tr.querySelector('.tc'+i):null)||'TC';
+
+  const x=(tr?tr.querySelector('.cx'):null)?.value||'';
+
+  const y=(tr?tr.querySelector('.cy'):null)?.value||'';
+
+  const pos=(x||y)?`X${x}_Y${y}`:'pos';
+
+  let ld=0;
+
+  files.forEach((f,fi)=>{
+
+    const rd=new FileReader();
+
+    rd.onload=e=>{
+
+      const ext=f.name.split('.').pop();
+
+      const fn=`${dt}_${md}_${st.replace(/\s/g,'')}_${tc}_${pos}_${fi+1}.${ext}`;
+
+      ps[i].push({name:fn,dataUrl:e.target.result});
+
+      ld++;if(ld===files.length)rpC(i,cell);
+
+    };rd.readAsDataURL(f);
+
+  });
+
+}
+
+function rpC(i,cell){
+
+  const ph=ps[i]||[];if(!ph.length)return;
+
+  cell.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;">
+
+    ${ph.map((p,pi)=>`<img class="pt" src="${p.dataUrl}" title="${p.name}" onclick="opM('${p.dataUrl}','${p.name}')">`).join('')}
+
+    <span style="font-size:11px;color:var(--p);font-weight:600;">${ph.length}張</span>
+
+    <label class="pub" style="margin-top:2px;">＋<input type="file" accept="image/*" multiple onchange="hdP(this,${i})" style="display:none"/></label>
+
+  </div>`;
+
+}
+
+
+
+// ===== ★ 修改：儲存 → 呼叫後端 API =====
+
+function saveAll(){
+
+  const dt=document.getElementById('sd').value;
+
+  const md=document.getElementById('sm').value;
+
+  const st=gCV('#ss .ch.on');
+
+  const ln=gL();
+
+  if(!dt||!md||!st){toast('請先填共用條件：日期、Model、站點','err');return;}
+
+  if((SL[st]||[]).length>0&&!ln){toast('此站點請選擇 LINE','err');return;}
+
+  const rows=document.querySelectorAll('#eb tr');
+
+  if(!rows.length){toast('請新增至少一筆明細','err');return;}
+
+
+
+  let add=0;
+
+  const records=[];
+
+  rows.forEach(tr=>{
+
+    const i=parseInt(tr.id.replace('r',''));
+
+    const sid=(tr.querySelector('.sid')||{}).value?.trim()||'';
+
+    const x=(tr.querySelector('.cx')||{}).value||'';
+
+    const y=(tr.querySelector('.cy')||{}).value||'';
+
+    const nt=tr.querySelector('textarea')?tr.querySelector('textarea').value.trim():'';
+
+    const tc=gM(tr.querySelector('.tc'+i));
+
+    const lv=gM(tr.querySelector('.lv'+i));
+
+    const ph=(ps[i]||[]).map(p=>({name:p.name,dataUrl:p.dataUrl}));
+
+    if(!sid&&!tc&&!lv&&!x&&!y)return;
+
+    records.push({
+
+      date:dt,model:md,station:st,line:ln,
+
+      sheetId:sid,tc,x:x||null,y:y||null,lv,note:nt,photos:ph
+
+    });
+
+    add++;
+
+  });
+
+
+
+  if(!add){toast('沒有有效明細','err');return;}
+
+
+
+  toast('⏳ 儲存中...');
+
+
+
+  const empId=document.getElementById('emp').value.trim();
+
+  records.forEach(r=>r.empId=empId);
+
+  fetch(API_BASE+'/api/save',{
+
+    method:'POST',
+
+    headers:{'Content-Type':'application/json'},
+
+    body:JSON.stringify({date:dt,model:md,station:st,line:ln,records})
+
+  })
+
+  .then(r=>r.json())
+
+  .then(data=>{
+
+    if(data.success){
+
+      toast(`✅ 已儲存 ${add} 筆`);
+
+      document.getElementById('eb').innerHTML='';rc=0;
+
+      Object.keys(ps).forEach(k=>delete ps[k]);
+
+      document.getElementById('si').textContent=`上次儲存：${new Date().toLocaleTimeString('zh-TW')}，共 ${add} 筆`;
+
+      addRow();
+
+    }else{
+
+      toast('❌ 儲存失敗：'+(data.error||'未知錯誤'),'err');
+
+    }
+
+  })
+
+  .catch(e=>toast('❌ 連線錯誤：'+e.message,'err'));
+
+}
+
+
+
+// ===== ★ 修改：搜尋 → 呼叫後端 API =====
+
+let lastSrch=[];
+
+function doSrch(){
+
+  const ff=document.getElementById('ff').value,ft=document.getElementById('ft').value;
+
+  const fm=document.getElementById('fm').value,fst=document.getElementById('fst').value;
+
+  const fl=document.getElementById('fl').value,ftc=document.getElementById('ftc').value;
+
+  const flv=document.getElementById('flv').value;
+
+
+
+  const femp=document.getElementById('femp');
+
+  const params=new URLSearchParams({
+
+    dateFrom:ff||'',dateTo:ft||'',model:fm||'',
+
+    station:fst||'',line:fl||'',tc:ftc||'',level:flv||'',
+
+    empId:femp?femp.value.trim():'',
+
+    sheetId:(document.getElementById('fsheetid')||{value:''}).value.trim()
+
+  });
+
+
+
+  fetch(API_BASE+'/api/search?'+params)
+
+  .then(r=>r.json())
+
+  .then(data=>{
+
+    if(!data.success){toast('查詢失敗：'+data.error,'err');return;}
+
+    const rs=data.records||[];
+
+    lastSrch=rs;
+
+    document.getElementById('rs2').textContent=`共找到 ${rs.length} 筆`;
+
+    const tb=document.getElementById('sb2');
+
+    if(!rs.length){tb.innerHTML='<tr><td colspan="17" class="nd">查無資料</td></tr>';return;}
+
+    // ★ 搜尋完自動做機台比對
+
+    setTimeout(()=>matchMachineData(rs), 50);
+    setTimeout(()=>checkIsNew(rs), 100);
+
+    setTimeout(()=>updDelBtn(), 50);
+
+    tb.innerHTML=rs.map((r,i)=>`<tr id="sr-${i}">
+
+      <td style="text-align:center"><input type="checkbox" class="delChk" onchange="updDelBtn()" data-idx="${i}" data-created-at="${r.createdAt||''}" data-date="${r.date||''}"></td>
+
+      <td>${i+1}</td>
+
+      <td id="ed-date-${i}">${r.date||''}</td>
+
+      <td id="ed-model-${i}">${r.model||''}</td>
+
+      <td id="ed-station-${i}">${r.station||''}</td>
+
+      <td id="ed-line-${i}">${r.line||'-'}</td>
+
+      <td id="ed-sid-${i}">${r.sheetId||''}</td>
+
+      <td id="ed-tc-${i}">${r.tc||''}</td>
+
+      <td id="ed-x-${i}">${r.x!=null?r.x:''}</td>
+
+      <td id="ed-y-${i}">${r.y!=null?r.y:''}</td>
+
+      <td id="ed-lv-${i}">${bdg(r.lv)}</td>
+
+      <td id="ed-note-${i}">${r.note||''}</td>
+
+      <td id="ed-photo-${i}">${phCell(r.photoUrls)}</td>
+
+      <td id="ed-empId-${i}">${r.empId||''}</td>
+
+      <td id="mc-${i}"><span style="color:#bbb;font-size:12px;">比對中...</span></td>
+
+      <td id="ni-${i}"><span style="color:#bbb;font-size:12px;">比對中...</span></td>
+
+      <td id="op-${i}"><button class="bn bp bsm" onclick="startEdit(${i})">✏️ 修改</button></td>
+
+    </tr>`).join('');
+
+  })
+
+  .catch(e=>toast('連線錯誤：'+e.message,'err'));
+
+}
+
+
+
+function phCell(photoUrls){
+
+  if(!photoUrls||!photoUrls.length)return '<span style="color:#ccc;font-size:12px;">—</span>';
+
+  return `<div class="ph-cell">${photoUrls.map(url=>{
+
+    const fname=url.split('\\').pop()||url;
+
+    const proxyUrl=API_BASE+'/api/photo?path='+encodeURIComponent(url);
+
+    return `<img class="pt" src="${proxyUrl}" title="${fname}" onclick="opM('${proxyUrl}','${escQ(fname)}')">`;
+
+  }).join('')}</div>`;
+
+}
+
+function escQ(s){return (s||'').replace(/'/g,"\\'");}
+
+function bdg(lv){const nm={'0':'0','0.0':'0','1':'1','1.0':'1','1.5':'1.5','2':'2.0','2.0':'2.0','3':'3.0','3.0':'3.0'};const nv=nm[String(lv).trim()]!==undefined?nm[String(lv).trim()]:String(lv||'').trim();const c={'0':'bl0','1':'bl1','1.5':'bl15','2.0':'bl2','3.0':'bl3'}[nv]||'bl0';return`<span class="bdg ${c}">LV ${lv||'-'}</span>`;}
+
+function clrF(){
+
+  document.getElementById('ff').value='';document.getElementById('ft').value='';
+
+  document.getElementById('fm').value='';document.getElementById('fst').value='';
+
+  document.getElementById('fl').innerHTML='<option value="">全部</option>';
+
+  document.getElementById('ftc').value='';document.getElementById('flv').value='';
+
+  document.getElementById('sb2').innerHTML='<tr><td colspan="16" class="nd">請先設定篩選條件後按「搜尋」</td></tr>';
+
+  document.getElementById('rs2').textContent='';
+
+  const fempEl=document.getElementById('femp');if(fempEl)fempEl.value='';
+
+  const fsidEl=document.getElementById('fsheetid');if(fsidEl)fsidEl.value='';
+
+}
+
+
+
+// ===== ★ 修改：匯出 Excel → 呼叫後端 =====
+
+function expXLSX(){
+
+  const params=new URLSearchParams({
+
+    dateFrom:document.getElementById('ff').value||'',
+
+    dateTo:document.getElementById('ft').value||'',
+
+    model:document.getElementById('fm').value||'',
+
+    station:document.getElementById('fst').value||'',
+
+    line:document.getElementById('fl').value||'',
+
+    tc:document.getElementById('ftc').value||'',
+
+    level:document.getElementById('flv').value||'',
+
+    empId:(document.getElementById('femp')||{}).value||''
+
+  });
+
+  window.location.href=API_BASE+'/api/export?'+params;
+
+}
+
+
+
+// ===== 照片放大 Modal（與原始版完全一致） =====
+
+function opM(src,name){
+
+  var pmo=document.getElementById('pmo');
+
+  if(pmo && pmo.parentElement!==document.body){document.body.appendChild(pmo);}
+
+  document.getElementById('pmi').src=src;
+
+  document.getElementById('pmt').textContent=name||'';
+
+  pmo.classList.add('on');
+
+  document.body.style.overflow='hidden';
+
+}
+
+function clPM(e){
+
+  if(!e||e.target.id==='pmo'||e.target.classList.contains('mc2')){
+
+    document.getElementById('pmo').classList.remove('on');
+
+    document.getElementById('pmi').src='';
+
+    document.body.style.overflow='';
+
+  }
+
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')clPM({target:{id:'pmo'}});});
+
+
+
+
+
+
+
+// ===== ★ 搜尋結果編輯功能 =====
+
+let editingIdx = null;
+
+const editPhotoState = {};
+
+
+
+function startEdit(i){
+
+  if(editingIdx !== null && editingIdx !== i){
+
+    if(!confirm('目前有未儲存的修改，確定放棄？'))return;
+
+    cancelEdit(editingIdx);
+
+  }
+
+  editingIdx = i;
+
+  const r = lastSrch[i];
+
+  if(!r)return;
+
+  editPhotoState[i] = {deleted:[], newFiles:[]};
+
+
+
+  // 操作按鈕
+
+  document.getElementById('op-'+i).innerHTML =
+
+    '<button class="bn bs bsm" onclick="saveEditRow('+i+')">✅ 儲存</button> '
+
+    +'<button class="bn bo bsm" onclick="cancelEdit('+i+')">❌ 取消</button>';
+
+
+
+  // 日期
+
+  document.getElementById('ed-date-'+i).innerHTML =
+
+    '<input type="date" id="ei-date-'+i+'" value="'+(r.date||'')+'">';
+
+
+
+  // Model（複製 Key In 頁面的下拉選單）
+
+  const smEl = document.getElementById('sm');
+
+  const modelOpts = smEl ? smEl.innerHTML : '';
+
+  document.getElementById('ed-model-'+i).innerHTML =
+
+    '<select id="ei-model-'+i+'">'+modelOpts+'</select>';
+
+  const mdSel = document.getElementById('ei-model-'+i);
+
+  if(mdSel) mdSel.value = r.model||'';
+
+
+
+  // 站點（按鈕）
+
+  const stations=['PI 前','PI 後','PA 後','ODF 後','AGX 後','BS ITO 後'];
+
+  const stBtns = stations.map(st=>
+
+    '<div class="ch'+(st===r.station?' on':'')+'" '
+
+    +'onclick="editSelSt(this,'+i+',\''+st+'\')">'+(st)+'</div>'
+
+  ).join('');
+
+  document.getElementById('ed-station-'+i).innerHTML =
+
+    '<div class="cg" id="ei-st-'+i+'">'+stBtns+'</div>';
+
+
+
+  // LINE（連動）
+
+  editUpdLine(i, r.station||'', r.line||'');
+
+
+
+  // Sheet ID
+
+  document.getElementById('ed-sid-'+i).innerHTML =
+
+    '<input type="text" id="ei-sid-'+i+'" value="'+(r.sheetId||'')+'" style="width:90px">';
+
+
+
+  // T/C
+
+  const tcBtns=['T','C'].map(tc=>
+
+    '<div class="mi'+(tc===r.tc?' on':'')+'" '
+
+    +'onclick="editTogSingle(this)">'+tc+'</div>'
+
+  ).join('');
+
+  document.getElementById('ed-tc-'+i).innerHTML =
+
+    '<div class="mc" id="ei-tc-'+i+'">'+tcBtns+'</div>';
+
+
+
+  // X / Y
+
+  document.getElementById('ed-x-'+i).innerHTML =
+
+    '<input type="number" id="ei-x-'+i+'" value="'+(r.x||'')+'" step="0.1" style="width:68px">';
+
+  document.getElementById('ed-y-'+i).innerHTML =
+
+    '<input type="number" id="ei-y-'+i+'" value="'+(r.y||'')+'" step="0.1" style="width:68px">';
+
+
+
+  // LV
+
+  const lvBtns=['0','1','1.5','2.0','3.0'].map(lv=>
+
+    '<div class="mi'+(lv===r.lv?' on':'')+'" '
+
+    +'onclick="editTogSingle(this)">'+lv+'</div>'
+
+  ).join('');
+
+  document.getElementById('ed-lv-'+i).innerHTML =
+
+    '<div class="mc" id="ei-lv-'+i+'">'+lvBtns+'</div>';
+
+
+
+  // Note
+
+  document.getElementById('ed-note-'+i).innerHTML =
+
+    '<textarea id="ei-note-'+i+'" rows="2" style="min-width:100px">'+(r.note||'')+'</textarea>';
+
+
+
+  // 照片
+
+  editRenderPhotos(i, r.photoUrls||[]);
+
+
+
+  // 工號
+
+  document.getElementById('ed-empId-'+i).innerHTML =
+
+    '<input type="text" id="ei-empId-'+i+'" value="'+(r.empId||'')+'" style="width:80px">';
+
+}
+
+
+
+function editSelSt(el, i, st){
+
+  el.closest('.cg').querySelectorAll('.ch').forEach(c=>c.classList.remove('on'));
+
+  el.classList.add('on');
+
+  editUpdLine(i, st, '');
+
+}
+
+
+
+function editUpdLine(i, station, selLine){
+
+  const lines = SL[station]||[];
+
+  const lnBtns = lines.map(l=>
+
+    '<div class="lc'+(l===selLine?' on':'')+'" onclick="editTogLine(this)">'+l+'</div>'
+
+  ).join('');
+
+  document.getElementById('ed-line-'+i).innerHTML =
+
+    '<div class="lg" id="ei-ln-'+i+'">'+(lnBtns||'<span class="lp">無 LINE</span>')+'</div>';
+
+}
+
+
+
+function editTogLine(el){
+
+  el.closest('.lg').querySelectorAll('.lc').forEach(c=>c.classList.remove('on'));
+
+  el.classList.add('on');
+
+}
+
+
+
+function editTogSingle(el){
+
+  el.closest('.mc').querySelectorAll('.mi').forEach(c=>c.classList.remove('on'));
+
+  el.classList.add('on');
+
+}
+
+
+
+function editRenderPhotos(i, urls){
+  const state = editPhotoState[i];
+  const existingHtml = urls
+    .filter(u=>!state.deleted.includes(u))
+    .map(u=>{
+      const fname=u.split('\\').pop()||u;
+      const proxy=API_BASE+'/api/photo?path='+encodeURIComponent(u);
+      const safeU=u.replace(/'/g,"\\'");
+      return '<div style="display:inline-block;position:relative;margin:2px">'
+        +'<img src="'+proxy+'" style="width:52px;height:40px;object-fit:cover;border-radius:4px;border:1px solid #ccc;">'
+        +'<button onclick="editDelPhoto('+i+',\''+safeU+'\')" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#e74c3c;color:#fff;border:none;cursor:pointer;font-size:11px;">✕</button>'
+        +'</div>';
+    }).join('');
+  const newHtml = state.newFiles.map((f,fi)=>
+    '<div style="display:inline-block;position:relative;margin:2px">'
+    +'<img src="'+f.dataUrl+'" style="width:52px;height:40px;object-fit:cover;border-radius:4px;border:2px solid #27ae60;">'
+    +'<button onclick="editDelNew('+i+','+fi+')" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#e74c3c;color:#fff;border:none;cursor:pointer;font-size:11px;">✕</button>'
+    +'</div>'
+  ).join('');
+  document.getElementById('ed-photo-'+i).innerHTML =
+    '<div style="display:flex;flex-wrap:wrap;gap:2px;align-items:center;">'
+    +existingHtml+newHtml
+    +'<label style="cursor:pointer;padding:4px 8px;border:1.5px dashed #ccc;border-radius:5px;font-size:12px;color:#888;">'
+    +'＋<input type="file" accept="image/*" multiple style="display:none" onchange="editAddPhoto('+i+',this)"></label>'
+    +'</div>';
+}
+function editDelPhoto(i, url){
+
+  editPhotoState[i].deleted.push(url);
+
+  editRenderPhotos(i, lastSrch[i].photoUrls||[]);
+
+}
+
+
+
+function editDelNew(i, fi){
+
+  editPhotoState[i].newFiles.splice(fi,1);
+
+  editRenderPhotos(i, lastSrch[i].photoUrls||[]);
+
+}
+
+
+
+function editAddPhoto(i, inp){
+
+  const files=Array.from(inp.files);
+
+  const rec=lastSrch[i];
+
+  const dt=(rec.date||'').replace(/-/g,'');
+
+  const md=rec.model||'MDL';
+
+  const st=(rec.station||'').replace(/\s/g,'');
+
+  let loaded=0;
+
+  files.forEach((f,fi)=>{
+
+    const rd=new FileReader();
+
+    rd.onload=e=>{
+
+      const ext=f.name.split('.').pop();
+
+      const fn=dt+'_'+md+'_'+st+'_edit_'+Date.now()+'_'+fi+'.'+ext;
+
+      editPhotoState[i].newFiles.push({name:fn,dataUrl:e.target.result});
+
+      loaded++;
+
+      if(loaded===files.length)editRenderPhotos(i,rec.photoUrls||[]);
+
+    };
+
+    rd.readAsDataURL(f);
+
+  });
+
+}
+
+
+
+function gEditVal(id){
+
+  const el=document.getElementById(id);
+
+  return el?el.value:'';
+
+}
+
+
+
+function gEditMC(id){
+
+  const el=document.querySelector('#'+id+' .mi.on');
+
+  return el?el.textContent.trim():'';
+
+}
+
+
+
+function cancelEdit(i){
+
+  if(editingIdx===i)editingIdx=null;
+
+  delete editPhotoState[i];
+
+  const r=lastSrch[i];
+
+  if(!r)return;
+
+  document.getElementById('ed-date-'+i).innerHTML=r.date||'';
+
+  document.getElementById('ed-model-'+i).innerHTML=r.model||'';
+
+  document.getElementById('ed-station-'+i).innerHTML=r.station||'';
+
+  document.getElementById('ed-line-'+i).innerHTML=r.line||'-';
+
+  document.getElementById('ed-sid-'+i).innerHTML=r.sheetId||'';
+
+  document.getElementById('ed-tc-'+i).innerHTML=r.tc||'';
+
+  document.getElementById('ed-x-'+i).innerHTML=r.x!=null?r.x:'';
+
+  document.getElementById('ed-y-'+i).innerHTML=r.y!=null?r.y:'';
+
+  document.getElementById('ed-lv-'+i).innerHTML=bdg(r.lv);
+
+  document.getElementById('ed-note-'+i).innerHTML=r.note||'';
+
+  document.getElementById('ed-photo-'+i).innerHTML=phCell(r.photoUrls);
+
+  document.getElementById('ed-empId-'+i).innerHTML=r.empId||'';
+
+  document.getElementById('op-'+i).innerHTML=
+
+    '<button class="bn bp bsm" onclick="startEdit('+i+')">✏️ 修改</button>';
+
+}
+
+
+
+function saveEditRow(i){
+
+  const r=lastSrch[i];
+
+  if(!r)return;
+
+  const state=editPhotoState[i]||{deleted:[],newFiles:[]};
+
+
+
+  // 收集各欄位
+
+  const stEl=document.querySelector('#ei-st-'+i+' .ch.on');
+
+  const lnEl=document.querySelector('#ei-ln-'+i+' .lc.on');
+
+
+
+  const newRec={
+
+    date:     gEditVal('ei-date-'+i)||r.date,
+
+    model:    gEditVal('ei-model-'+i)||r.model,
+
+    station:  stEl?stEl.textContent.trim():r.station,
+
+    line:     lnEl?lnEl.textContent.trim():r.line,
+
+    sheetId:  gEditVal('ei-sid-'+i)||r.sheetId,
+
+    tc:       gEditMC('ei-tc-'+i)||r.tc,
+
+    x:        gEditVal('ei-x-'+i)||r.x,
+
+    y:        gEditVal('ei-y-'+i)||r.y,
+
+    lv:       gEditMC('ei-lv-'+i)||r.lv,
+
+    note:     gEditVal('ei-note-'+i),
+
+    empId:    gEditVal('ei-empId-'+i)||r.empId,
+
+    photoUrls:(r.photoUrls||[]).filter(u=>!state.deleted.includes(u)),
+
+    createdAt:r.createdAt,
+
+    updatedAt:new Date().toISOString()
+
+  };
+
+
+
+  toast('⏳ 儲存中...');
+
+
+
+  fetch(API_BASE+'/api/update',{
+
+    method:'POST',
+
+    headers:{'Content-Type':'application/json'},
+
+    body:JSON.stringify({
+
+      createdAt:r.createdAt,
+
+      originalDate:r.date,
+
+      record:newRec,
+
+      newPhotos:state.newFiles,
+
+      deletedPhotos:state.deleted
+
+    })
+
+  })
+
+  .then(res=>res.json())
+
+  .then(data=>{
+
+    if(data.success){
+
+      toast('✅ 更新成功');
+
+      lastSrch[i]=data.record||newRec;
+
+      cancelEdit(i);
+
+    }else{
+
+      toast('❌ 更新失敗：'+(data.error||'未知'),'err');
+
+    }
+
+  })
+
+  .catch(e=>toast('❌ 連線錯誤：'+e.message,'err'));
+
+}
+
+
+
+
+// ===== ★ 是否新增比對 =====
+function checkIsNew(records){
+  if(!records||!records.length)return;
+  const tolerance=parseFloat(document.getElementById('ftol_isnew')?.value)||0.5;
+  const reqRecords=records.map((r,i)=>({
+    idx:i, sheetId:r.sheetId||'', station:r.station||'', y:r.y||''
+  }));
+  fetch(API_BASE+'/api/check/isnew',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({records:reqRecords, tolerance:tolerance})
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    if(!data.success)return;
+    data.results.forEach((val,i)=>{
+      const cell=document.getElementById('ni-'+i);
+      if(!cell)return;
+      if(val&&val.isNew===true) cell.innerHTML='<span style="color:#c0392b;font-weight:700;font-size:13px;background:#fde8e8;padding:2px 8px;border-radius:4px;">Y 新增</span>';
+      else if(val&&val.isNew===false) cell.innerHTML='<span style="color:#27ae60;font-weight:700;font-size:13px;background:#e8f8ee;padding:2px 8px;border-radius:4px;">N 已有</span>';
+      else cell.innerHTML='<span style="color:#bbb;font-size:12px;">-</span>';
+    });
+  })
+  .catch(e=>console.error('是否新增比對失敗',e));
+}
+
+// ===== ★ 機台比對：批次比對所有搜尋結果的 Y 值 =====
+
+function matchMachineData(records){
+
+  if(!records||!records.length)return;
+
+
+
+  const tolerance=parseFloat(document.getElementById('ftol_machine')?.value)||0.5;
+
+
+
+  const matchRecords=records.map((r,i)=>({
+
+    idx:i, y:r.y||'0', line:r.line||'', station:r.station||''
+
+  }));
+
+
+
+  if(matchRecords.every(r=>!r.y||r.y==='0')){
+
+    records.forEach((r,i)=>{
+
+      const mc=document.getElementById('mc-'+i);
+
+      if(mc)mc.innerHTML='<span style="color:#bbb;font-size:12px;">Y 值空白</span>';
+
+    });
+
+    return;
+
+  }
+
+
+
+  fetch(API_BASE+'/api/machine/match',{
+
+    method:'POST',
+
+    headers:{'Content-Type':'application/json'},
+
+    body:JSON.stringify({records:matchRecords, tolerance:tolerance})
+
+  })
+
+  .then(r=>r.json())
+
+  .then(data=>{
+
+    if(!data.success){
+
+      records.forEach((r,i)=>{
+
+        const mc=document.getElementById('mc-'+i);
+
+        if(mc)mc.innerHTML='<span style="color:#e74c3c;font-size:12px;">比對失敗</span>';
+
+      });
+
+      return;
+
+    }
+
+
+
+    const results=data.results;
+
+    const headers=data.headers||[];
+
+
+
+    document.querySelectorAll('[id^="mc-expand-"]').forEach(el=>el.remove());
+
+
+
+    records.forEach((r,i)=>{
+
+      const mc=document.getElementById('mc-'+i);
+
+      if(!mc)return;
+
+
+
+      const matched=results[String(i)]||[];
+
+
+
+      if(!matched.length){
+
+        mc.innerHTML='<span style="color:#bbb;font-size:12px;">無比對</span>';
+
+        return;
+
+      }
+
+
+
+      mc.innerHTML=
+
+        '<button class="bn bp bsm" id="mcbtn-'+i+'" onclick="toggleMachine('+i+')">'
+
+        +'🔧 比對到 '+matched.length+' 筆 ▼</button>';
+
+
+
+      const srcRow=document.getElementById('sr-'+i);
+
+      if(!srcRow)return;
+
+      const expandRow=document.createElement('tr');
+
+      expandRow.id='mc-expand-'+i;
+
+      expandRow.style.display='none';
+
+
+
+      const diffColor=diff=>Math.abs(diff)<=0.5?'#27ae60':Math.abs(diff)<=1?'#e67e22':'#c0392b';
+
+
+
+      const tHead=headers.map(h=>
+
+        '<th style="background:var(--p);color:#fff;padding:4px 10px;white-space:nowrap;'
+
+        +'border:1px solid #3a7fc1;font-size:12px;">'+h+'</th>'
+
+      ).join('')
+
+      +'<th style="background:var(--p);color:#fff;padding:4px 10px;border:1px solid #3a7fc1;'
+
+      +'font-size:12px;white-space:nowrap;">差距(cm)</th>';
+
+
+
+      const tBody=matched.map((m,mi)=>{
+
+        const diff=parseFloat(m.y1||0)-parseFloat(r.y||0);
+
+        const tds=headers.map(h=>
+
+          '<td style="padding:4px 10px;border:1px solid #e8edf3;font-size:12px;'
+
+          +(mi%2?'background:#f9fbff;':'')+'">'
+
+          +(m[h]!=null?m[h]:'')+'</td>'
+
+        ).join('');
+
+        const diffTd=
+
+          '<td style="padding:4px 10px;border:1px solid #e8edf3;font-size:12px;'
+
+          +'text-align:center;font-weight:600;color:'+diffColor(diff)+';'
+
+          +(mi%2?'background:#f9fbff;':'')+'">'
+
+          +(diff>=0?'+':'')+diff.toFixed(2)+'</td>';
+
+        return '<tr>'+tds+diffTd+'</tr>';
+
+      }).join('');
+
+
+
+      const colspan=document.querySelector('.st thead tr')?.children.length||16;
+
+      expandRow.innerHTML=
+
+        '<td colspan="'+colspan+'" style="padding:10px 16px;background:#eef5ff;'
+
+        +'border-left:4px solid var(--p);">'
+
+        +'<div style="font-weight:600;color:var(--p);margin-bottom:6px;font-size:13px;">'
+
+        +'🔧 機台比對 — Y='+r.y+' cm，line='+r.line+'，共 '+matched.length+' 筆（由近到遠）</div>'
+
+        +'<div style="overflow-x:auto;">'
+
+        +'<table style="border-collapse:collapse;">'
+
+        +'<thead><tr>'+tHead+'</tr></thead>'
+
+        +'<tbody>'+tBody+'</tbody>'
+
+        +'</table></div></td>';
+
+
+
+      srcRow.insertAdjacentElement('afterend', expandRow);
+
+    });
+
+  })
+
+  .catch(e=>console.error('機台比對失敗：', e));
+
+}
+
+
+
+// ===== ★ 機台比對：展開 / 收起 =====
+
+function toggleMachine(idx){
+
+  const row=document.getElementById('mc-expand-'+idx);
+
+  const btn=document.getElementById('mcbtn-'+idx);
+
+  if(!row||!btn)return;
+
+  if(row.style.display==='none'){
+
+    row.style.display='';
+
+    btn.innerHTML=btn.innerHTML.replace('▼','▲');
+
+  }else{
+
+    row.style.display='none';
+
+    btn.innerHTML=btn.innerHTML.replace('▲','▼');
+
+  }
+
+}
+
+
+
+// ===== Toast（與原始版完全一致） =====
+
+function toast(msg,type){
+
+  const t=document.getElementById('toast');
+
+  t.textContent=msg;t.className='on'+(type==='err'?' err':'');
+
+  setTimeout(()=>{t.className='';},2800);
+
+}
+
+
+
+// ===== ★ 修改：匯入 → 呼叫後端 API =====
+
+function hdImp(inp){
+
+  if(!inp.files||!inp.files.length)return;
+
+  const file=inp.files[0];
+
+  const ext=file.name.split('.').pop().toLowerCase();
+
+
+
+  if(ext==='xlsx'||ext==='xls'){
+
+    // Excel：用 SheetJS 解析
+
+    const rd=new FileReader();
+
+    rd.onload=e=>{
+
+      try{
+
+        const wb=XLSX.read(e.target.result,{type:'array'});
+
+        const ws=wb.Sheets[wb.SheetNames[0]];
+
+        const rows=XLSX.utils.sheet_to_json(ws,{defval:'',raw:false,dateNF:'yyyy-mm-dd'});
+
+        if(!rows.length){toast('Excel 無資料','err');return;}
+
+        ib=rows;
+
+        const hds=Object.keys(rows[0]);
+
+        showPreview(hds,rows);
+
+      }catch(err){
+
+        toast('Excel 解析失敗：'+err.message,'err');
+
+      }
+
+    };
+
+    rd.readAsArrayBuffer(file);
+
+  }else{
+
+    // CSV：文字讀取
+
+    const rd=new FileReader();
+
+    rd.onload=e=>{
+
+      const txt=e.target.result.replace(/^\uFEFF+/,'');
+
+      const lines=txt.split('\n').filter(l=>l.trim());
+
+      if(lines.length<2){toast('CSV 無資料','err');return;}
+
+      const hds=lines[0].split(',').map(h=>h.replace(/^"|"$/g,'').trim());
+
+      ib=lines.slice(1).map(line=>{
+
+        const vs=line.split(',').map(v=>v.replace(/^"|"$/g,'').trim());
+
+        const o={};hds.forEach((h,i)=>o[h]=vs[i]||'');return o;
+
+      }).filter(r=>Object.values(r).some(v=>v));
+
+      showPreview(hds,ib);
+
+    };
+
+    rd.readAsText(file,'UTF-8');
+
+  }
+
+}
+
+
+
+function showPreview(hds,rows){
+
+  const is2=document.getElementById('is2');
+
+  is2.innerHTML=`<div class="skd"><div class="num">${hds.length}</div><div class="lbl">欄位</div></div><div class="skd"><div class="num">${rows.length}</div><div class="lbl">筆資料</div></div>`;
+
+  document.getElementById('ih2').innerHTML='<th>#</th>'+hds.map(h=>`<th>${h}</th>`).join('');
+
+  document.getElementById('ib2').innerHTML=rows.slice(0,20).map((row,i)=>`<tr><td>${i+1}</td>${hds.map(h=>`<td>${row[h]!=null?row[h]:''}</td>`).join('')}</tr>`).join('')
+
+    +(rows.length>20?`<tr><td colspan="${hds.length+1}" style="text-align:center;color:var(--gr)">...前20筆預覽，共${rows.length}筆</td></tr>`:'');
+
+  document.getElementById('ip2').style.display='block';
+
+}
+
+
+
+function formatDate(d){
+
+  if(!d||d==='')return '';
+
+  const s=String(d).trim();
+
+  // ISO datetime 格式（如 "2026-07-06T00:00:00.000"）→ 取前10碼
+
+  if(/^\d{4}-\d{2}-\d{2}T/.test(s)) return s.slice(0,10);
+
+  // 已經是 YYYY-MM-DD 或 YYYY/MM/DD（完整年份）
+
+  if(/^\d{4}[-\/]\d{1,2}[-\/]\d{1,2}$/.test(s)){
+
+    const p=s.split(/[-\/]/);
+
+    return `${p[0]}-${p[1].padStart(2,'0')}-${p[2].padStart(2,'0')}`;
+
+  }
+
+  // M/D/YY 或 MM/DD/YY（短年份，如 2/1/26）
+
+  if(/^\d{1,2}\/\d{1,2}\/\d{2}$/.test(s)){
+
+    const p=s.split('/');
+
+    const yr=parseInt(p[2])<50?'20'+p[2]:'19'+p[2];
+
+    return `${yr}-${p[0].padStart(2,'0')}-${p[1].padStart(2,'0')}`;
+
+  }
+
+  // 純數字（Excel 序列號，如 46054）
+
+  if(/^\d+$/.test(s)){
+
+    const dt=new Date((parseInt(s)-25569)*86400000);
+
+    const y=dt.getUTCFullYear(),m=dt.getUTCMonth()+1,d2=dt.getUTCDate();
+
+    return `${y}-${String(m).padStart(2,'0')}-${String(d2).padStart(2,'0')}`;
+
+  }
+
+  return s;
+
+}
+
+
+
+function cfImp(){
+
+  if(!ib.length)return;
+
+  const g=(row,keys)=>{
+
+    for(const k of keys){
+
+      if(row[k]!==undefined&&row[k]!==null&&row[k]!=='')return String(row[k]);
+
+    }
+
+    return '';
+
+  };
+
+  const records=ib.map(row=>({
+
+    date:    formatDate(g(row,['日期','date','Date','MFG_DAY','mfg_day'])),
+
+    model:   g(row,['Model','model','MODEL','機型','PRODUCT_CODE','product_code']),
+
+    station: g(row,['站點','station','Station','site']),
+
+    line:    g(row,['LINE','Line','line','產線','LINE_ID','line_id']),
+
+    sheetId: g(row,['Sheet ID','SheetID','sheetId','sheet_id','片號','SHEET_ID','Sheet_ID']),
+
+    tc:      g(row,['T/C側','T/C 側','TC','tc','側別','T/C','t/c']),
+
+    x:       g(row,['X(cm)','X (cm)','x','X','X座標']),
+
+    y:       g(row,['Y(cm)','Y (cm)','y','Y','Y座標']),
+
+    lv:      g(row,['程度(LV)','程度 (LV)','程度','LV','lv','level','Level']),
+
+    note:    g(row,['Note','note','備註','NOTE']),
+
+    photos:  []
+
+  })).filter(r=>r.date||r.sheetId);
+
+
+
+  if(!records.length){toast('沒有可匯入的有效資料（需要有日期或片號）','err');return;}
+
+
+
+  fetch(API_BASE+'/api/import',{
+
+    method:'POST',
+
+    headers:{'Content-Type':'application/json'},
+
+    body:JSON.stringify({records})
+
+  })
+
+  .then(r=>r.json())
+
+  .then(data=>{
+
+    if(data.success){
+
+      toast(`✅ 成功匯入 ${data.count} 筆`);
+
+      ib=[];
+
+      document.getElementById('ip2').style.display='none';
+
+      document.getElementById('if2').value='';
+
+    }else{
+
+      toast('❌ 匯入失敗：'+(data.error||'未知錯誤'),'err');
+
+    }
+
+  })
+
+  .catch(e=>toast('❌ 連線錯誤：'+e.message,'err'));
+
+}
+
+function cnImp(){
+
+  ib=[];document.getElementById('ip2').style.display='none';document.getElementById('if2').value='';
+
+}
+
+
+
+// ===== 自動載入（保留 autoLoad 給本機 CSV 用） =====
+
+function autoLoad(){
+
+  const existing=lR();
+
+  if(existing.length>0){
+
+    const b=document.getElementById('pb');
+
+    b.style.display='block';
+
+    b.textContent=`✅ 已有 ${existing.length} 筆資料（localStorage）`;
+
+    return;
+
+  }
+
+}
+
+
+
+
+
+// ===== ★ 多選刪除功能 =====
+
+function togChkAll(){
+
+  const all=document.getElementById('chkAll');
+
+  document.querySelectorAll('.delChk').forEach(c=>c.checked=all.checked);
+
+  updDelBtn();
+
+}
+
+function updDelBtn(){
+
+  const n=document.querySelectorAll('.delChk:checked').length;
+
+  const btn=document.getElementById('delBtn');
+
+  const msg=document.getElementById('delMsg');
+
+  if(btn) btn.style.display=n>0?'inline-block':'none';
+
+  if(msg) msg.textContent=n>0?`已勾選 ${n} 筆`:'';
+
+}
+
+function delChecked(){
+
+  const chks=document.querySelectorAll('.delChk:checked');
+
+  if(!chks.length){toast('請先勾選要刪除的項目','err');return;}
+
+  // ★ 密碼確認
+
+  const pwd=prompt(`⚠️ 即將刪除 ${chks.length} 筆資料，請輸入密碼確認：`);
+
+  if(pwd===null)return;
+
+  if(pwd!=='999'){toast('❌ 密碼錯誤，取消刪除','err');return;}
+
+  if(!confirm(`確定要刪除勾選的 ${chks.length} 筆資料嗎？刪除後無法復原！`))return;
+
+  const deletions=[];
+
+  chks.forEach(c=>deletions.push({
+
+    createdAt:c.getAttribute('data-created-at'),
+
+    date:c.getAttribute('data-date')
+
+  }));
+
+  toast('⏳ 刪除中...');
+
+  fetch(API_BASE+'/api/delete',{
+
+    method:'POST',
+
+    headers:{'Content-Type':'application/json'},
+
+    body:JSON.stringify({deletions})
+
+  })
+
+  .then(r=>r.json())
+
+  .then(data=>{
+
+    if(data.success){toast(`✅ 已刪除 ${data.count} 筆`);doSrch();}
+
+    else toast('❌ 刪除失敗：'+(data.error||'未知錯誤'),'err');
+
+  })
+
+  .catch(e=>toast('❌ 連線錯誤：'+e.message,'err'));
+
+}
+
+// ===== Summary 圖表 =====
+// ===== Summary 分頁 =====
+if(typeof ChartDataLabels!=='undefined'){Chart.register(ChartDataLabels);}
+const SM_CFG={pi1:{station:'PI 前',hasLine:false,tolId:null,showId:null},pi2:{station:'PI 後',hasLine:true,tolId:'sm-pi2-tol',showId:'sm-pi2-show'},pa:{station:'PA 後',hasLine:true,tolId:'sm-pa-tol',showId:'sm-pa-show'},odf:{station:'ODF 後',hasLine:true,tolId:'sm-odf-tol',showId:'sm-odf-show'}};
+const SM_LV=['0','1','1.5','2.0','3.0'];const SM_LL=['LV0','LV1','LV1.5','LV2.0','LV3.0'];
+const SM_LC=['#efebe9','#d7ccc8','#a1887f','#6d4c41','#3e2723'];
+const SM_NA='__na__';const SM_LC_NA='#e8edf2';
+const SM_THEMES={pink:{lc:['#fff5f8','#ffe0ea','#ffc0d4','#f890b0','#e05888'],na:'#e8edf2'},blue:{lc:['#e8f4fd','#bde0fb','#7ec8f7','#3aa0e8','#1565c0'],na:'#e8edf2'},green:{lc:['#e8f8e8','#b2dfc4','#6ec66e','#3a9e3a','#1a6e1a'],na:'#e8edf2'},warm:{lc:['#fff8e1','#ffe082','#ffb300','#f57c00','#bf360c'],na:'#e8edf2'},purple:{lc:['#f3e5f5','#ce93d8','#ab47bc','#7b1fa2','#4a148c'],na:'#e8edf2'},cool:{lc:['#e0f7fa','#80deea','#26c6da','#0097a7','#004d5a'],na:'#e8edf2'},neutral:{lc:['#f5f5f5','#bdbdbd','#757575','#424242','#212121'],na:'#e0e0e0'},earth:{lc:['#efebe9','#d7ccc8','#a1887f','#6d4c41','#3e2723'],na:'#e8edf2'},morandi:{lc:['#e8ddd4','#c9b8a8','#a89080','#876860','#665040'],na:'#ede8e3'}};
+function smApplyTheme(){const t=document.getElementById('sm-g-theme')?.value||'earth';const th=SM_THEMES[t]||SM_THEMES.pink;SM_LC.splice(0,SM_LC.length,...th.lc);Object.keys(SM_CFG).forEach(k=>smDraw(k));}
+const smCharts={};let smInited=false;
+function smNormLV(v){if(v===null||v===undefined||v==='')return SM_NA;const s=String(v).trim();const m={'0':'0','0.0':'0','1':'1','1.0':'1','1.5':'1.5','2':'2.0','2.0':'2.0','3':'3.0','3.0':'3.0'};return m[s]!==undefined?m[s]:(s?s:SM_NA);}
+function smInit(){smInitDates();smFillModels();if(!smInited){smInited=true;Object.keys(SM_CFG).forEach(k=>smDraw(k));}}
+function smInitDates(){const now=new Date(),ago=new Date(now);ago.setMonth(ago.getMonth()-1);const today=dateStr(now),monthAgo=dateStr(ago);const ff=document.getElementById('ff'),ft=document.getElementById('ft');if(ff&&!ff.value)ff.value=monthAgo;if(ft&&!ft.value)ft.value=today;const gf=document.getElementById('sm-g-from'),gt=document.getElementById('sm-g-to');if(gf&&!gf.value)gf.value=monthAgo;if(gt&&!gt.value)gt.value=today;Object.keys(SM_CFG).forEach(k=>{const f=document.getElementById('sm-'+k+'-from'),t=document.getElementById('sm-'+k+'-to');if(f&&!f.value)f.value=monthAgo;if(t&&!t.value)t.value=today;});}
+function smFillModels(){const models=window._smModels||[];if(!models.length)return;const gm=document.getElementById('sm-g-model');if(gm){const cur=gm.value;gm.innerHTML='<option value="">全部</option>'+models.map(m=>'<option>'+m+'</option>').join('');if(cur)gm.value=cur;}Object.keys(SM_CFG).forEach(k=>{const s=document.getElementById('sm-'+k+'-model');if(!s)return;const cur=s.value;s.innerHTML='<option value="">全部</option>'+models.map(m=>'<option>'+m+'</option>').join('');if(cur)s.value=cur;});}
+function smApplyGlobal(){const gFrom=document.getElementById('sm-g-from')?.value||'';const gTo=document.getElementById('sm-g-to')?.value||'';const gModel=document.getElementById('sm-g-model')?.value||'';const gTc=document.getElementById('sm-g-tc')?.value||'';const gLv=document.getElementById('sm-g-lv')?.value||'';const gTol=document.getElementById('sm-g-tol')?.value||'';const gShow=document.getElementById('sm-g-show')?.value||'';Object.keys(SM_CFG).forEach(k=>{if(gFrom){const f=document.getElementById('sm-'+k+'-from');if(f)f.value=gFrom;}if(gTo){const t=document.getElementById('sm-'+k+'-to');if(t)t.value=gTo;}if(gModel){const m=document.getElementById('sm-'+k+'-model');if(m)m.value=gModel;}if(gTc){const tc=document.getElementById('sm-'+k+'-tc');if(tc)tc.value=gTc;}if(gLv){const lv=document.getElementById('sm-'+k+'-lv');if(lv)lv.value=gLv;}if(gTol&&SM_CFG[k].tolId){const tol=document.getElementById(SM_CFG[k].tolId);if(tol)tol.value=gTol;}if(gShow&&SM_CFG[k].showId){const sh=document.getElementById(SM_CFG[k].showId);if(sh)sh.value=gShow;}smDraw(k);});}
+function smDedup(recs){const seen=new Set();return recs.filter(r=>{const key=r.date+'|'+(r.tc||'')+'|'+(r.y||'');if(seen.has(key))return false;seen.add(key);return true;});}
+function smAgg(recs){const byDate={};recs.forEach(r=>{const d=r.date||'';const lv=smNormLV(r.lv);if(!byDate[d])byDate[d]={};byDate[d][lv]=(byDate[d][lv]||0)+1;});return{dates:Object.keys(byDate).sort(),byDate};}
+async function smDraw(key){const cfg=SM_CFG[key];if(!cfg)return;const gv=id=>{const e=document.getElementById(id);return e?e.value:'';};const from=gv('sm-'+key+'-from'),to=gv('sm-'+key+'-to');const model=gv('sm-'+key+'-model'),line=gv('sm-'+key+'-line');const tc=gv('sm-'+key+'-tc'),lv=gv('sm-'+key+'-lv');const tolEl=cfg.tolId?document.getElementById(cfg.tolId):null;const tol=parseFloat(tolEl?.value||'1')||1;const showEl=cfg.showId?document.getElementById(cfg.showId):null;const showMode=showEl?showEl.value:(cfg.hasLine?'new':'all');const params=new URLSearchParams({dateFrom:from,dateTo:to,model,station:cfg.station,line:line||'',tc:tc||'',level:lv||''});let allRecs=[];try{const data=await fetch(API_BASE+'/api/search?'+params).then(r=>r.json());if(!data.success)return;allRecs=data.records||[];const ms=[...new Set(allRecs.map(r=>r.model||'').filter(Boolean))].sort();if(ms.length){window._smModels=ms;smFillModels();}}catch(e){return;}const deduped=smDedup(allRecs);let isNewArr=[];if(cfg.hasLine&&deduped.length>0&&showMode==='new'){try{const reqRecords=deduped.map((r,i)=>({idx:i,sheetId:r.sheetId||'',station:r.station||'',y:r.y||''}));const niData=await fetch(API_BASE+'/api/check/isnew',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({records:reqRecords,tolerance:tol})}).then(r=>r.json());if(niData.success){const raw=niData.results;if(Array.isArray(raw)){isNewArr=raw;}else if(raw&&typeof raw==='object'){isNewArr=deduped.map((_,i)=>raw[String(i)]||raw[i]||'N');}}}catch(e){isNewArr=[];}}['T','C'].forEach(side=>{let chartRecs;if(cfg.hasLine&&showMode==='new'){chartRecs=deduped.filter((r,i)=>r.tc===side&&(isNewArr[i]&&isNewArr[i].isNew===true));}else{chartRecs=deduped.filter(r=>r.tc===side);}const{dates,byDate}=smAgg(chartRecs);let newByDate=null;if(cfg.hasLine){newByDate={};deduped.forEach((r,i)=>{if(r.tc!==side)return;if(isNewArr[i]&&isNewArr[i].isNew===true){const d=r.date||'';newByDate[d]=(newByDate[d]||0)+1;}});}const titleSuffix=cfg.hasLine?(showMode==='new'?' ▸ 僅新增線':' ▸ 全部'):'';smDrawChart('smc-'+key+'-'+side,dates,byDate,newByDate,cfg.station+' '+side+'側',chartRecs,titleSuffix);});}
+function smDrawChart(cid,dates,byDate,newByDate,title,expRecs,titleSuffix){const ctx=document.getElementById(cid)?.getContext('2d');if(!ctx)return;if(smCharts[cid])smCharts[cid].destroy();const titleEl=ctx.canvas.previousElementSibling;if(titleEl&&titleEl.classList.contains('smtitle')){const hint=titleSuffix?'<span style="font-size:10px;font-weight:600;color:'+(titleSuffix.includes('新增')?'#e67e22':'#888')+';">'+titleSuffix+'</span>':'';titleEl.innerHTML=title+' '+hint+'<span style="font-size:10px;color:#aaa;font-weight:400;">（點柱匯出 Excel）</span>';}const lblColors=['#aa3060','#aa3060','#fff','#fff','#fff'];const datasets=[{label:'無LV',data:dates.map(d=>(byDate[d]&&byDate[d][SM_NA])||0),backgroundColor:SM_LC_NA,borderWidth:1,borderColor:'rgba(255,255,255,.4)',datalabels:{display:c=>c.dataset.data[c.dataIndex]>0,color:'#778',font:{size:15,weight:'bold'},formatter:val=>val>0?val:''}},...SM_LV.map((lv,i)=>({label:SM_LL[i],data:dates.map(d=>(byDate[d]&&byDate[d][lv])||0),backgroundColor:SM_LC[i],borderWidth:1,borderColor:'rgba(255,255,255,.4)',datalabels:{display:c=>c.dataset.data[c.dataIndex]>0,color:lblColors[i],font:{size:15,weight:'bold'},formatter:val=>val>0?val:''}}))];if(newByDate){datasets.push({label:'新增線',data:dates.map(d=>newByDate[d]||0),type:'line',borderColor:'#e67e22',backgroundColor:'rgba(230,126,34,.1)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#e67e22',fill:false,tension:0.3,yAxisID:'y',datalabels:{display:false}});}smCharts[cid]=new Chart(ctx,{type:'bar',data:{labels:dates,datasets},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}},tooltip:{callbacks:{afterBody:items=>{const d=items[0]?.label;const tot=SM_LV.reduce((s,lv)=>s+(byDate[d]&&byDate[d][lv]||0),0)+((byDate[d]&&byDate[d][SM_NA])||0);return['合計: '+tot+(newByDate?'  新增: '+(newByDate[d]||0):'')];}}},datalabels:{anchor:'center',align:'center'}},scales:{x:{stacked:true,ticks:{font:{size:9},maxRotation:45}},y:{stacked:true,beginAtZero:true,ticks:{stepSize:1,font:{size:9}},title:{display:true,text:'條數',font:{size:10}}}},onClick:(_,els)=>{if(els.length>0)smExport(expRecs,dates[els[0].index],title);}}});}
+async function smExport(recs,date,title){if(!date||!recs)return;const rows=recs.filter(r=>r.date===date);if(!rows.length){alert('該日期無資料');return;}if(typeof XLSX==='undefined'){alert('Excel 庫未載入');return;}let matchResults={},matchHdrs=[];try{const tol=parseFloat(document.getElementById('ftol_machine')?.value)||1;const mRecs=rows.map((r,i)=>({idx:i,y:r.y||'0',line:r.line||'',station:r.station||''}));const resp=await fetch(API_BASE+'/api/machine/match',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({records:mRecs,tolerance:tol})});const mData=await resp.json();if(mData.success){matchResults=mData.results||{};matchHdrs=mData.headers||[];}}catch(e){}const wantKeys=['tool_id','tool_name','pos','class_desc','x1','y1'];function fuzzyFind(want,hdrs){const wl=want.toLowerCase().replace(/[_\s]/g,'');let f=hdrs.find(h=>h===want);if(f)return f;f=hdrs.find(h=>h.toLowerCase()===want.toLowerCase());if(f)return f;f=hdrs.find(h=>h.toLowerCase().replace(/[_\s]/g,'')===wl);if(f)return f;f=hdrs.find(h=>h.toLowerCase().replace(/[_\s]/g,'').includes(wl)||wl.includes(h.toLowerCase().replace(/[_\s]/g,'')));return f||null;}const resolvedKeys=wantKeys.map(w=>fuzzyFind(w,matchHdrs)).filter(k=>k!==null);const useKeys=resolvedKeys.length>0?resolvedKeys:matchHdrs.filter(h=>h!=='_id');const h=['日期','Model','站點','LINE','Sheet ID','T/C側','X(cm)','Y(cm)','程度(LV)','Note','工號','機台比對(tool_id/tool_name/pos/class_desc/x1/y1)'];const d=rows.map((r,i)=>{const base=[r.date,r.model,r.station,r.line||'',r.sheetId||'',r.tc,r.x!=null?r.x:'',r.y!=null?r.y:'',r.lv,r.note||'',r.empId||''];const matched=matchResults[String(i)]||[];if(matched.length>0&&useKeys.length>0){base.push(matched.map((m,mi)=>(mi+1)+'. '+useKeys.map(k=>k+':'+(m[k]!=null?String(m[k]):'—')).join(' / ')).join('\n'));}else{base.push('');}return base;});const wb=XLSX.utils.book_new();const ws=XLSX.utils.aoa_to_sheet([h,...d]);ws['!cols']=[{wch:12},{wch:14},{wch:10},{wch:11},{wch:14},{wch:7},{wch:8},{wch:8},{wch:10},{wch:20},{wch:10},{wch:60}];const range=XLSX.utils.decode_range(ws['!ref']);for(let R=1;R<=range.e.r;R++){const cr=XLSX.utils.encode_cell({r:R,c:11});if(ws[cr]&&ws[cr].v){ws[cr].s={alignment:{wrapText:true,vertical:'top'}};}}XLSX.utils.book_append_sheet(wb,ws,'詳細');XLSX.writeFile(wb,'背汙檢_'+title.replace(/\s+/g,'_')+'_'+date+'.xlsx');}
+
+// ===== 匯入（含圖片）=====
+let _picFile=null,_picIb=[],_picPreviewId=null;
+function hdImpPic(inp){if(!inp.files||!inp.files.length)return;const file=inp.files[0];_picFile=file;_picPreviewId=null;const ext=file.name.split('.').pop().toLowerCase();const statusEl=document.getElementById('impPicStatus');if(statusEl)statusEl.textContent='⏳ 讀取中...';if(ext==='csv'){const rd=new FileReader();rd.onload=e=>{const txt=e.target.result.replace(/^\uFEFF+/,'');const lines=txt.split('\n').filter(l=>l.trim());if(lines.length<2){toast('CSV 無資料','err');return;}const hds=lines[0].split(',').map(h=>h.replace(/^"|"$/g,'').trim());_picIb=lines.slice(1).map(line=>{const vs=line.split(',').map(v=>v.replace(/^"|"$/g,'').trim());const o={};hds.forEach((h,i)=>o[h]=vs[i]||'');return o;}).filter(r=>Object.values(r).some(v=>v));_showPicPreview(hds,_picIb,{},_picIb.length);if(statusEl)statusEl.textContent='';};rd.readAsText(file,'UTF-8');}else{const rd=new FileReader();rd.onload=async e=>{try{const bytes=new Uint8Array(e.target.result);let binary='';const CHUNK=8192;for(let i=0;i<bytes.length;i+=CHUNK)binary+=String.fromCharCode(...bytes.subarray(i,Math.min(i+CHUNK,bytes.length)));const b64=btoa(binary);if(statusEl)statusEl.textContent='⏳ 讀取 Excel 並提取圖片...';const res=await fetch(API_BASE+'/api/preview_excel_with_pics',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({excel_base64:b64})});const d=await res.json();if(d.success){_picPreviewId=d.preview_id;_picIb=d.rows;_showPicPreview(d.headers,d.rows,d.row_images||{},d.total);if(statusEl)statusEl.textContent='共 '+d.total+' 筆，'+Object.keys(d.row_images||{}).length+' 列有圖片';}else{if(statusEl)statusEl.textContent='❌ '+(d.error||'預覽失敗');toast('預覽失敗：'+(d.error||''),'err');}}catch(err){if(statusEl)statusEl.textContent='❌ '+err.message;}};rd.readAsArrayBuffer(file);}}
+function _showPicPreview(hds,rows,rowImages,total){const is3=document.getElementById('is3'),ih3=document.getElementById('ih3'),ib3=document.getElementById('ib3'),ip3=document.getElementById('ip3');if(!is3||!ip3)return;const hasImgs=Object.keys(rowImages).length>0,tot=total||rows.length;is3.innerHTML='<div class="skd"><div class="num">'+hds.length+'</div><div class="lbl">欄位</div></div><div class="skd"><div class="num">'+tot+'</div><div class="lbl">筆資料</div></div>'+(hasImgs?'<div class="skd"><div class="num">'+Object.keys(rowImages).length+'</div><div class="lbl">列有圖片</div></div>':'');if(ih3)ih3.innerHTML='<th>#</th>'+hds.map(h=>'<th>'+h+'</th>').join('')+(hasImgs?'<th>圖片預覽</th>':'');if(ib3)ib3.innerHTML=rows.slice(0,20).map((row,i)=>{const key=String(i+1),imgs=rowImages[key]||[];const imgTd=hasImgs?(imgs.length>0?'<td style="text-align:center">'+imgs.map(url=>'<img src="'+url+'" style="height:60px;width:auto;border:1px solid #ddd;border-radius:4px;margin:2px;cursor:zoom-in" onclick="opM(\''+url+'\',\'圖片預覽\')">').join('')+'</td>':'<td style="text-align:center;color:#ccc;font-size:12px;">—</td>'):'';return '<tr><td>'+(i+1)+'</td>'+hds.map(h=>'<td>'+(row[h]!=null?row[h]:'')+'</td>').join('')+imgTd+'</tr>';}).join('')+(tot>20?'<tr><td colspan="'+(hds.length+(hasImgs?2:1))+'" style="text-align:center;color:var(--gr)">...共'+tot+'筆，顯示前20筆</td></tr>':'');ip3.style.display='block';}
+async function cfImpPic(){if(!_picFile)return;const statusEl=document.getElementById('impPicStatus');const ext=_picFile.name.split('.').pop().toLowerCase();if(statusEl)statusEl.textContent='⏳ 匯入中...';if(ext==='csv'){const g=(row,keys)=>{for(const k of keys){if(row[k]!==undefined&&row[k]!==null&&row[k]!=='')return String(row[k]);}return '';};const records=_picIb.map(row=>({date:formatDate(g(row,['日期','date','Date','MFG_DAY','mfg_day'])),model:g(row,['Model','model','MODEL','機型','PRODUCT_CODE']),station:g(row,['站點','station','Station','site']),line:g(row,['LINE','Line','line','產線','LINE_ID']),sheetId:g(row,['Sheet ID','SheetID','sheetId','sheet_id','片號','SHEET_ID']),tc:g(row,['T/C側','T/C 側','TC','tc','側別','T/C','t/c']),x:g(row,['X(cm)','X (cm)','x','X','X座標']),y:g(row,['Y(cm)','Y (cm)','y','Y','Y座標']),lv:g(row,['程度(LV)','程度 (LV)','程度','LV','lv','level','Level']),note:g(row,['Note','note','備註','NOTE']),photos:[]})).filter(r=>r.date||r.sheetId);if(!records.length){toast('沒有可匯入的有效資料','err');return;}try{const res=await fetch(API_BASE+'/api/import',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({records})});const d=await res.json();if(d.success){if(statusEl)statusEl.textContent='✅ 匯入完成 '+d.count+' 筆';toast('✅ 成功匯入 '+d.count+' 筆');cnImpPic();}else{if(statusEl)statusEl.textContent='❌ '+(d.error||'未知錯誤');}}catch(e){if(statusEl)statusEl.textContent='❌ 連線錯誤：'+e.message;}}else{if(!_picPreviewId){if(statusEl)statusEl.textContent='❌ 請重新選擇檔案';return;}try{const res=await fetch(API_BASE+'/api/import_excel_with_pics',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({preview_id:_picPreviewId})});const d=await res.json();if(d.success){const skip=d.skipped>0?'（跳過'+d.skipped+'筆）':'';if(statusEl)statusEl.textContent='✅ '+d.count+' 筆，'+d.photos+' 張圖片 '+skip;toast('✅ 成功匯入 '+d.count+' 筆，'+d.photos+' 張圖片');_picPreviewId=null;cnImpPic();}else{if(statusEl)statusEl.textContent='❌ '+(d.error||'未知錯誤');}}catch(e){if(statusEl)statusEl.textContent='❌ 連線錯誤：'+e.message;}}}
+function cnImpPic(){_picFile=null;_picIb=[];_picPreviewId=null;const ip3=document.getElementById('ip3'),f=document.getElementById('if3');if(ip3)ip3.style.display='none';if(f)f.value='';}
+
+window.onload=()=>{
+  const _d=new Date();
+  const _past=new Date(_d); _past.setDate(_past.getDate()-30);
+  const _toStr=_d.toISOString().slice(0,10);
+  const _fromStr=_past.toISOString().slice(0,10);
+  document.getElementById('sd').value=_toStr;
+  addRow();autoLoad();sw('sr');
+  document.getElementById('ff').value=_fromStr;
+  document.getElementById('ft').value=_toStr;
+  // doSrch() 跳過（BEOL 頁面）
+  setTimeout(()=>{if(typeof bDoSrch==='function')bDoSrch();},300);
+  const _bd=new Date();
+  const _bFrom=new Date(_bd); _bFrom.setDate(_bFrom.getDate()-14);
+  document.getElementById('b-ff').value=_bFrom.toISOString().slice(0,10);
+  document.getElementById('b-ft').value=_bd.toISOString().slice(0,10);
+  // Q2: 預設顯示 BEOL 搜尋頁
+  swSeg('beol');
+  // Q3: KEY IN 預設今天
+  var _bDate=document.getElementById('b-date');
+  if(_bDate&&!_bDate.value) _bDate.value=_bd.toISOString().slice(0,10);
+};
+
+
+// ═══════════════ BEOL JavaScript ═══════════════
+let _beolInited=false;
+function swSeg(seg){
+  document.querySelectorAll('.seg-btn').forEach((b,i)=>b.classList.toggle('on',['feol','beol'][i]===seg));
+  document.querySelectorAll('.seg-wrap').forEach(w=>w.classList.remove('on'));
+  document.getElementById('seg-'+seg).classList.add('on');
+  if(seg==='beol'){bSw('bsr');if(!_beolInited){_beolInited=true;bDoSrch();}}
+}
+function bSw(n){
+  const seg=document.getElementById('seg-beol');
+  seg.querySelectorAll('.t').forEach((t,i)=>t.classList.toggle('on',['bki','bsr','bim','bsm'][i]===n));
+  seg.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pg-'+n).classList.add('on');
+}
+const BSL={'CGL':['CKCGL100','CKCGL200','CKCGL300','CKCGL400','CKCGL500','CKCGL600','CKCGL700','CKCGL800','CKCGLC00','CKCGLD00','CKCGLE00','CKCGLG00','CKCGLH00','CKCGLL00','CKCGLJ00','CKCGLK00'],'SHL':['CKSHL100','CKSHL200','CKSHL400','CKSHL500'],'PKL':['CKPKL200','CKPKL300','CKPKL400','CKPKL500','CKPKL600','CKPKL700','CKPKL800','CKPKL900','CKPKLA00','CKPKLB00','CKPKLC00','CKPKLD00','CKPKLE00','CKPKLF00','CKPKLG00','CKPKLH00'],'APK':['CKAPK100','CKAPK200','CKAPK300']};
+function bSelSt(el,st){document.querySelectorAll('#b-ss .ch').forEach(c=>c.classList.remove('on'));el.classList.add('on');bRlC(st);}
+function bRlC(st){const c=document.getElementById('b-sl'),ls=BSL[st]||[];if(!ls.length){c.innerHTML='<span class="lp">此站點無 LINE</span>';return;}c.innerHTML=ls.map(l=>`<div class="lc" onclick="bTogL(this)">${l}</div>`).join('');}
+function bTogL(el){document.querySelectorAll('#b-sl .lc').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
+function bGL(){const s=document.querySelector('#b-sl .lc.on');return s?s.textContent.trim():'';}
+function bUpdFL(){const st=document.getElementById('b-fst').value,ls=st?(BSL[st]||[]):[];const sl=document.getElementById('b-fl');sl.innerHTML='<option value="">全部</option>'+ls.map(l=>`<option>${l}</option>`).join('');}
+let bRc=0;const bPs={};
+const B_MORPH=['單點','直條','橫條','吸盤','撇狀'];
+const B_LV=['乾擦','濕擦','乾溼不可擦','不可見'];
+function bTogM(el,grp){el.closest('.mc').querySelectorAll('.mi').forEach(c=>c.classList.remove('on'));el.classList.add('on');const inp=document.getElementById(grp+'-oth');if(inp)inp.classList.remove('show');}
+function bTogMOther(el,grp){el.closest('.mc').querySelectorAll('.mi').forEach(c=>c.classList.remove('on'));el.classList.add('on');const inp=document.getElementById(grp+'-oth');if(inp)inp.classList.add('show');}
+function bGetMC(grp){const el=document.querySelector('.'+grp+'.on');if(!el)return'';if(el.textContent.trim()==='其他'){const inp=document.getElementById(grp+'-oth');return inp?inp.value.trim():'';}return el.textContent.trim();}
+function bMorphBtns(i){return B_MORPH.map(m=>`<div class="mi" onclick="bTogM(this,'bmo${i}')">${m}</div>`).join('')+`<div class="mi" onclick="bTogMOther(this,'bmo${i}')">其他</div><input class="other-input" id="bmo${i}-oth" placeholder="請輸入"/>`;}
+function bLvBtns(i){return B_LV.map(l=>`<div class="mi" onclick="bTogM(this,'blv${i}')">${l}</div>`).join('')+`<div class="mi" onclick="bTogMOther(this,'blv${i}')">其他</div><input class="other-input" id="blv${i}-oth" placeholder="請輸入"/>`;}
+function bAddRow(){bRc++;const i=bRc,tb=document.getElementById('b-eb'),tr=document.createElement('tr');tr.id='br'+i;tr.innerHTML=`<td class="rn">${i}</td><td><input type="text" class="b-mid" placeholder="中片ID" style="width:90px"/></td><td><input type="text" class="b-cid" placeholder="CHIP ID" style="width:90px"/></td><td><div class="mc btc${i}"><div class="mi" onclick="bTogM(this,'btc${i}')">T</div><div class="mi" onclick="bTogM(this,'btc${i}')">C</div></div></td><td><input type="text" class="b-cx" placeholder="X" style="width:72px"/></td><td><input type="text" class="b-cy" placeholder="Y" style="width:72px"/></td><td><div class="mc bmo${i}" style="flex-wrap:wrap;gap:3px;">${bMorphBtns(i)}</div></td><td><div class="mc blv${i}" style="flex-wrap:wrap;gap:3px;">${bLvBtns(i)}</div></td><td><div class="mc bito${i}"><div class="mi" onclick="bTogM(this,'bito${i}')">上</div><div class="mi" onclick="bTogM(this,'bito${i}')">下</div></div></td><td><textarea rows="2" class="b-note" placeholder="Note..." style="min-width:100px;"></textarea></td><td id="bpc${i}"><label class="pub" onclick="bSetPasteFocus(${i},'ph')">📷 照片<input type="file" accept="image/*" multiple onchange="bHdP(this,${i},'ph')" style="display:none"/></label></td><td id="bopc${i}"><label class="pub" onclick="bSetPasteFocus(${i},'om')">🔬 OM<input type="file" accept="image/*" multiple onchange="bHdP(this,${i},'om')" style="display:none"/></label></td><td><button class="bn bd2 bsm" onclick="bDelR(${i})">✕</button></td>`;tb.appendChild(tr);tr.scrollIntoView({behavior:'smooth',block:'nearest'});}
+function bAddRowSameID(){const rows=document.querySelectorAll('#b-eb tr');if(!rows.length){toast('沒有上一筆資料','err');return;}const lastRow=rows[rows.length-1];const lastCid=lastRow.querySelector('.b-cid').value.trim();const lastMid=lastRow.querySelector('.b-mid')?.value.trim()||'';bAddRow();const newRow=document.getElementById('br'+bRc);if(lastCid)newRow.querySelector('.b-cid').value=lastCid;if(lastMid)newRow.querySelector('.b-mid').value=lastMid;}
+function bDelR(i){const tr=document.getElementById('br'+i);if(tr)tr.remove();delete bPs[i+'_ph'];delete bPs[i+'_om'];}
+function bHdP(inp,i,type){if(!inp.files||!inp.files.length)return;const key=i+'_'+type;if(!bPs[key])bPs[key]=[];Array.from(inp.files).forEach(f=>{const rd=new FileReader();rd.onload=e=>{bPs[key].push({name:f.name,dataUrl:e.target.result});bRefreshPhotoCell(i,type);};rd.readAsDataURL(f);});}
+function bRefreshPhotoCell(i,type){const cellId=type==='om'?'bopc'+i:'bpc'+i;const cell=document.getElementById(cellId);if(!cell)return;const photos=bPs[i+'_'+type]||[];const label=type==='om'?'🔬 OM':'📷 照片';cell.innerHTML=`<label class="pub" onclick="bSetPasteFocus(${i},'${type}')">${label}<input type="file" accept="image/*" multiple onchange="bHdP(this,${i},'${type}')" style="display:none"/></label>`+photos.map(p=>`<img class="pt" src="${p.dataUrl}" title="${p.name}" onclick="opM('${p.dataUrl}','${p.name.replace(/'/g,"\\'")}')"/>`).join('');}
+
+// ===== BEOL Ctrl+V 貼上照片 =====
+var bPasteFocus = null; // { rowIdx, type }
+
+function bSetPasteFocus(rowIdx, type){
+  bPasteFocus = { rowIdx: rowIdx, type: type };
+}
+
+document.addEventListener('paste', function(e){
+  if(!bPasteFocus) return;
+  var pgBki = document.getElementById('pg-bki');
+  if(!pgBki || !pgBki.classList.contains('on')) return;
+
+  var items = (e.clipboardData || (e.originalEvent && e.originalEvent.clipboardData) || {}).items;
+  if(!items) return;
+  var hasImg = false;
+  for(var ii = 0; ii < items.length; ii++){
+    if(items[ii].type.indexOf('image') !== -1){
+      hasImg = true;
+      var blob = items[ii].getAsFile();
+      if(!blob) continue;
+      (function(b, focus){
+        var rd = new FileReader();
+        rd.onload = function(ev){
+          var key = focus.rowIdx + '_' + focus.type;
+          if(!bPs[key]) bPs[key] = [];
+          bPs[key].push({ name: 'paste_' + Date.now() + '.png', dataUrl: ev.target.result });
+          bRefreshPhotoCell(focus.rowIdx, focus.type);
+        };
+        rd.readAsDataURL(b);
+      })(blob, bPasteFocus);
+    }
+  }
+  if(hasImg) e.preventDefault();
+});
+
+// ===== BEOL Ctrl+V 貼上照片 =====
+var bPasteFocus = null;
+function bSetPasteFocus(rowIdx, type){ bPasteFocus = {rowIdx:rowIdx, type:type}; }
+document.addEventListener('paste', function(e){
+  if(!bPasteFocus) return;
+  var pg = document.getElementById('pg-bki');
+  if(!pg||!pg.classList.contains('on')) return;
+  var items=(e.clipboardData||(e.originalEvent&&e.originalEvent.clipboardData)||{}).items;
+  if(!items) return;
+  var hasImg=false;
+  for(var ii=0;ii<items.length;ii++){
+    if(items[ii].type.indexOf('image')!==-1){
+      hasImg=true;
+      var blob=items[ii].getAsFile();
+      if(!blob) continue;
+      (function(b,focus){
+        var rd=new FileReader();
+        rd.onload=function(ev){
+          var key=focus.rowIdx+'_'+focus.type;
+          if(!bPs[key]) bPs[key]=[];
+          bPs[key].push({name:'paste_'+Date.now()+'.png',dataUrl:ev.target.result});
+          bRefreshPhotoCell(focus.rowIdx,focus.type);
+        };
+        rd.readAsDataURL(b);
+      })(blob,bPasteFocus);
+    }
+  }
+  if(hasImg) e.preventDefault();
+});
+
+
+async function bSaveAll(){const date=document.getElementById('b-date').value;const model=document.getElementById('b-model').value;const empId=document.getElementById('b-emp').value.trim();const stEl=document.querySelector('#b-ss .ch.on');const station=stEl?stEl.textContent.trim():'';const line=bGL();if(!date){toast('請選擇日期','err');return;}if(!station){toast('請選擇站點','err');return;}const rows=document.querySelectorAll('#b-eb tr');if(!rows.length){toast('請至少新增一筆明細','err');return;}const records=[];for(const tr of rows){const i=parseInt(tr.id.replace('br',''));const midId=tr.querySelector('.b-mid')?.value.trim()||'';const chipId=tr.querySelector('.b-cid').value.trim();const tc=(tr.querySelector('.btc'+i+' .mi.on')||{}).textContent?.trim()||'';const x=tr.querySelector('.b-cx').value.trim();const y=tr.querySelector('.b-cy').value.trim();const morphology=bGetMC('bmo'+i);const level=bGetMC('blv'+i);const ito=(tr.querySelector('.bito'+i+' .mi.on')||{}).textContent?.trim()||'';const note=tr.querySelector('.b-note').value.trim();const photos=bPs[i+'_ph']||[];const omPhotos=bPs[i+'_om']||[];records.push({midId,chipId,tc,x,y,morphology,level,ito,note,photos:photos.map(p=>({name:p.name,dataUrl:p.dataUrl})),omPhotos:omPhotos.map(p=>({name:p.name,dataUrl:p.dataUrl}))});}document.getElementById('b-si').textContent='儲存中...';try{const res=await fetch(API_BASE+'/api/beol/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({date,model,station,line,empId,records})});const d=await res.json();if(d.success){toast('✅ 成功儲存 '+d.count+' 筆');document.getElementById('b-eb').innerHTML='';bRc=0;Object.keys(bPs).forEach(k=>delete bPs[k]);document.getElementById('b-si').textContent='';}else{toast('儲存失敗：'+(d.error||''),'err');document.getElementById('b-si').textContent='';}}catch(e){toast('連線錯誤：'+e.message,'err');document.getElementById('b-si').textContent='';}}
+let bLastSrch=[];
+function bDoSrch(){const params=new URLSearchParams({dateFrom:document.getElementById('b-ff').value||'',dateTo:document.getElementById('b-ft').value||'',model:document.getElementById('b-fm').value||'',station:document.getElementById('b-fst').value||'',line:document.getElementById('b-fl').value||'',tc:document.getElementById('b-ftc').value||'',level:document.getElementById('b-flv').value||'',empId:document.getElementById('b-femp').value||'',chipId:document.getElementById('b-fchip').value||'',midId:document.getElementById('b-fmid')?.value||''});fetch(API_BASE+'/api/beol/search?'+params).then(r=>r.json()).then(data=>{if(!data.success){toast('搜尋失敗','err');return;}bLastSrch=data.records||[];const tb=document.getElementById('b-sb2');document.getElementById('b-rs2').textContent='共 '+bLastSrch.length+' 筆';document.getElementById('b-chkAll').checked=false;document.getElementById('b-delBtn').style.display='none';if(!bLastSrch.length){tb.innerHTML='<tr><td colspan="19" class="nd">查無資料</td></tr>';return;}tb.innerHTML=bLastSrch.map((r,i)=>`<tr id="bsr-${i}"><td style="text-align:center"><input type="checkbox" class="b-delChk" onchange="bUpdDelBtn()" data-idx="${i}" data-created-at="${r.createdAt||''}" data-date="${r.date||''}"></td><td>${i+1}</td><td id="bed-date-${i}">${r.date||''}</td><td id="bed-model-${i}">${r.model||''}</td><td id="bed-station-${i}">${r.station||''}</td><td id="bed-line-${i}">${r.line||'-'}</td><td id="bed-mid-${i}">${r.midId||''}</td><td id="bed-chip-${i}">${r.chipId||''}</td><td id="bed-tc-${i}">${r.tc||''}</td><td id="bed-x-${i}">${r.x!=null?r.x:''}</td><td id="bed-y-${i}">${r.y!=null?r.y:''}</td><td id="bed-mo-${i}">${r.morphology||''}</td><td id="bed-lv-${i}">${r.level||''}</td><td id="bed-ito-${i}">${r.ito||''}</td><td id="bed-note-${i}">${r.note||''}</td><td id="bed-ph-${i}">${bPhCell(r.photoUrls)}</td><td id="bed-om-${i}">${bPhCell(r.omPhotoUrls)}</td><td id="bed-emp-${i}">${r.empId||''}</td><td id="bop-${i}"><button class="bn bp bsm" onclick="bStartEdit(${i})">✏️ 修改</button></td></tr>`).join('');}).catch(e=>toast('連線錯誤：'+e.message,'err'));}
+function bPhCell(urls){if(!urls||!urls.length)return'<span style="color:#ccc;font-size:12px;">—</span>';return'<div class="ph-cell">'+urls.map(u=>{const fname=u.split('\\').pop()||u;const proxy=API_BASE+'/api/photo?path='+encodeURIComponent(u);return`<img class="pt" src="${proxy}" title="${fname}" onclick="opM('${proxy}','${escQ(fname)}')">`;}).join('')+'</div>';}
+function bClrF(){['b-ff','b-ft'].forEach(id=>document.getElementById(id).value='');['b-fm','b-fst','b-ftc','b-flv'].forEach(id=>document.getElementById(id).value='');document.getElementById('b-fl').innerHTML='<option value="">全部</option>';document.getElementById('b-femp').value='';document.getElementById('b-fchip').value='';document.getElementById('b-fmid').value='';document.getElementById('b-sb2').innerHTML='<tr><td colspan="19" class="nd">請先設定篩選條件後按「搜尋」</td></tr>';document.getElementById('b-rs2').textContent='';}
+function bExpXLSX(){const params=new URLSearchParams({dateFrom:document.getElementById('b-ff').value||'',dateTo:document.getElementById('b-ft').value||'',model:document.getElementById('b-fm').value||'',station:document.getElementById('b-fst').value||'',line:document.getElementById('b-fl').value||'',tc:document.getElementById('b-ftc').value||'',level:document.getElementById('b-flv').value||'',empId:document.getElementById('b-femp').value||''});window.location.href=API_BASE+'/api/beol/export?'+params;}
+function bUpdDelBtn(){const chks=document.querySelectorAll('.b-delChk:checked');const btn=document.getElementById('b-delBtn');if(btn)btn.style.display=chks.length>0?'':'none';}
+function bTogChkAll(){const all=document.getElementById('b-chkAll').checked;document.querySelectorAll('.b-delChk').forEach(c=>c.checked=all);bUpdDelBtn();}
+async function bDelChecked(){const chks=document.querySelectorAll('.b-delChk:checked');if(!chks.length)return;if(!confirm('確定刪除勾選的 '+chks.length+' 筆資料？'))return;const deletions=Array.from(chks).map(c=>({createdAt:c.dataset.createdAt,date:c.dataset.date}));try{const res=await fetch(API_BASE+'/api/beol/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({deletions})});const d=await res.json();if(d.success){toast('✅ 刪除 '+d.deleted+' 筆');bDoSrch();}else{toast('刪除失敗：'+(d.error||''),'err');}}catch(e){toast('連線錯誤：'+e.message,'err');}}
+let bEditingIdx=null;const bEditPs={};
+function bStartEdit(i){if(bEditingIdx!==null&&bEditingIdx!==i){if(!confirm('目前有未儲存的修改，確定放棄？'))return;bCancelEdit(bEditingIdx);}bEditingIdx=i;const r=bLastSrch[i];if(!r)return;bEditPs[i]={deleted:[],newFiles:[],newOmFiles:[]};document.getElementById('bop-'+i).innerHTML='<button class="bn bs bsm" onclick="bSaveEditRow('+i+')">✅ 儲存</button> <button class="bn bo bsm" onclick="bCancelEdit('+i+')">❌ 取消</button>';document.getElementById('bed-date-'+i).innerHTML=`<input type="date" id="bei-date-${i}" value="${r.date||''}">`;const mOpts=document.getElementById('b-model').innerHTML;document.getElementById('bed-model-'+i).innerHTML=`<select id="bei-model-${i}">${mOpts}</select>`;const mSel=document.getElementById('bei-model-'+i);if(mSel)mSel.value=r.model||'';const stBtns=['CGL','SHL','PKL','APK'].map(st=>`<div class="ch${st===r.station?' on':''}" onclick="bEditSelSt(this,${i},'${st}')">${st}</div>`).join('');document.getElementById('bed-station-'+i).innerHTML=`<div class="cg" id="bei-st-${i}">${stBtns}</div>`;bEditUpdLine(i,r.station||'',r.line||'');document.getElementById('bed-mid-'+i).innerHTML=`<input type="text" id="bei-mid-${i}" value="${r.midId||''}" style="width:90px">`;document.getElementById('bed-chip-'+i).innerHTML=`<input type="text" id="bei-chip-${i}" value="${r.chipId||''}" style="width:90px">`;const tcBtns=['T','C'].map(tc=>`<div class="mi${tc===r.tc?' on':''}" onclick="editTogSingle(this)">${tc}</div>`).join('');document.getElementById('bed-tc-'+i).innerHTML=`<div class="mc" id="bei-tc-${i}">${tcBtns}</div>`;document.getElementById('bed-x-'+i).innerHTML=`<input type="number" id="bei-x-${i}" value="${r.x||''}" step="0.1" style="width:68px">`;document.getElementById('bed-y-'+i).innerHTML=`<input type="number" id="bei-y-${i}" value="${r.y||''}" step="0.1" style="width:68px">`;const moOpts=B_MORPH.concat(['其他']);document.getElementById('bed-mo-'+i).innerHTML=`<select id="bei-mo-${i}">${moOpts.map(o=>`<option${o===r.morphology?' selected':''}>${o}</option>`).join('')}</select>`;const lvOpts=B_LV.concat(['其他']);document.getElementById('bed-lv-'+i).innerHTML=`<select id="bei-lv-${i}">${lvOpts.map(o=>`<option${o===r.level?' selected':''}>${o}</option>`).join('')}</select>`;const itoBtns=['上','下'].map(v=>`<div class="mi${v===r.ito?' on':''}" onclick="editTogSingle(this)">${v}</div>`).join('');document.getElementById('bed-ito-'+i).innerHTML=`<div class="mc" id="bei-ito-${i}">${itoBtns}</div>`;document.getElementById('bed-note-'+i).innerHTML=`<textarea id="bei-note-${i}" rows="2" style="min-width:100px">${r.note||''}</textarea>`;document.getElementById('bed-ph-'+i).innerHTML=bPhCell(r.photoUrls);document.getElementById('bed-om-'+i).innerHTML=bPhCell(r.omPhotoUrls);document.getElementById('bed-emp-'+i).innerHTML=`<input type="text" id="bei-emp-${i}" value="${r.empId||''}" style="width:80px">`;}
+function bEditSelSt(el,i,st){el.closest('.cg').querySelectorAll('.ch').forEach(c=>c.classList.remove('on'));el.classList.add('on');bEditUpdLine(i,st,'');}
+function bEditUpdLine(i,st,sel){const lines=BSL[st]||[];const html=lines.map(l=>`<div class="lc${l===sel?' on':''}" onclick="editTogLine(this)">${l}</div>`).join('');document.getElementById('bed-line-'+i).innerHTML=`<div class="lg" id="bei-ln-${i}">${html||'<span class="lp">無 LINE</span>'}</div>`;}
+async function bSaveEditRow(i){const r=bLastSrch[i];if(!r)return;const state=bEditPs[i]||{};const date=(document.getElementById('bei-date-'+i)||{}).value||r.date;const model=(document.getElementById('bei-model-'+i)||{}).value||r.model;const stEl=document.querySelector('#bei-st-'+i+' .ch.on');const station=stEl?stEl.textContent.trim():r.station;const lnEl=document.querySelector('#bei-ln-'+i+' .lc.on');const line=lnEl?lnEl.textContent.trim():r.line;const midId=(document.getElementById('bei-mid-'+i)||{}).value||r.midId||'';const chipId=(document.getElementById('bei-chip-'+i)||{}).value||r.chipId;const tcEl=document.querySelector('#bei-tc-'+i+' .mi.on');const tc=tcEl?tcEl.textContent.trim():r.tc;const x=(document.getElementById('bei-x-'+i)||{}).value||r.x;const y=(document.getElementById('bei-y-'+i)||{}).value||r.y;const morphology=(document.getElementById('bei-mo-'+i)||{}).value||r.morphology;const level=(document.getElementById('bei-lv-'+i)||{}).value||r.level;const itoEl=document.querySelector('#bei-ito-'+i+' .mi.on');const ito=itoEl?itoEl.textContent.trim():r.ito;const note=(document.getElementById('bei-note-'+i)||{}).value||r.note;const empId=(document.getElementById('bei-emp-'+i)||{}).value||r.empId;const existPh=(r.photoUrls||[]).filter(u=>!(state.deleted||[]).includes(u));const existOm=(r.omPhotoUrls||[]).filter(u=>!(state.deletedOm||[]).includes(u));const newRecord={date,model,station,line,midId,chipId,tc,x,y,morphology,level,ito,note,empId,photoUrls:existPh,omPhotoUrls:existOm,createdAt:r.createdAt};try{const res=await fetch(API_BASE+'/api/beol/update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({createdAt:r.createdAt,originalDate:r.date,record:newRecord,newPhotos:state.newFiles||[],newOmPhotos:state.newOmFiles||[]})});const d=await res.json();if(d.success){toast('✅ 已更新');bLastSrch[i]=d.record||newRecord;bCancelEdit(i);}else{toast('更新失敗：'+(d.error||''),'err');}}catch(e){toast('連線錯誤：'+e.message,'err');}}
+function bCancelEdit(i){bEditingIdx=null;delete bEditPs[i];const r=bLastSrch[i];if(!r)return;document.getElementById('bop-'+i).innerHTML=`<button class="bn bp bsm" onclick="bStartEdit(${i})">✏️ 修改</button>`;['date','model','station','line','mid','chip','tc','x','y','mo','lv','ito','note','emp'].forEach(f=>{ const el=document.getElementById('bed-'+f+'-'+i); if(el) el.textContent=r[{date:'date',model:'model',station:'station',line:'line',mid:'midId',chip:'chipId',tc:'tc',x:'x',y:'y',mo:'morphology',lv:'level',ito:'ito',note:'note',emp:'empId'}[f]]||'';});document.getElementById('bed-ph-'+i).innerHTML=bPhCell(r.photoUrls);document.getElementById('bed-om-'+i).innerHTML=bPhCell(r.omPhotoUrls);}
+let bIb=[],bPicFile=null,bPicPreviewId=null;
+function bHdImp(inp){if(!inp.files||!inp.files.length)return;const file=inp.files[0];bPicFile=file;bPicPreviewId=null;const ext=file.name.split('.').pop().toLowerCase();const statusEl=document.getElementById('b-impStatus');if(statusEl)statusEl.textContent='⏳ 讀取中...';if(ext==='csv'){const rd=new FileReader();rd.onload=e=>{const txt=e.target.result.replace(/^\uFEFF+/,'');const lines=txt.split('\n').filter(l=>l.trim());if(lines.length<2){toast('CSV 無資料','err');return;}const hds=lines[0].split(',').map(h=>h.replace(/^"|"$/g,'').trim());bIb=lines.slice(1).map(line=>{const vs=line.split(',').map(v=>v.replace(/^"|"$/g,'').trim());const o={};hds.forEach((h,i)=>o[h]=vs[i]||'');return o;}).filter(r=>Object.values(r).some(v=>v));bShowPreview(hds,bIb,{},bIb.length);if(statusEl)statusEl.textContent='';};rd.readAsText(file,'UTF-8');}else{const rd=new FileReader();rd.onload=async e=>{try{const bytes=new Uint8Array(e.target.result);let binary='';const CHUNK=8192;for(let i=0;i<bytes.length;i+=CHUNK)binary+=String.fromCharCode(...bytes.subarray(i,Math.min(i+CHUNK,bytes.length)));const b64=btoa(binary);if(statusEl)statusEl.textContent='⏳ 讀取 Excel 並提取圖片...';const res=await fetch(API_BASE+'/api/beol/preview_excel_with_pics',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({excel_base64:b64})});const d=await res.json();if(d.success){bPicPreviewId=d.preview_id;bIb=d.rows;bShowPreview(d.headers,d.rows,d.row_images||{},d.total);if(statusEl)statusEl.textContent='共 '+d.total+' 筆，'+Object.keys(d.row_images||{}).length+' 列有圖片';}else{if(statusEl)statusEl.textContent='❌ '+(d.error||'預覽失敗');toast('預覽失敗：'+(d.error||''),'err');}}catch(err){if(statusEl)statusEl.textContent='❌ '+err.message;}};rd.readAsArrayBuffer(file);}}
+function bShowPreview(hds,rows,rowImages,total){const is2=document.getElementById('b-is2'),ip2=document.getElementById('b-ip2');if(!is2||!ip2)return;const hasImgs=Object.keys(rowImages).length>0;is2.innerHTML='<div class="skd"><div class="num">'+hds.length+'</div><div class="lbl">欄位</div></div><div class="skd"><div class="num">'+total+'</div><div class="lbl">筆資料</div></div>'+(hasImgs?'<div class="skd"><div class="num">'+Object.keys(rowImages).length+'</div><div class="lbl">列有圖片</div></div>':'');document.getElementById('b-ih2').innerHTML='<th>#</th>'+hds.map(h=>'<th>'+h+'</th>').join('')+(hasImgs?'<th>圖片預覽</th>':'');document.getElementById('b-ib2').innerHTML=rows.slice(0,20).map((row,i)=>{const key=String(i+1),imgs=rowImages[key]||[];const imgTd=hasImgs?(imgs.length>0?'<td>'+imgs.map(u=>'<img src="'+u+'" style="height:60px;width:auto;border:1px solid #ddd;border-radius:4px;margin:2px;">').join('')+'</td>':'<td style="color:#ccc;font-size:12px;">—</td>'):'';return'<tr><td>'+(i+1)+'</td>'+hds.map(h=>'<td>'+(row[h]!=null?row[h]:'')+'</td>').join('')+imgTd+'</tr>';}).join('')+(total>20?'<tr><td colspan="'+(hds.length+(hasImgs?2:1))+'" style="text-align:center;color:var(--gr)">...共'+total+'筆，顯示前20筆</td></tr>':'');ip2.style.display='block';}
+async function bCfImp(){if(!bPicFile)return;const statusEl=document.getElementById('b-impStatus');const ext=bPicFile.name.split('.').pop().toLowerCase();if(statusEl)statusEl.textContent='⏳ 匯入中...';if(ext==='csv'){const g=(row,keys)=>{for(const k of keys){if(row[k]!==undefined&&row[k]!==null&&row[k]!=='')return String(row[k]);}return'';};const records=bIb.map(row=>({date:formatDate(g(row,['日期','date','Date'])),model:g(row,['Model','model','MODEL']),station:g(row,['站點','station']),line:g(row,['LINE','Line','line']),midId:g(row,['中片ID','midId']),midId:g(row,['中片ID','midId']),midId:g(row,['中片ID','midId']),chipId:g(row,['CHIP ID','chipId','chip_id']),tc:g(row,['T/C','T/C側','TC','tc']),x:g(row,['X(mm)','X (mm)','x','X']),y:g(row,['Y(mm)','Y (mm)','y','Y']),morphology:g(row,['成像敘述','morphology']),level:g(row,['程度','level']),ito:g(row,['ITO','ito']),note:g(row,['Note','note','NOTE','備註']),photoUrls:[],omPhotoUrls:[]})).filter(r=>r.date||r.chipId);if(!records.length){toast('沒有可匯入的有效資料','err');return;}try{const res=await fetch(API_BASE+'/api/beol/import',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({records})});const d=await res.json();if(d.success){if(statusEl)statusEl.textContent='✅ 匯入完成 '+d.count+' 筆';toast('✅ 成功匯入 '+d.count+' 筆');bCnImp();}else{if(statusEl)statusEl.textContent='❌ '+(d.error||'');toast('匯入失敗','err');}}catch(e){if(statusEl)statusEl.textContent='❌ '+e.message;}}else{if(!bPicPreviewId){toast('請先完成預覽','err');return;}try{const res=await fetch(API_BASE+'/api/beol/import_excel_with_pics',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({preview_id:bPicPreviewId})});const d=await res.json();if(d.success){if(statusEl)statusEl.textContent='✅ 匯入完成 '+d.count+' 筆（圖片 '+d.photos+' 張）';toast('✅ 成功匯入 '+d.count+' 筆');bCnImp();}else{if(statusEl)statusEl.textContent='❌ '+(d.error||'');toast('匯入失敗','err');}}catch(e){if(statusEl)statusEl.textContent='❌ '+e.message;}}}
+function bCnImp(){bIb=[];bPicFile=null;bPicPreviewId=null;const el=document.getElementById('b-if2');if(el)el.value='';document.getElementById('b-ip2').style.display='none';document.getElementById('b-is2').innerHTML='';}
+
+
+// ===== BEOL SUMMARY 新版 JS =====
+const _bsmCharts = {};
+let _bsmAllRecs = [];
+const BSM_NG_LV = ['乾擦','濕擦','乾溼不可擦'];
+
+function bsmInitDates(){
+  var today = new Date();
+  var from14 = new Date(today); from14.setDate(today.getDate()-14);
+  var toStr = today.toISOString().slice(0,10);
+  var fromStr = from14.toISOString().slice(0,10);
+  var gf=document.getElementById('bsm-g-from'), gt=document.getElementById('bsm-g-to');
+  if(gf&&!gf.value) gf.value=fromStr;
+  if(gt&&!gt.value) gt.value=toStr;
+}
+
+async function bsmApply(){
+  var from  = (document.getElementById('bsm-g-from')||{}).value||'';
+  var to    = (document.getElementById('bsm-g-to')||{}).value||'';
+  var model = (document.getElementById('bsm-g-model')||{}).value||'';
+  var st    = (document.getElementById('bsm-g-st')||{}).value||'';
+  var lv    = (document.getElementById('bsm-g-lv')||{}).value||'';
+  var params = new URLSearchParams({dateFrom:from,dateTo:to,model:model,station:st,level:lv});
+  try{
+    var res = await fetch(API_BASE+'/api/beol/search?'+params).then(r=>r.json());
+    if(!res.success){console.error('BEOL SUMMARY 查詢失敗');return;}
+    _bsmAllRecs = res.records||[];
+    var models = [...new Set(_bsmAllRecs.map(r=>r.model||'').filter(Boolean))].sort();
+    ['bsm-g-model','bsm-T-cf-model','bsm-C-cf-model','bsm-T-mf-model','bsm-C-mf-model'].forEach(function(id){
+      var el=document.getElementById(id); if(!el) return;
+      var cur=el.value;
+      el.innerHTML='<option value="">全部</option>'+models.map(m=>'<option'+(m===cur?' selected':'')+'>'+m+'</option>').join('');
+    });
+    bsmRedrawAll();
+  }catch(e){console.error('BEOL SUMMARY 失敗：',e);}
+}
+
+function bsmRedrawAll(){
+  ['T','C'].forEach(function(s){
+    bsmDrawChipTotal(s);
+    bsmDrawChipFilter(s);
+    bsmDrawMidTotal(s);
+    bsmDrawMidFilter(s);
+  });
+}
+
+// 去重：同一天同一TC，idField 相同只算一筆；無 id 的記錄不計
+function bsmDedup(recs, idField){
+  var seen=new Set();
+  return recs.filter(function(r){
+    var v=r[idField]||''; if(!v) return false;
+    var key=(r.date||'')+'|'+(r.tc||'')+'|'+v;
+    if(seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+}
+
+// 去重後計算每日母數
+function bsmCountByDate(recs, idField){
+  var byDate={};
+  bsmDedup(recs,idField).forEach(function(r){var d=r.date||'';byDate[d]=(byDate[d]||0)+1;});
+  return byDate;
+}
+
+// 去重後計算指定程度的每日 NG 數（lvArr 為空 → 計算全部 BSM_NG_LV）
+function bsmNgByDate(recs, idField, lvArr){
+  var useArr = lvArr&&lvArr.length ? lvArr : BSM_NG_LV;
+  var filtered = recs.filter(function(r){return useArr.indexOf(r.level||'')!==-1;});
+  var byDate={};
+  bsmDedup(filtered,idField).forEach(function(r){var d=r.date||'';byDate[d]=(byDate[d]||0)+1;});
+  return byDate;
+}
+
+function bsmDates(recs){
+  return [...new Set(recs.map(r=>r.date||'').filter(Boolean))].sort();
+}
+
+function bsmDrawChipTotal(side){
+  var recs=_bsmAllRecs.filter(r=>r.tc===side);
+  var dates=bsmDates(recs);
+  var tot=bsmCountByDate(recs,'chipId');
+  var ng =bsmNgByDate(recs,'chipId',[]);
+  var lv0=bsmNgByDate(recs,'chipId',['乾擦']);
+  var lv1=bsmNgByDate(recs,'chipId',['濕擦']);
+  var lv2=bsmNgByDate(recs,'chipId',['乾溼不可擦']);
+  var col=(document.getElementById('color-'+side+'-chip-total')||{value:'#3498db'}).value;
+  _bsmDraw('bsm-'+side+'-chip-total',dates,tot,ng,col,recs,'chipId',{lv0:lv0,lv1:lv1,lv2:lv2},'total','');
+}
+
+function bsmDrawChipFilter(side){
+  var flv =(document.getElementById('bsm-'+side+'-cf-lv')||{}).value||'';
+  var fst =(document.getElementById('bsm-'+side+'-cf-st')||{}).value||'';
+  var fito=(document.getElementById('bsm-'+side+'-cf-ito')||{}).value||'';
+  var fmod=(document.getElementById('bsm-'+side+'-cf-model')||{}).value||'';
+  var recs=_bsmAllRecs.filter(function(r){
+    return r.tc===side&&(fst?r.station===fst:true)&&(fito?r.ito===fito:true)&&(fmod?r.model===fmod:true);
+  });
+  var dates=bsmDates(recs);
+  var tot=bsmCountByDate(recs,'chipId');
+  var ng =bsmNgByDate(recs,'chipId',flv?[flv]:[]);
+  var col=(document.getElementById('color-'+side+'-chip-filter')||{value:'#2ecc71'}).value;
+  _bsmDraw('bsm-'+side+'-chip-filter',dates,tot,ng,col,recs,'chipId',null,'filter',flv||'全部NG');
+}
+
+function bsmDrawMidTotal(side){
+  var recs=_bsmAllRecs.filter(r=>r.tc===side&&r.midId);
+  var sec=document.getElementById('bsm-'+side+'-mid-section');
+  if(sec) sec.style.display=recs.length?'':'none';
+  if(!recs.length) return;
+  var dates=bsmDates(recs);
+  var tot=bsmCountByDate(recs,'midId');
+  var ng =bsmNgByDate(recs,'midId',[]);
+  var lv0=bsmNgByDate(recs,'midId',['乾擦']);
+  var lv1=bsmNgByDate(recs,'midId',['濕擦']);
+  var lv2=bsmNgByDate(recs,'midId',['乾溼不可擦']);
+  var col=(document.getElementById('color-'+side+'-mid-total')||{value:'#9b59b6'}).value;
+  _bsmDraw('bsm-'+side+'-mid-total',dates,tot,ng,col,recs,'midId',{lv0:lv0,lv1:lv1,lv2:lv2},'total','');
+}
+
+function bsmDrawMidFilter(side){
+  var recs=_bsmAllRecs.filter(r=>r.tc===side&&r.midId);
+  if(!recs.length) return;
+  var flv =(document.getElementById('bsm-'+side+'-mf-lv')||{}).value||'';
+  var fst =(document.getElementById('bsm-'+side+'-mf-st')||{}).value||'';
+  var fito=(document.getElementById('bsm-'+side+'-mf-ito')||{}).value||'';
+  var fmod=(document.getElementById('bsm-'+side+'-mf-model')||{}).value||'';
+  var fr=recs.filter(function(r){
+    return (fst?r.station===fst:true)&&(fito?r.ito===fito:true)&&(fmod?r.model===fmod:true);
+  });
+  var dates=bsmDates(fr);
+  var tot=bsmCountByDate(fr,'midId');
+  var ng =bsmNgByDate(fr,'midId',flv?[flv]:[]);
+  var col=(document.getElementById('color-'+side+'-mid-filter')||{value:'#e67e22'}).value;
+  _bsmDraw('bsm-'+side+'-mid-filter',dates,tot,ng,col,fr,'midId',null,'filter',flv||'全部NG');
+}
+
+function _bsmDraw(cid,dates,totByDate,ngByDate,barColor,recs,idField,lvDet,mode,selLvLabel){
+  var canvas=document.getElementById(cid); if(!canvas) return;
+  if(_bsmCharts[cid]) _bsmCharts[cid].destroy();
+  var tots  =dates.map(d=>totByDate[d]||0);
+  var ngs   =dates.map(d=>ngByDate[d]||0);
+  var ratios=dates.map(function(d,i){return tots[i]>0?parseFloat(((ngs[i]/tots[i])*100).toFixed(2)):null;});
+  _bsmCharts[cid]=new Chart(canvas,{
+    type:'bar',
+    data:{labels:dates,datasets:[
+      {label:'總覆判數量',data:tots,backgroundColor:barColor,borderColor:barColor,borderWidth:1,yAxisID:'yLeft',order:2},
+      {label:'NG Ratio(%)',data:ratios,type:'line',borderColor:'#e74c3c',
+       backgroundColor:'rgba(231,76,60,0.1)',pointBackgroundColor:'#e74c3c',
+       borderWidth:2,pointRadius:4,fill:false,tension:0.3,yAxisID:'yRight',order:1}
+    ]},
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}},tooltip:{enabled:false}},
+      scales:{
+        yLeft:{type:'linear',position:'left',beginAtZero:true,
+               title:{display:true,text:'總覆判數量',font:{size:10}},ticks:{stepSize:1,font:{size:9}}},
+        yRight:{type:'linear',position:'right',beginAtZero:true,max:100,
+                title:{display:true,text:'NG Ratio (%)',font:{size:10}},
+                ticks:{font:{size:9},callback:function(v){return v+'%';}},
+                grid:{drawOnChartArea:false}}
+      },
+      onHover:function(evt,els){
+        if(els&&els.length>0){
+          _bsmShowTooltip(evt,dates[els[0].index],recs,idField,totByDate,ngByDate,lvDet,mode,selLvLabel);
+        } else { _bsmHideTooltip(); }
+      }
+    }
+  });
+  canvas.onmouseleave=_bsmHideTooltip;
+}
+
+function _bsmShowTooltip(evt,date,recs,idField,totByDate,ngByDate,lvDet,mode,selLvLabel){
+  var tt=document.getElementById('bsm-tooltip'); if(!tt) return;
+  var dayRecs=recs.filter(r=>r.date===date);
+  var models=[...new Set(dayRecs.map(r=>r.model||'').filter(Boolean))].sort();
+  if(!models.length) models=[''];
+  var html='<div style="font-weight:700;color:#1a6bb5;margin-bottom:6px;font-size:12px;">&#128197; '+date+'</div>';
+  models.forEach(function(mod){
+    var mRecs=mod?dayRecs.filter(r=>r.model===mod):dayRecs;
+    html+='<div class="bsm-tt-model-hdr">MODEL: '+(mod||'—')+'</div>';
+    var stations=[...new Set(mRecs.map(r=>r.station||'').filter(Boolean))].sort();
+    if(!stations.length) stations=[''];
+    if(mode==='total'){
+      html+='<table><tr><th>站點</th><th>總覆判數量</th><th>乾擦</th><th>ratio</th><th>濕擦</th><th>ratio</th><th>乾溼不可擦</th><th>ratio</th><th>Total NG ratio</th></tr>';
+      stations.forEach(function(st){
+        var sr=st?mRecs.filter(r=>r.station===st):mRecs;
+        var tot=bsmCountByDate(sr,idField)[date]||0;
+        var c0=lvDet?(bsmNgByDate(sr,idField,['乾擦'])[date]||0):0;
+        var c1=lvDet?(bsmNgByDate(sr,idField,['濕擦'])[date]||0):0;
+        var c2=lvDet?(bsmNgByDate(sr,idField,['乾溼不可擦'])[date]||0):0;
+        var cng=bsmNgByDate(sr,idField,[])[date]||0;
+        var pct=function(n){return tot>0?((n/tot)*100).toFixed(1)+'%':'—';};
+        html+='<tr><td>'+(st||'全部')+'</td><td>'+tot+'</td>'
+          +'<td>'+c0+'</td><td>'+pct(c0)+'</td>'
+          +'<td>'+c1+'</td><td>'+pct(c1)+'</td>'
+          +'<td>'+c2+'</td><td>'+pct(c2)+'</td>'
+          +'<td style="font-weight:700;color:#c0392b;">'+pct(cng)+'</td></tr>';
+      });
+      html+='</table>';
+    } else {
+      html+='<table><tr><th>站點</th><th>總覆判數量</th><th>'+(selLvLabel||'NG')+'</th><th>ratio</th></tr>';
+      stations.forEach(function(st){
+        var sr=st?mRecs.filter(r=>r.station===st):mRecs;
+        var tot=bsmCountByDate(sr,idField)[date]||0;
+        var ng=bsmNgByDate(sr,idField,selLvLabel&&selLvLabel!=='全部NG'?[selLvLabel]:[])[date]||0;
+        var rat=tot>0?((ng/tot)*100).toFixed(1)+'%':'—';
+        html+='<tr><td>'+(st||'全部')+'</td><td>'+tot+'</td><td>'+ng+'</td>'
+          +'<td style="font-weight:700;color:#c0392b;">'+rat+'</td></tr>';
+      });
+      html+='</table>';
+    }
+  });
+  tt.innerHTML=html; tt.style.display='block';
+  var x=evt.native?evt.native.clientX:(evt.clientX||0);
+  var y=evt.native?evt.native.clientY:(evt.clientY||0);
+  tt.style.left=(x+16)+'px'; tt.style.top=(y-10)+'px';
+  setTimeout(function(){
+    var tw=tt.offsetWidth;
+    if(x+16+tw>window.innerWidth) tt.style.left=(x-tw-10)+'px';
+  },0);
+}
+
+function _bsmHideTooltip(){var tt=document.getElementById('bsm-tooltip');if(tt)tt.style.display='none';}
+
+function bsmInit(){
+  bsmInitDates();
+  bsmApply();
+}
+
+</script>
+
+</div><!-- end seg-feol -->
+<div style="background:#0d3d6e;padding:8px 24px;display:flex;align-items:center;gap:16px;"><a href="背汙檢系統.html" style="color:rgba(255,255,255,.85);text-decoration:none;font-size:13px;padding:5px 14px;border:1px solid rgba(255,255,255,.35);border-radius:5px;font-weight:600;">&#8592; 返回首頁</a></div>
+<div class="hd" style="background:var(--p);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.15);"><span style="font-size:22px">🔬</span><h1 style="font-size:18px;font-weight:600;">BEOL 背汙檢 Key In 系統</h1></div>
+<div class="seg-wrap on" id="seg-beol">
+<div class="tb">
+  <div class="t" onclick="bSw('bki')">&#9999;&#65039; KEY IN</div>
+  <div class="t on" onclick="bSw('bsr')">&#128270; 搜尋</div>
+  <div class="t" onclick="bSw('bim')">&#128229; 舊資料匯入</div>
+  <div class="t" onclick="bSw('bsm')">&#128202; SUMMARY</div>
+</div>
+<div class="pg" id="pg-bki">
+  <div class="sc"><div class="sh">&#128203; 基本資料</div><div class="sb">
+    <div class="sr" style="margin-bottom:12px;">
+      <div class="fg"><label>&#128197; 日期</label><input type="date" id="b-date"/></div>
+      <div class="fg"><label>&#128187; Model</label><select id="b-model"><option value="">-- 選擇 Model --</option><option>M270DAN11</option><option>M270DAN07</option><option>M270QAN11</option><option>M238HAN05</option><option>M238HAN03</option><option>Y156HAN08</option><option>W270QAN02</option><option>W270DAN06</option><option>T850QVN08</option><option>T850QVN06</option><option>T850QVN07</option><option>T650QVR08</option><option>T550QVR06</option><option>T550QVN11</option><option>T550QVN10</option><option>T550QVN09</option><option>T550QVN07</option><option>T550QVN05</option><option>T550QVN03</option><option>T550HVN08</option><option>T430QVN05</option><option>T430QVN04</option><option>T430QVN03</option><option>T430HVN03</option><option>T430HVN01</option><option>T215HVN05</option><option>T215HVN03</option><option>P650QVN02</option><option>P550QVR04</option><option>P550QVR01</option><option>P550QVN06</option><option>P550QVN05</option><option>P550QVN01</option><option>P550QAR01</option><option>P550HVN09</option><option>P550HVN07</option><option>P550HVN06</option><option>P550HVN03</option><option>P490QAR01</option><option>P430QVN04</option><option>M490AVR01</option><option>M430QVN02</option><option>M315HVR01</option><option>M315DVR06</option><option>M315DVR01</option><option>M270HVR03</option><option>M270HVR01</option><option>M270HAN01</option><option>M270DAN13</option><option>M270DAN12</option><option>M236HVR01</option><option>M215HVN02</option><option>L7B_T850QVN03</option><option>L7B_T750QVN04</option><option>G430ZAN01</option><option>B160UAN04</option><option>B156HAN02</option></select></div>
+      <div class="fg"><label>&#128100; 工號</label><input type="text" id="b-emp" placeholder="請輸入工號" style="min-width:130px;"/></div>
+    </div>
+    <div style="margin-bottom:8px;"><div class="slbl">站點</div>
+      <div class="cg" id="b-ss">
+        <div class="ch" onclick="bSelSt(this,'CGL')">CGL</div>
+        <div class="ch" onclick="bSelSt(this,'SHL')">SHL</div>
+        <div class="ch" onclick="bSelSt(this,'PKL')">PKL</div>
+        <div class="ch" onclick="bSelSt(this,'APK')">APK</div>
+      </div>
+    </div>
+    <div><div class="slbl">LINE</div><div class="lg" id="b-sl"><span class="lp">請先選站點</span></div></div>
+  </div></div>
+  
+
+
+
+<div class="sc"><div class="sh">&#128203; 背汙明細（可多筆同時 Key In）</div><div class="sb">
+
+    <div style="overflow-x:auto"><table class="et"><thead><tr>
+
+      <th style="width:32px">#</th><th>中片ID</th><th>CHIP ID</th><th>T/C 側</th>
+
+      <th>X (mm)</th><th>Y (mm)</th><th>成像敘述</th><th>程度</th>
+
+      <th>ITO</th><th>Note</th><th>照片</th><th>OM 照片</th><th>刪除</th>
+
+    </tr></thead><tbody id="b-eb"></tbody></table></div>
+
+    <div class="ab">
+
+      <button class="bn bo" onclick="bAddRow()">&#65291; 新增一筆</button>
+
+      <button class="bn bo" onclick="bAddRowSameID()">&#65291; 新增一筆 同ID</button>
+
+      <button class="bn bs" onclick="bSaveAll()">&#128190; 統一儲存</button>
+
+      <span id="b-si" style="color:var(--gr);font-size:12px;"></span>
+
+    </div>
+
+  </div></div>
+</div>
+<div class="pg on" id="pg-bsr">
+  <div class="sc"><div class="sh">&#128270; 篩選條件</div><div class="sb"><div class="fr">
+    <div class="fg"><label>FROM 日期</label><input type="date" id="b-ff"/></div>
+    <div class="fg"><label>TO 日期</label><input type="date" id="b-ft"/></div>
+    <div class="fg"><label>Model</label><select id="b-fm"><option value="">全部</option><option>M270DAN11</option><option>M270DAN07</option><option>M270QAN11</option><option>M238HAN05</option><option>M238HAN03</option><option>Y156HAN08</option><option>W270QAN02</option><option>W270DAN06</option><option>T850QVN08</option><option>T850QVN06</option><option>T850QVN07</option><option>T650QVR08</option><option>T550QVR06</option><option>T550QVN11</option><option>T550QVN10</option><option>T550QVN09</option><option>T550QVN07</option><option>T550QVN05</option><option>T550QVN03</option><option>T550HVN08</option><option>T430QVN05</option><option>T430QVN04</option><option>T430QVN03</option><option>T430HVN03</option><option>T430HVN01</option><option>T215HVN05</option><option>T215HVN03</option><option>P650QVN02</option><option>P550QVR04</option><option>P550QVR01</option><option>P550QVN06</option><option>P550QVN05</option><option>P550QVN01</option><option>P550QAR01</option><option>P550HVN09</option><option>P550HVN07</option><option>P550HVN06</option><option>P550HVN03</option><option>P490QAR01</option><option>P430QVN04</option><option>M490AVR01</option><option>M430QVN02</option><option>M315HVR01</option><option>M315DVR06</option><option>M315DVR01</option><option>M270HVR03</option><option>M270HVR01</option><option>M270HAN01</option><option>M270DAN13</option><option>M270DAN12</option><option>M236HVR01</option><option>M215HVN02</option><option>L7B_T850QVN03</option><option>L7B_T750QVN04</option><option>G430ZAN01</option><option>B160UAN04</option><option>B156HAN02</option></select></div>
+    <div class="fg"><label>站點</label><select id="b-fst" onchange="bUpdFL()"><option value="">全部</option><option>CGL</option><option>SHL</option><option>PKL</option><option>APK</option></select></div>
+    <div class="fg"><label>LINE</label><select id="b-fl"><option value="">全部</option></select></div>
+    <div class="fg"><label>T/C</label><select id="b-ftc"><option value="">全部</option><option>T</option><option>C</option></select></div>
+    <div class="fg"><label>程度</label><select id="b-flv"><option value="">全部</option><option>乾擦</option><option>濕擦</option><option>乾溼不可擦</option><option>不可見</option></select></div>
+    <div class="fg"><label>&#128100; 工號</label><input type="text" id="b-femp" placeholder="工號" style="min-width:110px"/></div>
+    <div class="fg"><label>&#127991; CHIP ID</label><input type="text" id="b-fchip" placeholder="CHIP ID" style="min-width:140px"/></div>
+    <div class="fg"><label>&#127991; 中片ID</label><input type="text" id="b-fmid" placeholder="中片ID" style="min-width:120px"/></div>
+    <div class="fg"><label>&nbsp;</label><div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="bn bp" onclick="bDoSrch()">&#128269; 搜尋</button>
+      <button class="bn bo" onclick="bClrF()">清除</button>
+      <button class="bn bs" onclick="bExpXLSX()">&#128202; 匯出 Excel</button>
+      <button class="bn bd2" id="b-delBtn" style="display:none" onclick="bDelChecked()">&#128465;&#65039; 刪除勾選</button>
+    </div></div>
+  </div></div></div>
+  <div class="sc"><div class="sh">&#128202; 搜尋結果</div><div class="sb">
+    <div id="b-rs2" class="rs"></div>
+    <div class="srw"><table class="st" style="min-width:1200px;"><thead><tr>
+      <th style="width:32px"><input type="checkbox" id="b-chkAll" onchange="bTogChkAll()"></th>
+      <th>#</th><th>日期</th><th>Model</th><th>站點</th><th>LINE</th>
+      <th>中片ID</th><th>CHIP ID</th><th>T/C</th><th>X(mm)</th><th>Y(mm)</th>
+      <th>成像敘述</th><th>程度</th><th>ITO</th><th>Note</th>
+      <th>照片</th><th>OM照片</th><th>工號</th><th>操作</th>
+    </tr></thead><tbody id="b-sb2"><tr><td colspan="19" class="nd">請先設定篩選條件後按「搜尋」</td></tr></tbody>
+    </table></div>
+  </div></div>
+</div>
+<div class="pg" id="pg-bim">
+  <div class="sc"><div class="sh">&#128229; 舊資料匯入</div><div class="sb">
+    <p style="color:var(--gr);font-size:13px;margin-bottom:12px;"><button class="bn bp bsm" onclick="window.location.href=API_BASE+'/api/beol/download/template'" style="font-size:12px;padding:4px 12px;">📥 下載範例檔</button></p>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <label class="bn bp" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;">&#128194; 選擇檔案
+        <input type="file" id="b-if2" accept=".xlsx,.xls,.csv" onchange="bHdImp(this)" style="display:none"/>
+      </label>
+      <span id="b-impStatus" style="font-size:13px;color:var(--gr);"></span>
+    </div>
+    <div id="b-is2" class="sg" style="margin-top:12px;"></div>
+    <div id="b-ip2" style="display:none;margin-top:12px;">
+      <div style="overflow-x:auto;max-height:320px;"><table class="st"><thead><tr id="b-ih2"></tr></thead><tbody id="b-ib2"></tbody></table></div>
+      <div class="ab" style="margin-top:10px;">
+        <button class="bn bs" onclick="bCfImp()">&#9989; 確認匯入</button>
+        <button class="bn bo" onclick="bCnImp()">取消</button>
+      </div>
+    </div>
+  </div></div>
+</div>
+<div class="pg" id="pg-bsm">
+<div class="bsm-global-bar">
+  <div style="color:#fff;font-weight:700;font-size:13px;margin-bottom:10px;">&#128202; BEOL SUMMARY</div>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;">
+    <div class="fg"><label>FROM</label><input type="date" id="bsm-g-from"/></div>
+    <div class="fg"><label>TO</label><input type="date" id="bsm-g-to"/></div>
+    <div class="fg"><label>MODEL</label><select id="bsm-g-model"><option value="">全部</option></select></div>
+    <div class="fg"><label>站點</label><select id="bsm-g-st"><option value="">全部</option><option>CGL</option><option>SHL</option><option>PKL</option><option>APK</option></select></div>
+    <div class="fg"><label>程度</label><select id="bsm-g-lv"><option value="">全部</option><option>乾擦</option><option>濕擦</option><option>乾溼不可擦</option><option>不可見</option></select></div>
+    <div class="fg"><label>&nbsp;</label><button class="bn" style="background:#f39c12;color:#fff;padding:7px 16px;font-size:13px;" onclick="bsmApply()">&#128260; 套用篩選</button></div>
+  </div>
+</div>
+<div class="sc">
+  <div class="sh">&#128202; T 側</div>
+  <div class="bsm-chart-row">
+    <div class="bsm-chart-box">
+      <div class="bsm-chart-title">T側 CHIP — TOTAL NG Ratio
+        <span class="bsm-color-pick">柱色<input type="color" id="color-T-chip-total" value="#3498db" onchange="bsmRedrawAll()"></span>
+      </div>
+      <canvas id="bsm-T-chip-total" height="220"></canvas>
+    </div>
+    <div class="bsm-chart-box">
+      <div class="bsm-chart-title">T側 CHIP — 條件篩選
+        <span class="bsm-color-pick">柱色<input type="color" id="color-T-chip-filter" value="#2ecc71" onchange="bsmDrawChipFilter('T')"></span>
+      </div>
+      <div class="bsm-filter-row">
+        <label>程度</label><select id="bsm-T-cf-lv" onchange="bsmDrawChipFilter('T')"><option value="">全部NG</option><option>乾擦</option><option>濕擦</option><option>乾溼不可擦</option></select>
+        <label>站點</label><select id="bsm-T-cf-st" onchange="bsmDrawChipFilter('T')"><option value="">全部</option><option>CGL</option><option>SHL</option><option>PKL</option><option>APK</option></select>
+        <label>ITO</label><select id="bsm-T-cf-ito" onchange="bsmDrawChipFilter('T')"><option value="">全部</option><option>上</option><option>下</option></select>
+        <label>MODEL</label><select id="bsm-T-cf-model" onchange="bsmDrawChipFilter('T')"><option value="">全部</option></select>
+      </div>
+      <canvas id="bsm-T-chip-filter" height="220"></canvas>
+    </div>
+  </div>
+  <div id="bsm-T-mid-section" style="display:none;">
+    <div style="padding:0 14px 4px;font-weight:600;color:#888;font-size:12px;border-top:1px solid var(--bd);margin-top:4px;padding-top:10px;">── 中片 ID 圖組 ──</div>
+    <div class="bsm-chart-row">
+      <div class="bsm-chart-box">
+        <div class="bsm-chart-title">T側 中片 — TOTAL NG Ratio
+          <span class="bsm-color-pick">柱色<input type="color" id="color-T-mid-total" value="#9b59b6" onchange="bsmDrawMidTotal('T')"></span>
+        </div>
+        <canvas id="bsm-T-mid-total" height="220"></canvas>
+      </div>
+      <div class="bsm-chart-box">
+        <div class="bsm-chart-title">T側 中片 — 條件篩選
+          <span class="bsm-color-pick">柱色<input type="color" id="color-T-mid-filter" value="#e67e22" onchange="bsmDrawMidFilter('T')"></span>
+        </div>
+        <div class="bsm-filter-row">
+          <label>程度</label><select id="bsm-T-mf-lv" onchange="bsmDrawMidFilter('T')"><option value="">全部NG</option><option>乾擦</option><option>濕擦</option><option>乾溼不可擦</option></select>
+          <label>站點</label><select id="bsm-T-mf-st" onchange="bsmDrawMidFilter('T')"><option value="">全部</option><option>CGL</option><option>SHL</option><option>PKL</option><option>APK</option></select>
+          <label>ITO</label><select id="bsm-T-mf-ito" onchange="bsmDrawMidFilter('T')"><option value="">全部</option><option>上</option><option>下</option></select>
+          <label>MODEL</label><select id="bsm-T-mf-model" onchange="bsmDrawMidFilter('T')"><option value="">全部</option></select>
+        </div>
+        <canvas id="bsm-T-mid-filter" height="220"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sc">
+  <div class="sh">&#128202; C 側</div>
+  <div class="bsm-chart-row">
+    <div class="bsm-chart-box">
+      <div class="bsm-chart-title">C側 CHIP — TOTAL NG Ratio
+        <span class="bsm-color-pick">柱色<input type="color" id="color-C-chip-total" value="#e74c3c" onchange="bsmRedrawAll()"></span>
+      </div>
+      <canvas id="bsm-C-chip-total" height="220"></canvas>
+    </div>
+    <div class="bsm-chart-box">
+      <div class="bsm-chart-title">C側 CHIP — 條件篩選
+        <span class="bsm-color-pick">柱色<input type="color" id="color-C-chip-filter" value="#1abc9c" onchange="bsmDrawChipFilter('C')"></span>
+      </div>
+      <div class="bsm-filter-row">
+        <label>程度</label><select id="bsm-C-cf-lv" onchange="bsmDrawChipFilter('C')"><option value="">全部NG</option><option>乾擦</option><option>濕擦</option><option>乾溼不可擦</option></select>
+        <label>站點</label><select id="bsm-C-cf-st" onchange="bsmDrawChipFilter('C')"><option value="">全部</option><option>CGL</option><option>SHL</option><option>PKL</option><option>APK</option></select>
+        <label>ITO</label><select id="bsm-C-cf-ito" onchange="bsmDrawChipFilter('C')"><option value="">全部</option><option>上</option><option>下</option></select>
+        <label>MODEL</label><select id="bsm-C-cf-model" onchange="bsmDrawChipFilter('C')"><option value="">全部</option></select>
+      </div>
+      <canvas id="bsm-C-chip-filter" height="220"></canvas>
+    </div>
+  </div>
+  <div id="bsm-C-mid-section" style="display:none;">
+    <div style="padding:0 14px 4px;font-weight:600;color:#888;font-size:12px;border-top:1px solid var(--bd);margin-top:4px;padding-top:10px;">── 中片 ID 圖組 ──</div>
+    <div class="bsm-chart-row">
+      <div class="bsm-chart-box">
+        <div class="bsm-chart-title">C側 中片 — TOTAL NG Ratio
+          <span class="bsm-color-pick">柱色<input type="color" id="color-C-mid-total" value="#d35400" onchange="bsmDrawMidTotal('C')"></span>
+        </div>
+        <canvas id="bsm-C-mid-total" height="220"></canvas>
+      </div>
+      <div class="bsm-chart-box">
+        <div class="bsm-chart-title">C側 中片 — 條件篩選
+          <span class="bsm-color-pick">柱色<input type="color" id="color-C-mid-filter" value="#16a085" onchange="bsmDrawMidFilter('C')"></span>
+        </div>
+        <div class="bsm-filter-row">
+          <label>程度</label><select id="bsm-C-mf-lv" onchange="bsmDrawMidFilter('C')"><option value="">全部NG</option><option>乾擦</option><option>濕擦</option><option>乾溼不可擦</option></select>
+          <label>站點</label><select id="bsm-C-mf-st" onchange="bsmDrawMidFilter('C')"><option value="">全部</option><option>CGL</option><option>SHL</option><option>PKL</option><option>APK</option></select>
+          <label>ITO</label><select id="bsm-C-mf-ito" onchange="bsmDrawMidFilter('C')"><option value="">全部</option><option>上</option><option>下</option></select>
+          <label>MODEL</label><select id="bsm-C-mf-model" onchange="bsmDrawMidFilter('C')"><option value="">全部</option></select>
+        </div>
+        <canvas id="bsm-C-mid-filter" height="220"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bsm-tooltip" id="bsm-tooltip"></div>
+</div>
+</div><!-- end seg-beol -->
+
+<script>
+/* patch_v5 */
+
+// Fix 1: Modal/Toast 移至 body 根層
+document.addEventListener('DOMContentLoaded', function(){
+    ['pmo','toast'].forEach(function(id){
+        var el=document.getElementById(id);
+        if(el && el.parentElement!==document.body) document.body.appendChild(el);
+    });
+});
+
+// Fix 2: opM 覆寫
+window.opM=function(src,name){
+    var modal=document.getElementById('pmo');
+    if(modal && modal.parentElement!==document.body) document.body.appendChild(modal);
+    var img=document.getElementById('pmi');
+    var cap=document.getElementById('pmt');
+    if(img) img.src=src;
+    if(cap) cap.textContent=name||'';
+    if(modal) modal.classList.add('on');
+    document.body.style.overflow='hidden';
+};
+
+// Fix 3: 切換「其他」輸入框（橘色邊框，選後自動 focus）
+function bEditTogOther(sel,inputId){
+    var inp=document.getElementById(inputId);
+    if(!inp) return;
+    if(sel.value==='其他'){
+        inp.style.display='inline-block';
+        inp.focus();
+    }else{
+        inp.style.display='none';
+        inp.value='';
+    }
+}
+window.bEditTogOther=bEditTogOther;
+
+// Fix 4: bGetMC 覆寫（修正 Key In 成像/程度存空值）
+window.bGetMC=function(grp){
+    var el=document.querySelector('.'+grp+' .mi.on');
+    if(!el) return '';
+    if(el.textContent.trim()==='其他'){
+        var inp=document.getElementById(grp+'-oth');
+        return inp?inp.value.trim():'';
+    }
+    return el.textContent.trim();
+};
+
+// Fix 5: BEOL 預設日期（立即執行）
+(function(){
+    var today=new Date();
+    var ago14=new Date(today);
+    ago14.setDate(today.getDate()-14);
+    var toStr=today.toISOString().slice(0,10);
+    var fromStr=ago14.toISOString().slice(0,10);
+    var bd=document.getElementById('b-date');
+    if(bd&&!bd.value) bd.value=toStr;
+    var bf=document.getElementById('b-ff');
+    if(bf&&!bf.value) bf.value=fromStr;
+    var bt=document.getElementById('b-ft');
+    if(bt&&!bt.value) bt.value=toStr;
+})();
+
+// Fix 6: bStartEdit 覆寫
+// 注意：字串中 </ 全部改為 <\/ 避免 HTML 解析器誤判結束 script
+window.bStartEdit=function(i){
+    try{
+        if(bEditingIdx!==null&&bEditingIdx!==i){
+            if(!confirm('目前有未儲存的修改，確定放棄？'))return;
+            bCancelEdit(bEditingIdx);
+        }
+        bEditingIdx=i;
+        var r=bLastSrch[i];
+        if(!r){alert('找不到資料 index:'+i);return;}
+        bEditPs[i]={deleted:[],newFiles:[],newOmFiles:[]};
+
+        document.getElementById('bop-'+i).innerHTML=
+            '<button class="bn bs bsm" onclick="bSaveEditRow('+i+')">&#9989; 儲存<\/button> '
+            +'<button class="bn bo bsm" onclick="bCancelEdit('+i+')">&#10060; 取消<\/button>';
+
+        document.getElementById('bed-date-'+i).innerHTML=
+            '<input type="date" id="bei-date-'+i+'" value="'+(r.date||'')+'">';
+
+        var mOpts=document.getElementById('b-model')?document.getElementById('b-model').innerHTML:'';
+        document.getElementById('bed-model-'+i).innerHTML='<select id="bei-model-'+i+'">'+mOpts+'<\/select>';
+        var mSel=document.getElementById('bei-model-'+i);
+        if(mSel) mSel.value=r.model||'';
+
+        var stBtns=['CGL','SHL','PKL','APK'].map(function(st){
+            return '<div class="ch'+(st===r.station?' on':'')+'" onclick="bEditSelSt(this,'+i+',\''+st+'\')">'+st+'<\/div>';
+        }).join('');
+        document.getElementById('bed-station-'+i).innerHTML='<div class="cg" id="bei-st-'+i+'">'+stBtns+'<\/div>';
+        bEditUpdLine(i,r.station||'',r.line||'');
+
+        document.getElementById('bed-chip-'+i).innerHTML=
+            '<input type="text" id="bei-chip-'+i+'" value="'+(r.chipId||'')+'" style="width:90px">';
+
+        var tcBtns=['T','C'].map(function(tc){
+            return '<div class="mi'+(tc===r.tc?' on':'')+'" onclick="editTogSingle(this)">'+tc+'<\/div>';
+        }).join('');
+        document.getElementById('bed-tc-'+i).innerHTML='<div class="mc" id="bei-tc-'+i+'">'+tcBtns+'<\/div>';
+
+        document.getElementById('bed-x-'+i).innerHTML=
+            '<input type="number" id="bei-x-'+i+'" value="'+(r.x||'')+'" step="0.1" style="width:68px">';
+        document.getElementById('bed-y-'+i).innerHTML=
+            '<input type="number" id="bei-y-'+i+'" value="'+(r.y||'')+'" step="0.1" style="width:68px">';
+
+        var moFixed=['單點','直條','橫條','吸盤','撇狀'];
+        var moIsOther=!!r.morphology&&moFixed.indexOf(r.morphology)===-1;
+        var moSV=moIsOther?'其他':(r.morphology||'');
+        var moOV=moIsOther?r.morphology:'';
+        document.getElementById('bed-mo-'+i).innerHTML=
+            '<select id="bei-mo-'+i+'" onchange="bEditTogOther(this,\'bei-mo-oth-'+i+'\')">'
+            +moFixed.concat(['其他']).map(function(o){return'<option'+(o===moSV?' selected':'')+'>'+o+'<\/option>';}).join('')
+            +'<\/select>'
+            +'<input type="text" id="bei-mo-oth-'+i+'" placeholder="輸入其他成像" value="'+moOV+'"'
+            +' style="display:'+(moIsOther?'inline-block':'none')+';width:80px;margin-left:4px;border:1.5px solid #e67e22;">';
+
+        var lvFixed=['乾擦','濕擦','乾溼不可擦'];
+        var lvIsOther=!!r.level&&lvFixed.indexOf(r.level)===-1;
+        var lvSV=lvIsOther?'其他':(r.level||'');
+        var lvOV=lvIsOther?r.level:'';
+        document.getElementById('bed-lv-'+i).innerHTML=
+            '<select id="bei-lv-'+i+'" onchange="bEditTogOther(this,\'bei-lv-oth-'+i+'\')">'
+            +lvFixed.concat(['其他']).map(function(o){return'<option'+(o===lvSV?' selected':'')+'>'+o+'<\/option>';}).join('')
+            +'<\/select>'
+            +'<input type="text" id="bei-lv-oth-'+i+'" placeholder="輸入其他程度" value="'+lvOV+'"'
+            +' style="display:'+(lvIsOther?'inline-block':'none')+';width:80px;margin-left:4px;border:1.5px solid #e67e22;">';
+
+        var itoBtns=['上','下'].map(function(v){
+            return '<div class="mi'+(v===r.ito?' on':'')+'" onclick="editTogSingle(this)">'+v+'<\/div>';
+        }).join('');
+        document.getElementById('bed-ito-'+i).innerHTML='<div class="mc" id="bei-ito-'+i+'">'+itoBtns+'<\/div>';
+
+        document.getElementById('bed-note-'+i).innerHTML=
+            '<textarea id="bei-note-'+i+'" rows="2" style="min-width:100px">'+(r.note||'')+'<\/textarea>';
+
+        document.getElementById('bed-ph-'+i).innerHTML=bPhCell(r.photoUrls);
+        document.getElementById('bed-om-'+i).innerHTML=bPhCell(r.omPhotoUrls);
+
+        document.getElementById('bed-emp-'+i).innerHTML=
+            '<input type="text" id="bei-emp-'+i+'" value="'+(r.empId||'')+'" style="width:80px">';
+
+    }catch(e){
+        console.error('bStartEdit error:',e);
+        alert('修改功能錯誤：'+e.message);
+    }
+};
+
+// Fix 7: bSaveEditRow 覆寫（正確讀取「其他」值）
+window.bSaveEditRow=function(i){
+    var r=bLastSrch[i];
+    if(!r)return;
+    var state=bEditPs[i]||{};
+    var date    =(document.getElementById('bei-date-'+i)||{}).value||r.date;
+    var model   =(document.getElementById('bei-model-'+i)||{}).value||r.model;
+    var stEl    =document.querySelector('#bei-st-'+i+' .ch.on');
+    var station =stEl?stEl.textContent.trim():r.station;
+    var lnEl    =document.querySelector('#bei-ln-'+i+' .lc.on');
+    var line    =lnEl?lnEl.textContent.trim():r.line;
+    var chipId  =(document.getElementById('bei-chip-'+i)||{}).value||r.chipId;
+    var tcEl    =document.querySelector('#bei-tc-'+i+' .mi.on');
+    var tc      =tcEl?tcEl.textContent.trim():r.tc;
+    var x       =(document.getElementById('bei-x-'+i)||{}).value||r.x;
+    var y       =(document.getElementById('bei-y-'+i)||{}).value||r.y;
+    var moSel   =document.getElementById('bei-mo-'+i);
+    var moOth   =document.getElementById('bei-mo-oth-'+i);
+    var morphology=moSel&&moSel.value==='其他'?(moOth?moOth.value.trim():r.morphology):(moSel?moSel.value:r.morphology)||r.morphology;
+    var lvSel   =document.getElementById('bei-lv-'+i);
+    var lvOth   =document.getElementById('bei-lv-oth-'+i);
+    var level   =lvSel&&lvSel.value==='其他'?(lvOth?lvOth.value.trim():r.level):(lvSel?lvSel.value:r.level)||r.level;
+    var itoEl   =document.querySelector('#bei-ito-'+i+' .mi.on');
+    var ito     =itoEl?itoEl.textContent.trim():r.ito;
+    var note    =(document.getElementById('bei-note-'+i)||{}).value||r.note;
+    var empId   =(document.getElementById('bei-emp-'+i)||{}).value||r.empId;
+    var existPh =(r.photoUrls||[]).filter(function(u){return!(state.deleted||[]).includes(u);});
+    var existOm =(r.omPhotoUrls||[]).filter(function(u){return!(state.deletedOm||[]).includes(u);});
+    var newRecord={date:date,model:model,station:station,line:line,chipId:chipId,tc:tc,
+        x:x,y:y,morphology:morphology,level:level,ito:ito,note:note,empId:empId,
+        photoUrls:existPh,omPhotoUrls:existOm,createdAt:r.createdAt};
+    fetch(API_BASE+'/api/beol/update',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({createdAt:r.createdAt,originalDate:r.date,
+            record:newRecord,newPhotos:state.newFiles||[],newOmPhotos:state.newOmFiles||[]})
+    }).then(function(res){return res.json();}).then(function(d){
+        if(d.success){
+            toast('✅ 已更新');
+            bLastSrch[i]=d.record||newRecord;
+            bCancelEdit(i);
+        }else{
+            toast('更新失敗：'+(d.error||''),'err');
+        }
+    }).catch(function(e){toast('連線錯誤：'+e.message,'err');});
+};
+
+// Fix 8: bDoSrch 覆寫（補 td id）
+// 注意：<\/ 在 JS 中等同 </，但不會被 HTML 解析器誤判
+window.bDoSrch=function(){
+    var params=new URLSearchParams({
+        dateFrom:document.getElementById('b-ff').value||'',
+        dateTo:document.getElementById('b-ft').value||'',
+        model:document.getElementById('b-fm').value||'',
+        station:document.getElementById('b-fst').value||'',
+        line:document.getElementById('b-fl').value||'',
+        tc:document.getElementById('b-ftc').value||'',
+        level:document.getElementById('b-flv').value||'',
+        empId:document.getElementById('b-femp').value||'',
+        chipId:document.getElementById('b-fchip').value||''
+    });
+    fetch(API_BASE+'/api/beol/search?'+params)
+    .then(function(res){return res.json();})
+    .then(function(data){
+        if(!data.success){toast('搜尋失敗','err');return;}
+        bLastSrch=data.records||[];
+        var tb=document.getElementById('b-sb2');
+        document.getElementById('b-rs2').textContent='共 '+bLastSrch.length+' 筆';
+        document.getElementById('b-chkAll').checked=false;
+        document.getElementById('b-delBtn').style.display='none';
+        if(!bLastSrch.length){
+            tb.innerHTML='<tr><td colspan="18" class="nd">查無資料<\/td><\/tr>';
+            return;
+        }
+        tb.innerHTML=bLastSrch.map(function(r,i){
+            return '<tr id="bsr-'+i+'">'
+                +'<td style="text-align:center"><input type="checkbox" class="b-delChk" onchange="bUpdDelBtn()" data-idx="'+i+'" data-created-at="'+(r.createdAt||'')+'" data-date="'+(r.date||'')+'"><\/td>'
+                +'<td>'+(i+1)+'<\/td>'
+                +'<td id="bed-date-'+i+'">'+(r.date||'')+'<\/td>'
+                +'<td id="bed-model-'+i+'">'+(r.model||'')+'<\/td>'
+                +'<td id="bed-station-'+i+'">'+(r.station||'')+'<\/td>'
+                +'<td id="bed-line-'+i+'">'+(r.line||'-')+'<\/td>'
+                +'<td id="bed-chip-'+i+'">'+(r.chipId||'')+'<\/td>'
+                +'<td id="bed-tc-'+i+'">'+(r.tc||'')+'<\/td>'
+                +'<td id="bed-x-'+i+'">'+(r.x!=null?r.x:'')+'<\/td>'
+                +'<td id="bed-y-'+i+'">'+(r.y!=null?r.y:'')+'<\/td>'
+                +'<td id="bed-mo-'+i+'">'+(r.morphology||'')+'<\/td>'
+                +'<td id="bed-lv-'+i+'">'+(r.level||'')+'<\/td>'
+                +'<td id="bed-ito-'+i+'">'+(r.ito||'')+'<\/td>'
+                +'<td id="bed-note-'+i+'">'+(r.note||'')+'<\/td>'
+                +'<td id="bed-ph-'+i+'">'+bPhCell(r.photoUrls)+'<\/td>'
+                +'<td id="bed-om-'+i+'">'+bPhCell(r.omPhotoUrls)+'<\/td>'
+                +'<td id="bed-emp-'+i+'">'+(r.empId||'')+'<\/td>'
+                +'<td id="bop-'+i+'"><button class="bn bp bsm" onclick="bStartEdit('+i+')">&#9999;&#65039; 修改<\/button><\/td>'
+                +'<\/tr>';
+        }).join('');
+    })
+    .catch(function(e){toast('連線錯誤：'+e.message,'err');});
+};
+
+<script>
+function bShowPreview(hds,rows,rowImages,total){
+  var is2=document.getElementById('b-is2'),ip2=document.getElementById('b-ip2');
+  if(!is2||!ip2)return;
+  var hasImgs=Object.keys(rowImages).length>0;
+  var visibleHds=hds.filter(function(h){return h.indexOf('col_')!==0;});
+  is2.innerHTML='<div class="skd"><div class="num">'+visibleHds.length+'</div><div class="lbl">欄位</div></div>'
+    +'<div class="skd"><div class="num">'+total+'</div><div class="lbl">筆資料</div></div>'
+    +(hasImgs?'<div class="skd"><div class="num">'+Object.keys(rowImages).length+'</div><div class="lbl">列有圖片</div></div>':'');
+  document.getElementById('b-ih2').innerHTML='<th>#</th>'+visibleHds.map(function(h){return'<th>'+h+'</th>';}).join('');
+  document.getElementById('b-ib2').innerHTML=rows.slice(0,20).map(function(row,i){
+    var key=String(i+1);
+    var imgInfo=rowImages[key]||{};
+    var photos=Array.isArray(imgInfo)?imgInfo:(imgInfo.photo||[]);
+    var oms=Array.isArray(imgInfo)?[]:(imgInfo.om||[]);
+    var cells=visibleHds.map(function(h){
+      if(h==='\u7167\u7247'||h==='\u7167\u7247(H\u6b04)'){
+        return photos.length>0
+          ?'<td>'+photos.map(function(u){return'<img src="'+u+'" style="height:60px;width:auto;border:1px solid #ddd;border-radius:4px;margin:2px;">';}).join('')+'</td>'
+          :'<td style="color:#ccc;font-size:12px;">\u2014</td>';
+      }
+      if(h==='OM \u7167\u7247'||h==='OM\u7167\u7247'||h==='OM\u7167\u7247(J\u6b04)'){
+        return oms.length>0
+          ?'<td>'+oms.map(function(u){return'<img src="'+u+'" style="height:60px;width:auto;border:1px solid #ddd;border-radius:4px;margin:2px;">';}).join('')+'</td>'
+          :'<td style="color:#ccc;font-size:12px;">\u2014</td>';
+      }
+      return'<td>'+(row[h]!=null?row[h]:'')+'</td>';
+    }).join('');
+    return'<tr><td>'+(i+1)+'</td>'+cells+'</tr>';
+  }).join('')+(total>20?'<tr><td colspan="'+(visibleHds.length+1)+'" style="text-align:center;color:var(--gr)">...\u524520\u7b46\uff0c\u5171'+total+'\u7b46</td></tr>':'');
+  ip2.style.display='block';
+}
+
+// ===== BEOL SUMMARY 新版 JS =====
+const _bsmCharts = {};
+let _bsmAllRecs = [];
+const BSM_NG_LV = ['乾擦','濕擦','乾溼不可擦'];
+
+function bsmInitDates(){
+  var today=new Date(), f14=new Date(today);
+  f14.setDate(today.getDate()-14);
+  var ts=today.toISOString().slice(0,10), fs=f14.toISOString().slice(0,10);
+  var gf=document.getElementById('bsm-g-from'), gt=document.getElementById('bsm-g-to');
+  if(gf&&!gf.value) gf.value=fs;
+  if(gt&&!gt.value) gt.value=ts;
+}
+
+async function bsmApply(){
+  var from =(document.getElementById('bsm-g-from')||{}).value||'';
+  var to   =(document.getElementById('bsm-g-to')||{}).value||'';
+  var model=(document.getElementById('bsm-g-model')||{}).value||'';
+  var st   =(document.getElementById('bsm-g-st')||{}).value||'';
+  var lv   =(document.getElementById('bsm-g-lv')||{}).value||'';
+  var p=new URLSearchParams({dateFrom:from,dateTo:to,model:model,station:st,level:lv});
+  try{
+    var res=await fetch(API_BASE+'/api/beol/search?'+p).then(r=>r.json());
+    if(!res.success){console.error('BEOL SUMMARY 查詢失敗');return;}
+    _bsmAllRecs=res.records||[];
+    var ms=[...new Set(_bsmAllRecs.map(r=>r.model||'').filter(Boolean))].sort();
+    ['bsm-g-model','bsm-T-cf-model','bsm-C-cf-model','bsm-T-mf-model','bsm-C-mf-model'].forEach(function(id){
+      var el=document.getElementById(id); if(!el) return;
+      var cur=el.value;
+      el.innerHTML='<option value="">全部</option>'+ms.map(m=>'<option'+(m===cur?' selected':'')+'>'+m+'</option>').join('');
+    });
+    bsmRedrawAll();
+  }catch(e){console.error('BEOL SUMMARY 失敗：',e);}
+}
+
+function bsmRedrawAll(){
+  ['T','C'].forEach(function(s){
+    bsmDrawChipTotal(s); bsmDrawChipFilter(s);
+    bsmDrawMidTotal(s);  bsmDrawMidFilter(s);
+  });
+}
+
+function bsmDedup(recs,idField){
+  var seen=new Set();
+  return recs.filter(function(r){
+    var v=r[idField]||''; if(!v) return false;
+    var k=(r.date||'')+'|'+(r.tc||'')+'|'+v;
+    if(seen.has(k)) return false; seen.add(k); return true;
+  });
+}
+
+function bsmCountByDate(recs,idField){
+  var d={};
+  bsmDedup(recs,idField).forEach(function(r){var dt=r.date||'';d[dt]=(d[dt]||0)+1;});
+  return d;
+}
+
+function bsmNgByDate(recs,idField,lvArr){
+  var use=lvArr&&lvArr.length?lvArr:BSM_NG_LV;
+  var fr=recs.filter(function(r){return use.indexOf(r.level||'')!==-1;});
+  var d={};
+  bsmDedup(fr,idField).forEach(function(r){var dt=r.date||'';d[dt]=(d[dt]||0)+1;});
+  return d;
+}
+
+function bsmDates(recs){
+  return [...new Set(recs.map(r=>r.date||'').filter(Boolean))].sort();
+}
+
+function bsmDrawChipTotal(side){
+  var recs=_bsmAllRecs.filter(r=>r.tc===side);
+  var dates=bsmDates(recs);
+  var tot=bsmCountByDate(recs,'chipId'), ng=bsmNgByDate(recs,'chipId',[]);
+  var lv0=bsmNgByDate(recs,'chipId',['乾擦']),lv1=bsmNgByDate(recs,'chipId',['濕擦']),lv2=bsmNgByDate(recs,'chipId',['乾溼不可擦']);
+  var col=(document.getElementById('color-'+side+'-chip-total')||{value:'#3498db'}).value;
+  _bsmDraw('bsm-'+side+'-chip-total',dates,tot,ng,col,recs,'chipId',{lv0:lv0,lv1:lv1,lv2:lv2},'total','');
+}
+
+function bsmDrawChipFilter(side){
+  var flv=(document.getElementById('bsm-'+side+'-cf-lv')||{}).value||'';
+  var fst=(document.getElementById('bsm-'+side+'-cf-st')||{}).value||'';
+  var fit=(document.getElementById('bsm-'+side+'-cf-ito')||{}).value||'';
+  var fmo=(document.getElementById('bsm-'+side+'-cf-model')||{}).value||'';
+  var recs=_bsmAllRecs.filter(function(r){
+    return r.tc===side&&(fst?r.station===fst:true)&&(fit?r.ito===fit:true)&&(fmo?r.model===fmo:true);
+  });
+  var dates=bsmDates(recs);
+  var tot=bsmCountByDate(recs,'chipId'), ng=bsmNgByDate(recs,'chipId',flv?[flv]:[]);
+  var col=(document.getElementById('color-'+side+'-chip-filter')||{value:'#2ecc71'}).value;
+  _bsmDraw('bsm-'+side+'-chip-filter',dates,tot,ng,col,recs,'chipId',null,'filter',flv||'全部NG');
+}
+
+function bsmDrawMidTotal(side){
+  var recs=_bsmAllRecs.filter(r=>r.tc===side&&r.midId);
+  var sec=document.getElementById('bsm-'+side+'-mid-section');
+  if(sec) sec.style.display=recs.length?'':'none';
+  if(!recs.length) return;
+  var dates=bsmDates(recs);
+  var tot=bsmCountByDate(recs,'midId'), ng=bsmNgByDate(recs,'midId',[]);
+  var lv0=bsmNgByDate(recs,'midId',['乾擦']),lv1=bsmNgByDate(recs,'midId',['濕擦']),lv2=bsmNgByDate(recs,'midId',['乾溼不可擦']);
+  var col=(document.getElementById('color-'+side+'-mid-total')||{value:'#9b59b6'}).value;
+  _bsmDraw('bsm-'+side+'-mid-total',dates,tot,ng,col,recs,'midId',{lv0:lv0,lv1:lv1,lv2:lv2},'total','');
+}
+
+function bsmDrawMidFilter(side){
+  var recs=_bsmAllRecs.filter(r=>r.tc===side&&r.midId);
+  if(!recs.length) return;
+  var flv=(document.getElementById('bsm-'+side+'-mf-lv')||{}).value||'';
+  var fst=(document.getElementById('bsm-'+side+'-mf-st')||{}).value||'';
+  var fit=(document.getElementById('bsm-'+side+'-mf-ito')||{}).value||'';
+  var fmo=(document.getElementById('bsm-'+side+'-mf-model')||{}).value||'';
+  var fr=recs.filter(function(r){
+    return (fst?r.station===fst:true)&&(fit?r.ito===fit:true)&&(fmo?r.model===fmo:true);
+  });
+  var dates=bsmDates(fr);
+  var tot=bsmCountByDate(fr,'midId'), ng=bsmNgByDate(fr,'midId',flv?[flv]:[]);
+  var col=(document.getElementById('color-'+side+'-mid-filter')||{value:'#e67e22'}).value;
+  _bsmDraw('bsm-'+side+'-mid-filter',dates,tot,ng,col,fr,'midId',null,'filter',flv||'全部NG');
+}
+
+function _bsmDraw(cid,dates,totByDate,ngByDate,barColor,recs,idField,lvDet,mode,selLv){
+  var canvas=document.getElementById(cid); if(!canvas) return;
+  if(_bsmCharts[cid]) _bsmCharts[cid].destroy();
+  var tots=dates.map(d=>totByDate[d]||0);
+  var ngs =dates.map(d=>ngByDate[d]||0);
+  var rat =dates.map(function(d,i){return tots[i]>0?parseFloat(((ngs[i]/tots[i])*100).toFixed(2)):null;});
+  _bsmCharts[cid]=new Chart(canvas,{
+    type:'bar',
+    data:{labels:dates,datasets:[
+      {label:'總覆判數量',data:tots,backgroundColor:barColor,borderColor:barColor,borderWidth:1,yAxisID:'yL',order:2},
+      {label:'NG Ratio(%)',data:rat,type:'line',borderColor:'#e74c3c',
+       backgroundColor:'rgba(231,76,60,.1)',pointBackgroundColor:'#e74c3c',
+       borderWidth:2,pointRadius:4,fill:false,tension:0.3,yAxisID:'yR',order:1}
+    ]},
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}},tooltip:{enabled:false}},
+      scales:{
+        yL:{type:'linear',position:'left',beginAtZero:true,
+            title:{display:true,text:'總覆判數量',font:{size:10}},ticks:{stepSize:1,font:{size:9}}},
+        yR:{type:'linear',position:'right',beginAtZero:true,max:100,
+            title:{display:true,text:'NG Ratio (%)',font:{size:10}},
+            ticks:{font:{size:9},callback:function(v){return v+'%';}},
+            grid:{drawOnChartArea:false}}
+      },
+      onHover:function(evt,els){
+        if(els&&els.length>0){
+          _bsmShowTT(evt,dates[els[0].index],recs,idField,lvDet,mode,selLv);
+        }else{ _bsmHideTT(); }
+      }
+    }
+  });
+  canvas.onmouseleave=_bsmHideTT;
+}
+
+function _bsmShowTT(evt,date,recs,idField,lvDet,mode,selLv){
+  var tt=document.getElementById('bsm-tooltip'); if(!tt) return;
+  var dr=recs.filter(r=>r.date===date);
+  var ms=[...new Set(dr.map(r=>r.model||'').filter(Boolean))].sort();
+  if(!ms.length) ms=[''];
+  var html='<div style="font-weight:700;color:#1a6bb5;margin-bottom:6px;">&#128197; '+date+'</div>';
+  ms.forEach(function(mod){
+    var mr=mod?dr.filter(r=>r.model===mod):dr;
+    html+='<span class="bsm-tt-model-hdr">MODEL: '+(mod||'—')+'</span>';
+    var sts=[...new Set(mr.map(r=>r.station||'').filter(Boolean))].sort();
+    if(!sts.length) sts=[''];
+    if(mode==='total'){
+      html+='<table><tr><th>站點</th><th>總覆判數量</th><th>乾擦</th><th>ratio</th><th>濕擦</th><th>ratio</th><th>乾溼不可擦</th><th>ratio</th><th>Total NG ratio</th></tr>';
+      sts.forEach(function(st){
+        var sr=st?mr.filter(r=>r.station===st):mr;
+        var tot=bsmCountByDate(sr,idField)[date]||0;
+        var c0=lvDet?(bsmNgByDate(sr,idField,['乾擦'])[date]||0):0;
+        var c1=lvDet?(bsmNgByDate(sr,idField,['濕擦'])[date]||0):0;
+        var c2=lvDet?(bsmNgByDate(sr,idField,['乾溼不可擦'])[date]||0):0;
+        var cn=bsmNgByDate(sr,idField,[])[date]||0;
+        var p=function(n){return tot>0?((n/tot)*100).toFixed(1)+'%':'—';};
+        html+='<tr><td>'+(st||'全部')+'</td><td>'+tot+'</td>'
+          +'<td>'+c0+'</td><td>'+p(c0)+'</td>'
+          +'<td>'+c1+'</td><td>'+p(c1)+'</td>'
+          +'<td>'+c2+'</td><td>'+p(c2)+'</td>'
+          +'<td style="font-weight:700;color:#c0392b;">'+p(cn)+'</td></tr>';
+      });
+      html+='</table>';
+    }else{
+      html+='<table><tr><th>站點</th><th>總覆判數量</th><th>'+(selLv||'NG')+'</th><th>ratio</th></tr>';
+      sts.forEach(function(st){
+        var sr=st?mr.filter(r=>r.station===st):mr;
+        var tot=bsmCountByDate(sr,idField)[date]||0;
+        var ng=bsmNgByDate(sr,idField,selLv&&selLv!=='全部NG'?[selLv]:[])[date]||0;
+        var rat=tot>0?((ng/tot)*100).toFixed(1)+'%':'—';
+        html+='<tr><td>'+(st||'全部')+'</td><td>'+tot+'</td><td>'+ng+'</td>'
+          +'<td style="font-weight:700;color:#c0392b;">'+rat+'</td></tr>';
+      });
+      html+='</table>';
+    }
+  });
+  tt.innerHTML=html; tt.style.display='block';
+  var x=evt.native?evt.native.clientX:0, y=evt.native?evt.native.clientY:0;
+  tt.style.left=(x+16)+'px'; tt.style.top=(y-10)+'px';
+  requestAnimationFrame(function(){
+    if(x+16+tt.offsetWidth>window.innerWidth) tt.style.left=(x-tt.offsetWidth-10)+'px';
+  });
+}
+function _bsmHideTT(){var tt=document.getElementById('bsm-tooltip');if(tt)tt.style.display='none';}
+
+function bsmInit(){bsmInitDates();bsmApply();}
+
+</script>
+</body>

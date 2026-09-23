@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>L8B 缺陷登錄系統 lv3</title>
+  <link rel="stylesheet" href="lv3_style.css">
+  <script src="/html2canvas.js"></script>
+</head>
+<body onload="init()">
+
+<div id="login-box">
+  <div style="font-size:22px;font-weight:700;margin-bottom:18px">🔐 登入</div>
+  <input id="lu" class="fc" placeholder="帳號" style="margin-bottom:10px">
+  <input id="lp" class="fc" type="password" placeholder="密碼" onkeydown="if(event.key==='Enter')doLogin()">
+  <button class="bs" onclick="doLogin()" style="margin-top:12px">登入</button>
+  <div id="le" style="color:#e74c3c;margin-top:8px;font-size:12px"></div>
+</div>
+
+<div id="app" style="display:none">
+  <!-- ═══ TOP BAR ═══ -->
+  <div id="topbar">
+    <span id="ttl" style="font-weight:700;font-size:15px;flex:1;cursor:pointer" onclick="loadTitles()">📋</span>
+    <button onclick="toggleTheme()" style="padding:2px 9px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">🌙</button>
+    <button onclick="showCP()" style="padding:2px 9px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">🔑</button>
+    <span id="uname" style="font-size:12px;color:var(--tm);margin-left:4px"></span>
+    <button onclick="doLogout()" style="padding:2px 9px;font-size:11px;background:#c0392b;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">登出</button>
+  </div>
+
+  <!-- ═══ CHANGE PASSWORD PANEL ═══ -->
+  <div id="cp-panel" style="display:none;background:var(--cb);border:1px solid var(--bd);border-radius:6px;padding:14px;margin-bottom:10px;max-width:320px">
+    <div style="font-weight:600;margin-bottom:8px;font-size:13px">🔑 修改密碼</div>
+    <input id="cp-old" class="fc" type="password" placeholder="舊密碼" style="margin-bottom:6px">
+    <input id="cp-new" class="fc" type="password" placeholder="新密碼" style="margin-bottom:6px">
+    <input id="cp-new2" class="fc" type="password" placeholder="確認新密碼" onkeydown="if(event.key==='Enter')doCP()">
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="bs" onclick="doCP()">確認</button>
+      <button class="bg" onclick="document.getElementById('cp-panel').style.display='none'">取消</button>
+    </div>
+    <div id="cp-msg" style="font-size:12px;margin-top:6px"></div>
+  </div>
+
+  <div id="cols">
+    <!-- ═══ COL1 搜尋 ═══ -->
+    <div id="c1">
+      <div class="sec-hdr">🔍 箱號查詢</div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <input id="scas" class="fc" placeholder="箱號（換行多筆）" style="flex:1;min-width:80px" onkeydown="if(event.key==='Enter')scCassette()">
+        <input id="sdate" class="fc" type="date" style="width:130px">
+        <button class="bs" onclick="scCassette()">查</button>
+      </div>
+      <div id="clist" style="margin-top:8px"></div>
+
+      <div class="sec-hdr" style="margin-top:12px">📊 良率查詢</div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <input id="syld" class="fc" placeholder="箱號" style="flex:1;min-width:80px" onkeydown="if(event.key==='Enter')scYield()">
+        <button class="bs" onclick="scYield()">查</button>
+      </div>
+      <div id="yarea" style="margin-top:6px"></div>
+
+      <div class="sec-hdr" style="margin-top:12px">🗑️ 除帳搜尋</div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <input id="sscr" class="fc" placeholder="箱號" style="flex:1;min-width:80px" onkeydown="if(event.key==='Enter')scScrp()">
+        <input id="sscr-date" class="fc" type="date" style="width:130px">
+        <button class="bs" onclick="scScrp()">查</button>
+      </div>
+      <div id="scrp-area" style="margin-top:6px"></div>
+
+      <div id="batch-panel" style="display:none">
+        <div class="sec-hdr" style="margin-top:12px;display:flex;align-items:center;gap:6px">
+          📦 批次新增
+          <button onclick="toggleBatch()" style="padding:1px 7px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">收起</button>
+        </div>
+        <div id="batch-list" style="margin-top:6px;font-size:12px;max-height:160px;overflow-y:auto"></div>
+        <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+          <button class="bs" onclick="batchPreview()">預覽</button>
+          <button class="bg" onclick="document.getElementById('batch-panel').style.display='none'">取消</button>
+        </div>
+        <div id="batch-preview" style="margin-top:8px"></div>
+        <div id="batch-msg" style="font-size:12px;margin-top:4px"></div>
+      </div>
+    </div>
+
+    <!-- ═══ COL2 表單 ═══ -->
+    <div id="c2">
+      <div class="sec-hdr">📝 缺陷登錄</div>
+      <div class="fr">
+        <div class="fl">🏷️ 標題</div>
+        <div style="display:flex;gap:4px;align-items:center">
+          <select id="ftn-sel" class="fc" onchange="onTitleSel()" style="flex:1"></select>
+          <button onclick="showAddTitle()" style="padding:2px 7px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">+</button>
+        </div>
+        <input type="text" id="ftn" class="fc" placeholder="輸入新標題" onblur="onTB()">
+      </div>
+      <div class="fr"><div class="tc2">
+        <div><div class="fl">📅 日期</div><input type="text" id="fdate" class="fc fa" readonly></div>
+        <div><div class="fl">🔲 Chip ID</div><input type="text" id="fchip" class="fc fa" readonly placeholder="點選左側"></div>
+      </div></div>
+      <div class="fr"><div class="tc2">
+        <div><div class="fl">📦 Model</div><input type="text" id="fmod" class="fc fa" readonly></div>
+        <div><div class="fl">🎯 Grade <button id="gbtn" onclick="toggleOvrG()" style="padding:1px 8px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit;margin-left:4px">改判</button></div><input type="text" id="fgrd" class="fc fa" readonly><input type="hidden" id="fgrd_orig"></div>
+      </div></div>
+      <div class="fr">
+        <div class="fl">⚠️ Defect <button id="obtn" onclick="toggleOverride()" style="padding:1px 8px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit;margin-left:6px;vertical-align:middle">改判</button></div>
+        <div style="position:relative">
+          <input type="text" id="fdef" class="fc fa" readonly autocomplete="off" oninput="onDefInput()" onblur="onDefBlur()">
+          <div id="defect-drop" style="display:none;position:absolute;z-index:999;width:100%;left:0;top:100%;background:var(--cb);border:1px solid var(--bd);border-top:none;border-radius:0 0 5px 5px;box-shadow:0 6px 14px rgba(0,0,0,.18);max-height:180px;overflow-y:auto"></div>
+        </div>
+        <input type="hidden" id="fdef_orig">
+      </div>
+      <div id="defect-warn" style="display:none;font-size:12px;margin-top:3px"></div>
+      <div class="fr"><div class="tc2">
+        <div><div class="fl">📝 呈象描述</div><input type="text" id="fapp" class="fc" placeholder="手動輸入" style="font-size:12px;padding:3px 6px"></div>
+        <div><div class="fl">🖥️ 判定畫面</div><input type="text" id="fjdg" class="fc" placeholder="手動輸入" style="font-size:12px;padding:3px 6px"></div>
+      </div></div>
+      <div class="fr"><div class="tc2">
+        <div><div class="fl">📊 JND <button id="jbtn" onclick="toggleOvrJ()" style="padding:1px 8px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit;margin-left:4px">改判</button></div><input type="text" id="fjnd" class="fc fa" readonly><input type="hidden" id="fjnd_orig"></div>
+        <div><div class="fl">🔬 POL</div><input type="text" id="fpol" class="fc fa" readonly></div>
+      </div></div>
+      <div class="fr"><div class="fl">🏭 機台</div><input type="text" id="ftool" class="fc fa" readonly></div>
+      <div class="fr">
+        <div class="fl">↔️ 由左至右 (Signal No.) <span style="font-size:10px;color:var(--tm)">換行多筆</span></div>
+        <div class="cpair">
+          <div><div class="slbl">Start</div><textarea id="fxs" class="fc fa" rows="2" placeholder="換行多筆"></textarea></div>
+          <div><div class="slbl">End</div><textarea id="fxe" class="fc" rows="2" placeholder="—"></textarea></div>
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fl">↕️ 由上而下 (Gate No.) <span style="font-size:10px;color:var(--tm)">換行多筆</span></div>
+        <div class="cpair">
+          <div><div class="slbl">Start</div><textarea id="fys" class="fc fa" rows="2" placeholder="換行多筆"></textarea></div>
+          <div><div class="slbl">End</div><textarea id="fye" class="fc" rows="2" placeholder="—"></textarea></div>
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fl">📷 照片</div>
+        <div class="par">
+          <div class="parl">
+            <div id="pa" tabindex="0" onclick="this.focus()" onpaste="onPaste(event)"><span>Ctrl+V 貼截圖</span></div>
+            <span class="pcl" onclick="clrImg()">× 清除照片</span>
+          </div>
+          <div class="parr">
+            <button class="bs" onclick="submitForm()">新增 / 修正</button>
+            <button class="bg" onclick="clrForm()">清除表單</button>
+            <button class="bd" id="bdel" onclick="delRecord()" disabled>刪除</button>
+            <button class="bg" id="bnext" onclick="nextPhoto()">下一張圖</button>
+          </div>
+        </div>
+      </div>
+      <div class="fr" style="margin-top:2px">
+        <div class="fl" style="display:flex;align-items:center;gap:6px">
+          🖊️ 示意圖
+          <button id="sketch-toggle-btn" onclick="toggleSketch()" style="padding:1px 8px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">展開</button>
+          <span class="pcl" onclick="clearSketch()" style="font-size:11px;margin-left:2px">× 清除</span>
+        </div>
+        <div id="sketch-sec" style="display:none;margin-top:4px">
+          <div style="display:flex;gap:3px;align-items:center;flex-wrap:wrap;margin-bottom:4px">
+            <button id="sktb-pen"     class="sk-tool-btn" onclick="setSkTool('pen',this)"     style="padding:2px 6px;font-size:11px;background:var(--bp);color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">✏️ 畫筆</button>
+            <button id="sktb-eraser"  class="sk-tool-btn" onclick="setSkTool('eraser',this)"  style="padding:2px 6px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">🧹 橡皮擦</button>
+            <button id="sktb-spray"   class="sk-tool-btn" onclick="setSkTool('spray',this)"   style="padding:2px 6px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">🎨 噴漆</button>
+            <button id="sktb-line"    class="sk-tool-btn" onclick="setSkTool('line',this)"    style="padding:2px 6px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">📏 直線</button>
+            <button id="sktb-circle"  class="sk-tool-btn" onclick="setSkTool('circle',this)"  style="padding:2px 6px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">⭕ 圓形</button>
+            <button id="sktb-filldot" class="sk-tool-btn" onclick="setSkTool('filldot',this);document.getElementById('sk-color').value='#1565c0';_sk.color='#1565c0';" style="padding:2px 6px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">🔵 實心圓</button>
+            <label id="sktb-mid-lbl" style="display:inline-flex;align-items:center;gap:3px;font-size:11px;cursor:pointer;padding:2px 6px;background:#7f8c8d;color:#fff;border-radius:3px;user-select:none" title="勾選後畫布預設黑十字（中片）"><input type="checkbox" id="sk-mid-cross" onchange="onMidCrossChange()" style="accent-color:#fff;width:13px;height:13px;cursor:pointer"> 中片</label>
+            <input type="color" id="sk-color" value="#e74c3c" oninput="_sk.color=this.value" title="顏色" style="width:26px;height:22px;border:1px solid var(--bd);border-radius:3px;cursor:pointer;padding:1px;vertical-align:middle">
+            <span style="font-size:10px;color:var(--tm)">粗</span>
+            <input type="range" min="1" max="20" value="4" oninput="_sk.size=parseInt(this.value);document.getElementById('sk-sz-lbl').textContent=this.value" style="width:55px;vertical-align:middle">
+            <span id="sk-sz-lbl" style="font-size:10px;color:var(--tm);min-width:14px">4</span>
+          </div>
+          <canvas id="sketch-cvs" style="width:100%;height:220px;border:1px solid var(--bd);border-radius:4px;cursor:crosshair;background:#fff;display:block;touch-action:none"></canvas>
+        </div>
+      </div>
+      <div id="sm"></div>
+    </div>
+
+    <!-- ═══ COL3 報告 ═══ -->
+    <div id="c3">
+      <div class="rep-hdr">
+        <span id="rep-title" style="font-size:12px;color:var(--tm);font-weight:600;flex:1">📋 今日報告</span>
+        <button id="allbtn" onclick="toggleAllView()" style="padding:2px 9px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">👥 全員</button>
+        <button id="colbtn" onclick="toggleColPanel()" style="padding:2px 9px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">⚙️ 欄位</button>
+        <button id="ph2btn" onclick="togglePhCol(2,this)" style="padding:2px 9px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">📷2</button>
+        <button id="ph3btn" onclick="togglePhCol(3,this)" style="padding:2px 9px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">📷3</button>
+      </div>
+      <div id="all-panel">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <label style="font-size:12px;color:var(--tm);font-weight:600">日期</label>
+          <input type="date" id="all-date" style="border:1px solid var(--bd);border-radius:4px;padding:3px 7px;font-size:12px;background:var(--ib);color:var(--tx);outline:none">
+          <span style="font-size:12px;color:var(--tm);font-weight:600">人員</span>
+          <div id="all-users" style="display:flex;flex-wrap:wrap;gap:3px 10px;font-size:12px"></div>
+          <div id="col-panel">
+            <div style="font-size:11px;color:var(--tm);font-weight:600;margin-bottom:6px">⚙️ 欄位設定（寬度 px / 字體大小 px）—— 自動記住設定</div>
+            <div id="col-panel-inner"></div>
+            <button onclick="resetColSettings()" style="padding:3px 12px;font-size:11px;background:#7f8c8d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:inherit">↩ 重置預設值</button>
+          </div>
+          <button id="all-qbtn" onclick="loadAllReport()" style="padding:3px 13px;background:var(--bp);color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px;font-family:inherit">查詢</button>
+          <button onclick="resetToMyReport()" style="padding:3px 10px;background:#7f8c8d;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px;font-family:inherit">還原今日</button>
+        </div>
+      </div>
+      <div id="rarea"><div class="rep-empty">⏳ 載入中...</div></div>
+    </div>
+
+  </div><!-- /cols -->
+</div><!-- /app -->
+
+<!-- IMAGE MODAL -->
+<div id="modal" onclick="closeM()"><img id="mimg" src="" alt=""></div>
+
+<!-- ═══ JS 外部引用（順序重要！） ═══ -->
+<script src="lv3_helpers.js"></script>
+<script src="lv3_vars_init.js"></script>
+<script src="lv3_search.js"></script>
+<script src="lv3_defect.js"></script>
+<script src="lv3_form.js"></script>
+<script src="lv3_report.js"></script>
+<script src="lv3_settings.js"></script>
+<script src="lv3_sketch.js"></script>
+<script src="lv3_batch.js"></script>
+
+</body>
+</html>

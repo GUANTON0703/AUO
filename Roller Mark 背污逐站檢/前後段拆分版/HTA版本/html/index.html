@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>背汙檢 Key In 系統</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      flex: 1;
+      padding-left: 24px;
+    }
+    .nav-menu a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 5px;
+      transition: all 0.2s;
+      font-size: 15px;
+    }
+    .nav-menu a:hover {
+      background: rgba(255,255,255,.2);
+    }
+    .nav-menu a.active {
+      background: #f39c12;
+    }
+    .content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+    .welcome-box {
+      text-align: center;
+      background: #fff;
+      border-radius: 12px;
+      padding: 60px 40px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.1);
+      max-width: 600px;
+    }
+    .welcome-box h1 {
+      color: var(--p);
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+    .welcome-box p {
+      color: var(--gr);
+      font-size: 16px;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+    .btn-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-link {
+      padding: 12px 32px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-feol {
+      background: #1a6bb5;
+      color: #fff;
+    }
+    .btn-feol:hover {
+      background: #145091;
+    }
+    .btn-beol {
+      background: #27ae60;
+      color: #fff;
+    }
+    .btn-beol:hover {
+      background: #219a52;
+    }
+  </style>
+</head>
+<body>
+  <div class="hd">
+    <span style="font-size: 20px; font-weight: 700; color: #fff;">🔬 背汙檢 Key In 系統</span>
+    <div class="nav-menu">
+      <a href="index.html" class="active">首頁</a>
+      <a href="feol.html">FEOL</a>
+      <a href="beol.html">BEOL</a>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="welcome-box">
+      <h1>歡迎使用背汙檢系統</h1>
+      <p>
+        本系統用於記錄和分析背汙檢查數據，支援多站點、多產線和照片上傳。
+        <br><br>
+        請選擇要進入的分頁：
+      </p>
+      <div class="btn-group">
+        <a href="feol.html" class="btn-link btn-feol">📍 FEOL (Front-End Of Line)</a>
+        <a href="beol.html" class="btn-link btn-beol">📍 BEOL (Back-End Of Line)</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="common.js"></script>
+  <script>
+    // 高亮當前分頁
+    function highlightNav() {
+      const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('.nav-menu a').forEach(a => {
+        const href = a.getAttribute('href');
+        if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+          a.classList.add('active');
+        } else {
+          a.classList.remove('active');
+        }
+      });
+    }
+    highlightNav();
+  </script>
+</body>
+</html>

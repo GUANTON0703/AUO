@@ -1,0 +1,1120 @@
+[11:37:37] 📍 開發環境
+[11:37:37]    程式位置: \\tw100049089\00_MyAgent\LV3\後端與程式\app.py
+[11:37:37] 
+[11:37:37] ✅ pywin32 已安裝，可使用 Excel COM
+[11:37:37] 
+[11:37:37] ✅ Pillow 已安裝，可使用快照圖片處理
+[11:37:37] 
+[11:37:37] ⚠️  chardet 未安裝，文字檔編碼偵測將使用 utf-8 預設
+[11:37:37]    建議執行: pip install chardet
+[11:37:37] 
+[11:37:37] 
+[11:37:37] ======================================================================
+[11:37:37] 🚀 LV3 資料查詢系統 - V9.7（DEFECT 模糊匹配 + 逗號多選）
+[11:37:37] ======================================================================
+[11:37:37] 📍 API 位址: http://0.0.0.0:5103
+[11:37:37] 📂 資料路徑: \\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔
+[11:37:37] ⏹️  按 Ctrl+C 停止伺服器
+[11:37:37] ======================================================================
+[11:37:37] 
+[11:37:37] ✨ 版本說明：
+[11:37:37]    ✅ V9.5：Excel COM 改用 DispatchEx，不影響用戶自己開的 Excel
+[11:37:37]    ✅ V9.6：DEFECT 支援逗號分隔多選
+[11:37:37]    ✅ V9.7：修正 DEFECT 搜尋 — 保留字母順序模糊匹配 + 逗號多選
+[11:37:37]             CPC → 能找到 CELL PARTICLE CLUSTER
+[11:37:37]             CPC,CFM → CPC 或 CFM 任一模糊匹配即通過
+[11:37:37] 
+[11:37:37] ✅ TXT 路徑驗證成功
+[11:37:37] 
+[11:37:37] ✅ pywin32 已就緒
+[11:37:37] 
+[11:37:37] 🔍 尋找 HTML 檔案...
+[11:37:37]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[11:37:37]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[11:37:37] ✅ 成功讀取 index.html
+[11:37:37] ✅ 檔案大小: 119432 字元
+[11:37:37] 
+[11:37:37] 
+[11:37:37] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[11:37:37]    ✅ 找到 54 個不重複9碼型號
+[11:37:37]    ❌ 型號列表錯誤: [WinError 10053] 連線已被您主機上的軟體中止。
+[11:37:37] 🔍 尋找 HTML 檔案...
+[11:37:37]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[11:37:37]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[11:37:37] ✅ 成功讀取 index.html
+[11:37:37] ✅ 檔案大小: 119432 字元
+[11:37:37] 
+[11:37:37] 
+[11:37:37] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[11:37:37]    ✅ 找到 54 個不重複9碼型號
+[11:37:37] 🔍 尋找 HTML 檔案...
+[11:37:37]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[11:37:37]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[11:37:37] ✅ 成功讀取 index.html
+[11:37:37] ✅ 檔案大小: 119432 字元
+[11:37:37] 
+[11:37:37] 
+[11:37:37] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[11:37:37]    ✅ 找到 54 個不重複9碼型號
+[11:37:37] 
+[11:37:37] 📍 查詢請求: ID=[], Periods=[('2026', 8)], AdvFilter={'models': ['T550QVN10'], 'defect_keyword': 'EGG'}
+[11:37:37]    ✅ 找到 21 筆結果
+[11:37:37] 
+[11:37:37] 📸 生成快照 (pywin32 COM + 剪貼簿):
+[11:37:37]    檔案: \\tw100049089\ml8bc1\LV3\L8B_LV3\Daily Report\2026\8月\0807秋月.xlsx
+[11:37:37]    分頁: '0807秋月'
+[11:37:37]    列號: 37
+[11:37:37]    🔒 [Fix-10k] 取得 snapshot_lock...
+[11:37:37] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\08\\31\\陳凱年_20260831_K86V4KB_sketch.png'
+[11:37:37] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\08\\27\\陳凱年_20260827_K81K9HF.png'
+[11:37:37] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\08\\29\\李奕寬_20260829_K87993E.jpg'
+[11:37:37] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\08\\29\\李奕寬_20260829_K87G3XC.jpg'
+[11:37:37] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\08\\26\\黃美珠_20260826_K83Y0ZD.png'
+[11:37:37]    ⏳ 啟動獨立 Excel instance... (第 1 次)
+[11:37:37] [/api/image] 檔案存在: True
+[11:37:37] [/api/image] 檔案存在: True
+[11:37:37] [/api/image] 檔案存在: True
+[11:37:37] [/api/image] 父目錄內容(前5): ['大寶_20260827_K7F92DC.png', '大寶_20260827_K7F92DC_2.jpg', '大寶_20260827_K7F92DC_sketch.png', '大寶_20260827_K81J2ZA_sketch.png', '林千_20260827_K7C64JE.jpg']
+[11:37:37] [/api/image] 檔案存在: True
+[11:37:37] [/api/image] 檔案存在: True
+[11:37:37] [/api/image] 父目錄內容(前5): ['余秋月_20260829_K78D8CC.jpg', '余秋月_20260829_K78D8CE.jpg', '余秋月_20260829_K78E1CT.jpg', '余秋月_20260829_K7DR4F4.jpg', '余秋月_20260829_K7DR4G6.jpg']
+[11:37:37] [/api/image] 父目錄內容(前5): ['余秋月_20260829_K78D8CC.jpg', '余秋月_20260829_K78D8CE.jpg', '余秋月_20260829_K78E1CT.jpg', '余秋月_20260829_K7DR4F4.jpg', '余秋月_20260829_K7DR4G6.jpg']
+[11:37:37] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\08\\29\\李奕寬_20260829_K87R02F.jpg'
+[11:37:37] [/api/image] 檔案存在: True
+[11:37:37] [/api/image] 父目錄內容(前5): ['余秋月_20260829_K78D8CC.jpg', '余秋月_20260829_K78D8CE.jpg', '余秋月_20260829_K78E1CT.jpg', '余秋月_20260829_K7DR4F4.jpg', '余秋月_20260829_K7DR4G6.jpg']
+[11:37:37]    ✅ 已建立獨立 Excel process（不影響用戶已開啟的 Excel）
+[11:37:37]    ⏳ 開啟檔案: 0807秋月.xlsx
+[11:37:37] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\08\\31\\陳凱年_20260831_K86V4KB.jpg'
+[11:37:37] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\08\\31\\林千_20260831_K8909TD.jpg'
+[11:37:37] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\08\\31\\林千_20260831_K8610VC.jpg'
+[11:37:37] [/api/image] 檔案存在: True
+[11:37:37] [/api/image] 檔案存在: True
+[11:37:37] [/api/image] 檔案存在: True
+[11:37:37] [/api/image] 父目錄內容(前5): ['林千_20260831_K7DD1RC.jpg', '林千_20260831_K7DD1RC_sketch.jpg', '林千_20260831_K7DD1RC_sketch.png', '林千_20260831_K7E93XH.jpg', '林千_20260831_K7E93XH_sketch.jpg']
+[11:37:37] [/api/image] 父目錄內容(前5): ['林千_20260831_K7DD1RC.jpg', '林千_20260831_K7DD1RC_sketch.jpg', '林千_20260831_K7DD1RC_sketch.png', '林千_20260831_K7E93XH.jpg', '林千_20260831_K7E93XH_sketch.jpg']
+[11:37:37] [/api/image] 父目錄內容(前5): ['林千_20260831_K7DD1RC.jpg', '林千_20260831_K7DD1RC_sketch.jpg', '林千_20260831_K7DD1RC_sketch.png', '林千_20260831_K7E93XH.jpg', '林千_20260831_K7E93XH_sketch.jpg']
+[11:37:37] [/api/image] 父目錄內容(前5): ['林千_20260831_K7DD1RC.jpg', '林千_20260831_K7DD1RC_sketch.jpg', '林千_20260831_K7DD1RC_sketch.png', '林千_20260831_K7E93XH.jpg', '林千_20260831_K7E93XH_sketch.jpg']
+[11:37:37]    ✅ 已開啟（第 1 次嘗試）
+[11:37:37]    ✅ 成功擷取圖片: 1520x97px
+[11:37:37] [/api/image] 父目錄內容(前5): ['林千_20260826_K7A36FE.png', '林千_20260826_K7A36FF.png', '林千_20260826_K7A36FH.png', '林千_20260826_K7A36KW.png', '林千_20260826_K7A36YX.png']
+[11:37:37]    ✅ 快照生成成功 (27307 bytes)
+[11:37:37]    🔒 workbook 已關閉: 0807秋月.xlsx
+[11:37:37]    🔓 snapshot_lock 已釋放
+[11:37:37] 
+[11:37:37] 📸 生成快照 (pywin32 COM + 剪貼簿):
+[11:37:37]    檔案: \\tw100049089\ml8bc1\LV3\L8B_LV3\Daily Report\2026\8月\0810奕寬.xlsx
+[11:37:37]    分頁: '0810'
+[11:37:37]    列號: 43
+[11:37:37]    🔒 [Fix-10k] 取得 snapshot_lock...
+[11:37:37]    ⏳ 開啟檔案: 0810奕寬.xlsx
+[11:37:37]    ⚠️  COM 斷連（-2147220995），重置 Excel 實例...
+[11:37:37]    ⏳ 等待 1.5s 後重試...
+[11:37:37]    ⏳ 啟動獨立 Excel instance... (第 2 次)
+[11:37:37]    ✅ 已建立獨立 Excel process（不影響用戶已開啟的 Excel）
+[11:37:37]    ⏳ 開啟檔案: 0810奕寬.xlsx
+[11:37:37]    ✅ 已開啟（第 2 次嘗試）
+[11:37:37]    ✅ 成功擷取圖片: 1461x113px
+[11:37:37]    ✅ 快照生成成功 (57096 bytes)
+[11:37:37]    🔒 workbook 已關閉: 0810奕寬.xlsx
+[11:37:37]    🔓 snapshot_lock 已釋放
+[11:37:37] 
+[11:37:37] 📸 生成快照 (pywin32 COM + 剪貼簿):
+[11:37:37]    檔案: \\tw100049089\ml8bc1\LV3\L8B_LV3\Daily Report\2026\8月\0810奕寬.xlsx
+[11:37:37]    分頁: '0810'
+[11:37:37]    列號: 44
+[11:44:32]    🔒 [Fix-10k] 取得 snapshot_lock...----------------------------------------
+[11:44:32] Exception occurred during processing of request from ('127.0.0.1', 58449)
+[11:44:32] Traceback (most recent call last):
+[11:44:32]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6489, in do_POST
+[11:44:32]     self.send_json({'success': True, 'models': models})
+[11:44:32]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6673, in send_json
+[11:44:32]     self.wfile.write(json.dumps(data, ensure_ascii=False).encode('utf-8'))
+[11:44:32]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[11:44:32]     self._sock.sendall(b)
+[11:44:32] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[11:44:32] 
+[11:44:32] During handling of the above exception, another exception occurred:
+[11:44:32] 
+[11:44:32] Traceback (most recent call last):
+[11:44:32]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 697, in process_request_thread
+[11:44:32]     self.finish_request(request, client_address)
+[11:44:32]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 362, in finish_request
+[11:44:32]     self.RequestHandlerClass(request, client_address, self)
+[11:44:32]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 766, in __init__
+[11:44:32]     self.handle()
+[11:44:32]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 436, in handle
+[11:44:32]     self.handle_one_request()
+[11:44:32]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 424, in handle_one_request
+[11:44:32]     method()
+[11:44:32]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6513, in do_POST
+[11:44:32]     self.send_json({'success': False, 'error': str(e)})
+[11:44:32]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6665, in send_json
+[11:44:32]     self.end_headers()
+[11:44:32]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 538, in end_headers
+[11:44:32]     self.flush_headers()
+[11:44:32]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 542, in flush_headers
+[11:44:32]     self.wfile.write(b"".join(self._headers_buffer))
+[11:44:32]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[11:44:32]     self._sock.sendall(b)
+[11:44:32] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[11:44:32] ----------------------------------------
+
+====================================================
+[ 啟動於 2026-09-23 13:12:34 ]
+====================================================
+[13:12:37] 📍 開發環境
+[13:12:37]    程式位置: \\tw100049089\00_MyAgent\LV3\後端與程式\app.py
+[13:12:37] 
+[13:12:37] ✅ pywin32 已安裝，可使用 Excel COM
+[13:12:37] 
+[13:12:37] ✅ Pillow 已安裝，可使用快照圖片處理
+[13:12:37] 
+[13:12:37] ⚠️  chardet 未安裝，文字檔編碼偵測將使用 utf-8 預設
+[13:12:37]    建議執行: pip install chardet
+[13:12:37] 
+[13:12:37] [hta_logger] 'lv3' → U:\GPT\小工具轉換\後端總控台\LOG\hta_access.db
+[13:12:37] Traceback (most recent call last):
+[13:12:37]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 7146, in <module>
+[13:12:37]     _hta_logger.register(app)  # HTA auto-middleware
+[13:12:37]                          ^^^
+[13:12:37] NameError: name 'app' is not defined
+
+====================================================
+[ 啟動於 2026-09-23 13:28:13 ]
+====================================================
+[13:28:31] ----------------------------------------
+[13:28:31] Exception occurred during processing of request from ('127.0.0.1', 60780)
+[13:28:31] Traceback (most recent call last):
+[13:28:31]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6489, in do_POST
+[13:28:31]     self.send_json({'success': True, 'models': models})
+[13:28:31]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6673, in send_json
+[13:28:31]     self.wfile.write(json.dumps(data, ensure_ascii=False).encode('utf-8'))
+[13:28:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[13:28:31]     self._sock.sendall(b)
+[13:28:31] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[13:28:31] 
+[13:28:31] During handling of the above exception, another exception occurred:
+[13:28:31] 
+[13:28:31] Traceback (most recent call last):
+[13:28:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 697, in process_request_thread
+[13:28:31]     self.finish_request(request, client_address)
+[13:28:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 362, in finish_request
+[13:28:31]     self.RequestHandlerClass(request, client_address, self)
+[13:28:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 766, in __init__
+[13:28:31]     self.handle()
+[13:28:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 436, in handle
+[13:28:31]     self.handle_one_request()
+[13:28:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 424, in handle_one_request
+[13:28:31]     method()
+[13:28:31]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6513, in do_POST
+[13:28:31]     self.send_json({'success': False, 'error': str(e)})
+[13:28:31]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6665, in send_json
+[13:28:31]     self.end_headers()
+[13:28:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 538, in end_headers
+[13:28:31]     self.flush_headers()
+[13:28:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 542, in flush_headers
+[13:28:31]     self.wfile.write(b"".join(self._headers_buffer))
+[13:28:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[13:28:31]     self._sock.sendall(b)
+[13:28:31] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[13:28:31] ----------------------------------------
+[13:35:04] 📍 開發環境
+[13:35:04]    程式位置: \\tw100049089\00_MyAgent\LV3\後端與程式\app.py
+[13:35:04] 
+[13:35:04] ✅ pywin32 已安裝，可使用 Excel COM
+[13:35:04] 
+[13:35:04] ✅ Pillow 已安裝，可使用快照圖片處理
+[13:35:04] 
+[13:35:04] ⚠️  chardet 未安裝，文字檔編碼偵測將使用 utf-8 預設
+[13:35:04]    建議執行: pip install chardet
+[13:35:04] 
+[13:35:04] [hta_logger] 'lv3' → U:\GPT\小工具轉換\後端總控台\LOG\hta_access.db
+[13:35:04] 
+[13:35:04] ======================================================================
+[13:35:04] 🚀 LV3 資料查詢系統 - V9.7（DEFECT 模糊匹配 + 逗號多選）
+[13:35:04] ======================================================================
+[13:35:04] 📍 API 位址: http://0.0.0.0:5103
+[13:35:04] 📂 資料路徑: \\tw100049089\ML8BC1\LV3\L8B_LV3\Daily Report\文字檔
+[13:35:04] ⏹️  按 Ctrl+C 停止伺服器
+[13:35:04] ======================================================================
+[13:35:04] 
+[13:35:04] ✨ 版本說明：
+[13:35:04]    ✅ V9.5：Excel COM 改用 DispatchEx，不影響用戶自己開的 Excel
+[13:35:04]    ✅ V9.6：DEFECT 支援逗號分隔多選
+[13:35:04]    ✅ V9.7：修正 DEFECT 搜尋 — 保留字母順序模糊匹配 + 逗號多選
+[13:35:04]             CPC → 能找到 CELL PARTICLE CLUSTER
+[13:35:04]             CPC,CFM → CPC 或 CFM 任一模糊匹配即通過
+[13:35:04] 
+[13:35:04] ✅ TXT 路徑驗證成功
+[13:35:04] 
+[13:35:04] ✅ pywin32 已就緒
+[13:35:04] 
+[13:35:04] 🔍 尋找 HTML 檔案...
+[13:35:04]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[13:35:04]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[13:35:04] ✅ 成功讀取 index.html
+[13:35:04] ✅ 檔案大小: 119432 字元
+[13:35:04] 
+[13:35:04] 
+[13:35:04] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[13:35:04]    ✅ 找到 54 個不重複9碼型號
+[13:35:04]    ❌ 型號列表錯誤: [WinError 10053] 連線已被您主機上的軟體中止。
+[13:35:04] 🔍 尋找 HTML 檔案...
+[13:35:04]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[13:35:04]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[13:35:04] ✅ 成功讀取 index.html
+[13:35:04] ✅ 檔案大小: 119432 字元
+[13:35:04] 
+[13:35:04] 
+[13:35:04] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[13:35:04]    ✅ 找到 54 個不重複9碼型號
+[13:35:04] 
+[13:35:04] 📍 查詢請求: ID=[], Periods=[('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)], AdvFilter={'models': ['B156HAN02'], 'defect_keyword': 'rubbing'}
+[13:35:04]    ✅ 找到 11 筆結果
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MB_sketch.png'
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0ME_sketch.png'
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0MF_sketch.png'
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MA_sketch.png'
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MC_sketch.png'
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2P0MD_sketch.png'
+[13:35:04] [/api/image] 檔案存在: True
+[13:35:04] [/api/image] 檔案存在: True
+[13:35:04] [/api/image] 檔案存在: True
+[13:35:04] [/api/image] 檔案存在: True
+[13:35:04] [/api/image] 檔案存在: True
+[13:35:04] [/api/image] 檔案存在: True
+[13:35:04] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:35:04] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:35:04] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:35:04] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:35:04] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:35:04] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MA_sketch.png'
+[13:35:04] [/api/image] 檔案存在: True
+[13:35:04] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\黃美珠_20260920_J36K8DG2Q0MA.jpg'
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\黃美珠_20260920_J36K8DH2G0MF.jpg'
+[13:35:04] [/api/image] 檔案存在: True
+[13:35:04] [/api/image] 檔案存在: True
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MB.jpg'
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2P0MD.jpg'
+[13:35:04] [/api/image] 檔案存在: True
+[13:35:04] [/api/image] 檔案存在: True
+[13:35:04] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:35:04] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0MF.jpg'
+[13:35:04] [/api/image] 檔案存在: True
+[13:35:04] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:35:04] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:35:04] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MA.jpg'
+[13:35:04] [/api/image] 檔案存在: True
+[13:35:04] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:35:04] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0ME.jpg'
+[13:35:04] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg'][/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\陳凱年_20260920_J36K8DG9F0LB_sketch.png'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MA.jpg'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] 
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\陳凱年_20260920_J36K8DG9F0LB.jpg'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\18\\余秋月_20260918_J36K8DA4G0MB.jpg'
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MC.jpg'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['余秋月_20260918_J36K8DA4G0MB.jpg', '余秋月_20260918_K82R33B.jpg', '余秋月_20260918_K8BX1UE.jpg', '余秋月_20260918_K8BY91C.jpg', '余秋月_20260918_K8FL9NE.jpg']
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\18\\余秋月_20260918_J36K8DA4G0MB.jpg'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MB_sketch.png'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MB.jpg'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['余秋月_20260918_J36K8DA4G0MB.jpg', '余秋月_20260918_K82R33B.jpg', '余秋月_20260918_K8BX1UE.jpg', '余秋月_20260918_K8BY91C.jpg', '余秋月_20260918_K8FL9NE.jpg']
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0ME_sketch.png'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0ME.jpg'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0MF_sketch.png'
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0MF.jpg'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MA_sketch.png'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MA.jpg'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MC_sketch.png'
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MC.jpg'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2P0MD_sketch.png'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2P0MD.jpg'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MA_sketch.png'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MA.jpg'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:34] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:34] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\陳凱年_20260920_J36K8DG9F0LB_sketch.png'
+[13:36:34] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\陳凱年_20260920_J36K8DG9F0LB.jpg'[/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\黃美珠_20260920_J36K8DH2G0MF.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\黃美珠_20260920_J36K8DG2Q0MA.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:36:35] 
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\18\\余秋月_20260918_J36K8DA4G0MB.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['余秋月_20260918_J36K8DA4G0MB.jpg', '余秋月_20260918_K82R33B.jpg', '余秋月_20260918_K8BX1UE.jpg', '余秋月_20260918_K8BY91C.jpg', '余秋月_20260918_K8FL9NE.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MB_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MB.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0ME_sketch.png'
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0ME.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0MF_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0MF.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MA_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MA.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MC_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MC.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2P0MD_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2P0MD.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MA_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MA.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\陳凱年_20260920_J36K8DG9F0LB_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\陳凱年_20260920_J36K8DG9F0LB.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\黃美珠_20260920_J36K8DH2G0MF.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg'][/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\黃美珠_20260920_J36K8DG2Q0MA.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\18\\余秋月_20260918_J36K8DA4G0MB.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['余秋月_20260918_J36K8DA4G0MB.jpg', '余秋月_20260918_K82R33B.jpg', '余秋月_20260918_K8BX1UE.jpg', '余秋月_20260918_K8BY91C.jpg', '余秋月_20260918_K8FL9NE.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MB_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MB.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0ME_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0ME.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0MF_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0MF.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MA_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MA.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MC_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MC.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2P0MD_sketch.png'
+[13:36:35] 
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2P0MD.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MA_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MA.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\陳凱年_20260920_J36K8DG9F0LB_sketch.png'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\陳凱年_20260920_J36K8DG9F0LB.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\黃美珠_20260920_J36K8DH2G0MF.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\黃美珠_20260920_J36K8DG2Q0MA.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:36:35] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[13:36:35] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\18\\余秋月_20260918_J36K8DA4G0MB.jpg'
+[13:36:35] [/api/image] 檔案存在: True
+[13:53:41] [/api/image] 父目錄內容(前5): ['余秋月_20260918_J36K8DA4G0MB.jpg', '余秋月_20260918_K82R33B.jpg', '余秋月_20260918_K8BX1UE.jpg', '余秋月_20260918_K8BY91C.jpg', '余秋月_20260918_K8FL9NE.jpg']----------------------------------------
+[13:53:41] Exception occurred during processing of request from ('127.0.0.1', 61730)
+[13:53:41] Traceback (most recent call last):
+[13:53:41]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6489, in do_POST
+[13:53:41]     self.send_json({'success': True, 'models': models})
+[13:53:41]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6673, in send_json
+[13:53:41]     self.wfile.write(json.dumps(data, ensure_ascii=False).encode('utf-8'))
+[13:53:41]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[13:53:41]     self._sock.sendall(b)
+[13:53:41] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[13:53:41] 
+[13:53:41] During handling of the above exception, another exception occurred:
+[13:53:41] 
+[13:53:41] Traceback (most recent call last):
+[13:53:41]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 697, in process_request_thread
+[13:53:41]     self.finish_request(request, client_address)
+[13:53:41]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 362, in finish_request
+[13:53:41]     self.RequestHandlerClass(request, client_address, self)
+[13:53:41]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 766, in __init__
+[13:53:41]     self.handle()
+[13:53:41]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 436, in handle
+[13:53:41]     self.handle_one_request()
+[13:53:41]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 424, in handle_one_request
+[13:53:41]     method()
+[13:53:41]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6513, in do_POST
+[13:53:41]     self.send_json({'success': False, 'error': str(e)})
+[13:53:41]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6665, in send_json
+[13:53:41]     self.end_headers()
+[13:53:41]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 538, in end_headers
+[13:53:41]     self.flush_headers()
+[13:53:41]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 542, in flush_headers
+[13:53:41]     self.wfile.write(b"".join(self._headers_buffer))
+[13:53:41]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[13:53:41]     self._sock.sendall(b)
+[13:53:41] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[13:53:41] ----------------------------------------
+[14:01:27] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MB_sketch.png'
+[14:01:27] [/api/image] 檔案存在: True
+[14:01:27] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:27] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MB.jpg'
+[14:01:27] [/api/image] 檔案存在: True
+[14:01:27] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:27] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0ME_sketch.png'
+[14:01:27] [/api/image] 檔案存在: True
+[14:01:27] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:27] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0ME.jpg'
+[14:01:27] [/api/image] 檔案存在: True
+[14:01:27] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:27] 
+[14:01:27] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0MF_sketch.png'
+[14:01:27] [/api/image] 檔案存在: True
+[14:01:27] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:27] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9E0MF.jpg'
+[14:01:27] [/api/image] 檔案存在: True
+[14:01:27] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:27] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MA_sketch.png'
+[14:01:27] [/api/image] 檔案存在: True
+[14:01:27] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:27] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\陳凱年_20260919_J36K8DG9D0MA.jpg'
+[14:01:27] [/api/image] 檔案存在: True
+[14:01:27] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MC_sketch.png'
+[14:01:27] [/api/image] 檔案存在: True
+[14:01:28] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:28] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:28] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MC.jpg'
+[14:01:28] [/api/image] 檔案存在: True
+[14:01:28] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2P0MD_sketch.png'
+[14:01:28] [/api/image] 檔案存在: True
+[14:01:28] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:28] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:28] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2P0MD.jpg'
+[14:01:28] [/api/image] 檔案存在: True
+[14:01:28] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:28] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MA_sketch.png'
+[14:01:28] [/api/image] 檔案存在: True
+[14:01:28] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:28] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\19\\林千_20260919_J36K8DG2L0MA.jpg'
+[14:01:28] [/api/image] 檔案存在: True
+[14:01:28] [/api/image] 父目錄內容(前5): ['林千_20260919_J36K8DA420JF.jpg', '林千_20260919_J36K8DA430AE.jpg', '林千_20260919_J36K8DA430AF.jpg', '林千_20260919_J36K8DA440FA.jpg', '林千_20260919_J36K8DA440HF.jpg']
+[14:01:28] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\陳凱年_20260920_J36K8DG9F0LB_sketch.png'
+[14:01:28] [/api/image] 檔案存在: True
+[14:01:28] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[14:01:28] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\陳凱年_20260920_J36K8DG9F0LB.jpg'
+[14:01:28] [/api/image] 檔案存在: True
+[14:01:28] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[14:01:28] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\黃美珠_20260920_J36K8DH2G0MF.jpg'
+[14:01:28] [/api/image] 檔案存在: True
+[14:01:28] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[14:01:28] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\20\\黃美珠_20260920_J36K8DG2Q0MA.jpg'
+[14:01:28] [/api/image] 檔案存在: True
+[14:01:28] [/api/image] 父目錄內容(前5): ['林千_20260920_K8AC7TB.jpg', '林千_20260920_K8AC7TB_sketch.jpg', '林千_20260920_K8AK84D.jpg', '林千_20260920_K8AN0MD.jpg', '林千_20260920_K8BB2ZE.jpg']
+[14:01:28] 🔍 尋找 HTML 檔案...
+[14:01:28]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[14:01:28]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[14:01:28] ✅ 成功讀取 index.html
+[14:01:28] ✅ 檔案大小: 119432 字元
+[14:01:28] 
+[14:01:28] 
+[14:01:28] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[14:01:28]    ✅ 找到 54 個不重複9碼型號
+[14:01:28]    ❌ 型號列表錯誤: [WinError 10053] 連線已被您主機上的軟體中止。
+[14:01:28] 🔍 尋找 HTML 檔案...
+[14:01:28]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[14:01:28]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[14:01:28] ✅ 成功讀取 index.html
+[14:01:28] ✅ 檔案大小: 119432 字元
+[14:01:28] 
+[14:01:28] 
+[14:01:30] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]----------------------------------------
+[14:01:30] Exception occurred during processing of request from ('127.0.0.1', 62454)
+[14:01:30] Traceback (most recent call last):
+[14:01:30]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6489, in do_POST
+[14:01:30]     self.send_json({'success': True, 'models': models})
+[14:01:30]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6673, in send_json
+[14:01:30]     self.wfile.write(json.dumps(data, ensure_ascii=False).encode('utf-8'))
+[14:01:30]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[14:01:30]     self._sock.sendall(b)
+[14:01:30] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[14:01:30] 
+[14:01:30] During handling of the above exception, another exception occurred:
+[14:01:30] 
+[14:01:30] Traceback (most recent call last):
+[14:01:30]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 697, in process_request_thread
+[14:01:30]     self.finish_request(request, client_address)
+[14:01:30]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 362, in finish_request
+[14:01:30]     self.RequestHandlerClass(request, client_address, self)
+[14:01:30]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 766, in __init__
+[14:01:30]     self.handle()
+[14:01:30]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 436, in handle
+[14:01:30]     self.handle_one_request()
+[14:01:30]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 424, in handle_one_request
+[14:01:30]     method()
+[14:01:30]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6513, in do_POST
+[14:01:30]     self.send_json({'success': False, 'error': str(e)})
+[14:01:30]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6665, in send_json
+[14:01:30]     self.end_headers()
+[14:01:30]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 538, in end_headers
+[14:01:30]     self.flush_headers()
+[14:01:30]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 542, in flush_headers
+[14:01:30]     self.wfile.write(b"".join(self._headers_buffer))
+[14:01:30]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[14:01:30]     self._sock.sendall(b)
+[14:01:30] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[14:01:30] ----------------------------------------
+[15:11:31] ----------------------------------------
+[15:11:31] Exception occurred during processing of request from ('127.0.0.1', 49460)
+[15:11:31] Traceback (most recent call last):
+[15:11:31]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6489, in do_POST
+[15:11:31]     self.send_json({'success': True, 'models': models})
+[15:11:31]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6673, in send_json
+[15:11:31]     self.wfile.write(json.dumps(data, ensure_ascii=False).encode('utf-8'))
+[15:11:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[15:11:31]     self._sock.sendall(b)
+[15:11:31] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[15:11:31] 
+[15:11:31] During handling of the above exception, another exception occurred:
+[15:11:31] 
+[15:11:31] Traceback (most recent call last):
+[15:11:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 697, in process_request_thread
+[15:11:31]     self.finish_request(request, client_address)
+[15:11:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 362, in finish_request
+[15:11:31]     self.RequestHandlerClass(request, client_address, self)
+[15:11:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 766, in __init__
+[15:11:31]     self.handle()
+[15:11:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 436, in handle
+[15:11:31]     self.handle_one_request()
+[15:11:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 424, in handle_one_request
+[15:11:31]     method()
+[15:11:31]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6513, in do_POST
+[15:11:31]     self.send_json({'success': False, 'error': str(e)})
+[15:11:31]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6665, in send_json
+[15:11:31]     self.end_headers()
+[15:11:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 538, in end_headers
+[15:11:31]     self.flush_headers()
+[15:11:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 542, in flush_headers
+[15:11:31]     self.wfile.write(b"".join(self._headers_buffer))
+[15:11:31]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[15:11:31]     self._sock.sendall(b)
+[15:11:31] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[15:11:31] ----------------------------------------
+[15:33:23] ----------------------------------------
+[15:33:23] Exception occurred during processing of request from ('10.36.38.240', 50635)
+[15:33:23] Traceback (most recent call last):
+[15:33:23]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6489, in do_POST
+[15:33:23]     self.send_json({'success': True, 'models': models})
+[15:33:23]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6673, in send_json
+[15:33:23]     self.wfile.write(json.dumps(data, ensure_ascii=False).encode('utf-8'))
+[15:33:23]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[15:33:23]     self._sock.sendall(b)
+[15:33:23] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[15:33:23] 
+[15:33:23] During handling of the above exception, another exception occurred:
+[15:33:23] 
+[15:33:23] Traceback (most recent call last):
+[15:33:23]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 697, in process_request_thread
+[15:33:23]     self.finish_request(request, client_address)
+[15:33:23]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 362, in finish_request
+[15:33:23]     self.RequestHandlerClass(request, client_address, self)
+[15:33:23]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 766, in __init__
+[15:33:23]     self.handle()
+[15:33:23]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 436, in handle
+[15:33:23]     self.handle_one_request()
+[15:33:23]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 424, in handle_one_request
+[15:33:23]     method()
+[15:33:23]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6513, in do_POST
+[15:33:23]     self.send_json({'success': False, 'error': str(e)})
+[15:33:23]   File "\\tw100049089\00_MyAgent\LV3\後端與程式\app.py", line 6665, in send_json
+[15:33:23]     self.end_headers()
+[15:33:23]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 538, in end_headers
+[15:33:23]     self.flush_headers()
+[15:33:23]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 542, in flush_headers
+[15:33:23]     self.wfile.write(b"".join(self._headers_buffer))
+[15:33:23]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[15:33:23]     self._sock.sendall(b)
+[15:33:23] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[15:33:23] ----------------------------------------
+[15:57:27] 
+[15:57:27]    ✅ 找到 54 個不重複9碼型號
+[15:57:27]    ❌ 型號列表錯誤: [WinError 10053] 連線已被您主機上的軟體中止。
+[15:57:27] 🔍 尋找 HTML 檔案...
+[15:57:27]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[15:57:27]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[15:57:27] ✅ 成功讀取 index.html
+[15:57:27] ✅ 檔案大小: 119432 字元
+[15:57:27] 
+[15:57:27] 
+[15:57:27] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 7), ('2025', 8), ('2026', 1), ('2026', 2), ('2026', 7), ('2026', 8)]
+[15:57:27]    ✅ 找到 49 個不重複9碼型號
+[15:57:27] 🔍 尋找 HTML 檔案...
+[15:57:27]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[15:57:27]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[15:57:27] ✅ 成功讀取 index.html
+[15:57:27] ✅ 檔案大小: 119432 字元
+[15:57:27] 
+[15:57:27] 
+[15:57:27] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[15:57:27]    ✅ 找到 54 個不重複9碼型號
+[15:57:27]    ❌ 型號列表錯誤: [WinError 10053] 連線已被您主機上的軟體中止。
+[15:57:27] 🔍 尋找 HTML 檔案...
+[15:57:27]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[15:57:27]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[15:57:27] ✅ 成功讀取 index.html
+[15:57:27] ✅ 檔案大小: 119432 字元
+[15:57:27] 
+[15:57:27] 
+[15:57:27] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[15:57:27]    ✅ 找到 54 個不重複9碼型號
+[15:57:27]    ❌ 型號列表錯誤: [WinError 10053] 連線已被您主機上的軟體中止。
+[15:57:27] 🔍 尋找 HTML 檔案...
+[15:57:27]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[15:57:27]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[15:57:27] ✅ 成功讀取 index.html
+[15:57:27] ✅ 檔案大小: 119432 字元
+[15:57:27] 
+[15:57:27] 
+[15:57:27] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[15:57:27]    ✅ 找到 54 個不重複9碼型號
+[15:57:27] 🔍 尋找 HTML 檔案...
+[15:57:27]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[15:57:27]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[15:57:27] ✅ 成功讀取 index.html
+[15:57:27] ✅ 檔案大小: 119432 字元
+[15:57:27] 
+[15:57:27] 
+[15:57:27] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[15:57:27]    ✅ 找到 54 個不重複9碼型號
+[15:57:27] 🔍 尋找 HTML 檔案...
+[15:57:27]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[15:57:27]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[15:57:27] ✅ 成功讀取 index.html
+[15:57:27] ✅ 檔案大小: 119432 字元
+[15:57:27] 
+[15:57:27] 
+[15:57:27] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[15:57:27]    ✅ 找到 54 個不重複9碼型號
+[15:57:27] 
+[15:57:27] 📍 查詢請求: ID=['K75M1PE'], Periods=[('2026', 8)], AdvFilter={}
+[15:57:27]    ✅ 找到 0 筆結果
+[15:57:27] 
+[15:57:27] 📍 查詢請求: ID=['K75M1PE'], Periods=[('2026', 8), ('2026', 9)], AdvFilter={}
+[15:57:27]    ✅ 找到 1 筆結果
+[15:57:27] 
+[15:57:27] 📍 查詢請求: ID=['K75M1PE'], Periods=[('2026', 8), ('2026', 9)], AdvFilter={}
+[15:57:27] 
+[15:57:27] 📍 查詢請求: ID=['K75L9HB'], Periods=[('2026', 8), ('2026', 9)], AdvFilter={}
+[15:57:27]    ✅ 找到 1 筆結果
+[15:57:27]    ✅ 找到 1 筆結果
+[15:57:27] 🔍 尋找 HTML 檔案...
+[15:57:27]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[15:57:27]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[15:57:27] ✅ 成功讀取 index.html
+[15:57:27] ✅ 檔案大小: 119432 字元
+[15:57:27] 
+[15:57:27] 
+[15:57:27] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[15:57:27]    ✅ 找到 54 個不重複9碼型號
+[15:57:27] 
+[15:57:27] 📍 查詢請求: ID=['K75M1PE'], Periods=[('2026', 8), ('2026', 9)], AdvFilter={}
+[15:57:27] 
+[15:57:27] 📍 查詢請求: ID=['K75L9HB'], Periods=[('2026', 8), ('2026', 9)], AdvFilter={}
+[15:57:27]    ✅ 找到 1 筆結果
+[15:57:27]    ✅ 找到 1 筆結果
+[15:57:27] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75M1PE_sketch.png'
+[15:57:27] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75M1PE.jpg'
+[15:57:27] [/api/image] 檔案存在: True
+[15:57:27] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75M1PE_2.jpg'
+[15:57:27] [/api/image] 檔案存在: True
+[15:57:27] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75L9HB.jpg'
+[15:57:27] [/api/image] 檔案存在: True
+[15:57:27] [/api/image] 檔案存在: True
+[15:57:27] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[15:57:27] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[15:57:27] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[15:57:27] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[15:57:27] 🔍 尋找 HTML 檔案...
+[15:57:27]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[15:57:27]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[15:57:27] ✅ 成功讀取 index.html
+[15:57:27] ✅ 檔案大小: 119432 字元
+[15:57:27] 
+[15:57:27] 
+[15:57:27] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[15:57:27]    ✅ 找到 54 個不重複9碼型號
+[15:57:27] 🔍 尋找 HTML 檔案...
+[15:57:27]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[15:57:27]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[15:57:27] ✅ 成功讀取 index.html
+[15:57:27] ✅ 檔案大小: 119432 字元
+[15:57:27] 
+[15:57:27] 
+[15:57:27] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[15:57:27]    ✅ 找到 54 個不重複9碼型號
+[15:57:27] 🔍 尋找 HTML 檔案...
+[15:57:27]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[15:57:27]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[15:57:27] ✅ 成功讀取 index.html
+[15:57:27] ✅ 檔案大小: 119432 字元
+[15:57:27] 
+[15:57:27] 
+[16:02:05] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[16:02:05]    ✅ 找到 54 個不重複9碼型號
+[16:02:05] 🔍 尋找 HTML 檔案...
+[16:02:05]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[16:02:05]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[16:02:05] ✅ 成功讀取 index.html
+[16:02:05] ✅ 檔案大小: 119432 字元
+[16:02:05] 
+[16:02:05] 
+[16:02:05] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[16:02:05]    ✅ 找到 54 個不重複9碼型號
+[16:02:05] 
+[16:02:05] 📍 查詢請求: ID=[], Periods=[('2026', 9)], AdvFilter={'models': ['P550QVN06'], 'defect_keyword': 'cf'}
+[16:02:05]    ✅ 找到 0 筆結果
+[16:02:05] 
+[16:02:05] 📍 查詢請求: ID=[], Periods=[('2026', 9)], AdvFilter={'models': ['P550QVN06']}
+[16:02:05]    ✅ 找到 0 筆結果
+[16:02:05] 
+[16:02:05] 📍 查詢請求: ID=[], Periods=[('2026', 9)], AdvFilter={'models': ['P550QVN06', 'P550QVN07']}
+[16:02:05]    ✅ 找到 0 筆結果
+[16:02:05] 
+[16:02:05] 📍 查詢請求: ID=[], Periods=[('2026', 9)], AdvFilter={'models': ['P550QAR01'], 'defect_keyword': 'cpc'}
+[16:02:05]    ✅ 找到 0 筆結果
+[16:02:05] 
+[16:02:05] 📍 查詢請求: ID=[], Periods=[('2026', 9)], AdvFilter={'models': ['P550QAR01'], 'defect_keyword': 'cp'}
+[16:02:05]    ✅ 找到 0 筆結果
+[16:02:05] 🔍 尋找 HTML 檔案...
+[16:02:05]    搜尋資料夾: \\tw100049089\00_MyAgent\LV3\後端與程式
+[16:02:05]    嘗試: \\tw100049089\00_MyAgent\LV3\後端與程式\index.html
+[16:02:05] ✅ 成功讀取 index.html
+[16:02:05] ✅ 檔案大小: 119432 字元
+[16:02:05] 
+[16:02:05] 
+[16:02:05] 📍 型號列表請求: Periods=[('2025', 1), ('2025', 2), ('2025', 3), ('2025', 4), ('2025', 5), ('2025', 6), ('2025', 7), ('2025', 8), ('2025', 9), ('2025', 10), ('2025', 11), ('2025', 12), ('2026', 1), ('2026', 2), ('2026', 3), ('2026', 4), ('2026', 5), ('2026', 6), ('2026', 7), ('2026', 8), ('2026', 9), ('2026', 10), ('2026', 11), ('2026', 12)]
+[16:02:05]    ✅ 找到 54 個不重複9碼型號
+[16:02:05] 
+[16:02:05] 📍 查詢請求: ID=[], Periods=[('2026', 9)], AdvFilter={'models': ['P550QAR01', 'P550QVR01'], 'defect_keyword': 'cp'}
+[16:02:05]    ✅ 找到 31 筆結果
+[16:02:05] 
+[16:02:05] 📍 查詢請求: ID=[], Periods=[('2026', 9)], AdvFilter={'models': ['P550QAR01', 'P550QVR01'], 'defect_keyword': 'cpd'}
+[16:02:05]    ✅ 找到 28 筆結果
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75M1PE_sketch.png'
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K74Q94C_sketch.png'
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K74R8CC_sketch.png'
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K5TC2NC_sketch.png'
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75M1DA_sketch.png'
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K73381B_sketch.png'
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K74R8DE_sketch.png'
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\大寶_20260922_K5TC2NC_sketch.png'
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\大寶_20260922_K73381B_sketch.png'
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\大寶_20260922_K74R8CC_sketch.png'
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\大寶_20260922_K74R8DE_sketch.png'
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\大寶_20260922_K75M1DA_sketch.png'
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\02\\李奕寬_20260902_K1D37UB.jpg'
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8637LF.jpg'
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8638YB_2.jpg'
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K7338WD_2.jpg'
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8637LF_2.jpg'
+[16:02:05] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8638YB.jpg'
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:05] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg'][/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] 
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8641FC_2.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8638FC.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8635UC_2.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8641FC.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8638FC_2.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K7338WD.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K86351A.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K86351A_2.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8635FC.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8635FC_2.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\余秋月_20260909_K85403A.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\余秋月_20260909_K86413C.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K5TC2NC.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75M1DA.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75M1PE_2.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\余秋月_20260909_K8643BE.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75M1PE.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K74Q94C.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:07] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K73381B.jpg'
+[16:02:07] [/api/image] 檔案存在: True
+[16:02:07] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K74R8CC.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K74R8DE.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\02\\李奕寬_20260902_K1C86DC.jpg'
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\02\\李奕寬_20260902_K1B11CA.jpg'
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\02\\李奕寬_20260902_K1C85CF.jpg'
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\02\\李奕寬_20260902_K1D36VA.jpg'
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8635UC.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260902_K74T83L.jpg', '余秋月_20260902_K75L01C.jpg', '余秋月_20260902_K75L01C_sketch.jpg', '余秋月_20260902_K75L01C_sketch.png', '余秋月_20260902_K7BJ3BC.jpg']
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260902_K74T83L.jpg', '余秋月_20260902_K75L01C.jpg', '余秋月_20260902_K75L01C_sketch.jpg', '余秋月_20260902_K75L01C_sketch.png', '余秋月_20260902_K7BJ3BC.jpg']
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260902_K74T83L.jpg', '余秋月_20260902_K75L01C.jpg', '余秋月_20260902_K75L01C_sketch.jpg', '余秋月_20260902_K75L01C_sketch.png', '余秋月_20260902_K7BJ3BC.jpg']
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260902_K74T83L.jpg', '余秋月_20260902_K75L01C.jpg', '余秋月_20260902_K75L01C_sketch.jpg', '余秋月_20260902_K75L01C_sketch.png', '余秋月_20260902_K7BJ3BC.jpg']
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260902_K74T83L.jpg', '余秋月_20260902_K75L01C.jpg', '余秋月_20260902_K75L01C_sketch.jpg', '余秋月_20260902_K75L01C_sketch.png', '余秋月_20260902_K7BJ3BC.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\02\\李奕寬_20260902_K1D37UB.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260902_K74T83L.jpg', '余秋月_20260902_K75L01C.jpg', '余秋月_20260902_K75L01C_sketch.jpg', '余秋月_20260902_K75L01C_sketch.png', '余秋月_20260902_K7BJ3BC.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\02\\李奕寬_20260902_K1C86DC.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260902_K74T83L.jpg', '余秋月_20260902_K75L01C.jpg', '余秋月_20260902_K75L01C_sketch.jpg', '余秋月_20260902_K75L01C_sketch.png', '余秋月_20260902_K7BJ3BC.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\02\\李奕寬_20260902_K1B11CA.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260902_K74T83L.jpg', '余秋月_20260902_K75L01C.jpg', '余秋月_20260902_K75L01C_sketch.jpg', '余秋月_20260902_K75L01C_sketch.png', '余秋月_20260902_K7BJ3BC.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\02\\李奕寬_20260902_K1C85CF.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260902_K74T83L.jpg', '余秋月_20260902_K75L01C.jpg', '余秋月_20260902_K75L01C_sketch.jpg', '余秋月_20260902_K75L01C_sketch.png', '余秋月_20260902_K7BJ3BC.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\02\\李奕寬_20260902_K1D36VA.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260902_K74T83L.jpg', '余秋月_20260902_K75L01C.jpg', '余秋月_20260902_K75L01C_sketch.jpg', '余秋月_20260902_K75L01C_sketch.png', '余秋月_20260902_K7BJ3BC.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8635UC.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8635UC_2.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8638FC.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8638FC_2.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8638YB.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8638YB_2.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8641FC.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8641FC_2.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:22] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:22] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8637LF.jpg'
+[16:02:22] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg'][/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8637LF_2.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K7338WD.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K7338WD_2.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K86351A.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:23] 
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K86351A_2.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8635FC.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\陳怡君_20260909_K8635FC_2.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\余秋月_20260909_K85403A.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\余秋月_20260909_K86413C.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\09\\余秋月_20260909_K8643BE.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260909_K7F8742.jpg', '余秋月_20260909_K83E1TE.jpg', '余秋月_20260909_K85403A.jpg', '余秋月_20260909_K86413C.jpg', '余秋月_20260909_K8643BE.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75M1PE_sketch.png'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75M1PE.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75M1PE_2.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K74Q94C_sketch.png'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K74Q94C.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K74R8CC_sketch.png'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K74R8CC.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K5TC2NC_sketch.png'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K5TC2NC.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75M1DA_sketch.png'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']
+[16:02:23] [/api/image] 收到路徑: '\\\\tw100049089\\ML8BC1\\LV3\\L8B_LV3\\Daily Report\\文字檔\\PIC\\2026\\09\\22\\李奕寬_20260922_K75M1DA.jpg'
+[16:02:23] [/api/image] 檔案存在: True
+[16:02:23] [/api/image] 父目錄內容(前5): ['余秋月_20260922_K8B122C.jpg', '余秋月_20260922_K8DX03D.jpg', '余秋月_20260922_K8DX0TB.jpg', '余秋月_20260922_K8E35DQ.jpg', '余秋月_20260922_K9164CQ.jpg']

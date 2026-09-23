@@ -1,0 +1,207 @@
+[2026-09-23 10:43:43] name_map 載入：56 筆
+[2026-09-23 10:43:43] 每日 07:00 自動清空排程已啟動
+[2026-09-23 10:43:43] ============================================================
+[2026-09-23 10:43:43] HTA Work Platform Launcher v2.9.3
+[2026-09-23 10:43:43] Management @ http://localhost:5100
+[2026-09-23 10:43:43] ============================================================
+[2026-09-23 10:43:45] Auto-start: 開始啟動 10 個服務...
+[2026-09-23 10:43:45] Auto-start: wish_pool pid=15072
+[2026-09-23 10:43:45] Auto-start: roller_mark pid=14388
+[2026-09-23 10:43:46] Auto-start: lv3 pid=2696
+[2026-09-23 10:43:46] Auto-start: lv3keyin pid=16284
+[2026-09-23 10:43:47] Auto-start: yield_query pid=13324
+[2026-09-23 10:43:47] Auto-start: pi_insp pid=7280
+[2026-09-23 10:43:48] Auto-start: id_convert pid=5248
+[2026-09-23 10:43:48] Auto-start: boss_site pid=15568
+[2026-09-23 10:43:49] Auto-start: fma_trend pid=15532
+[2026-09-23 10:43:49] Auto-start: yield_dashboard pid=11500
+[2026-09-23 10:43:50] Auto-start: 完成
+[2026-09-23 10:44:20] Started wish_pool pid=6368
+[2026-09-23 10:44:44] Browser opened: http://10.36.38.240:5203
+[2026-09-23 10:44:47] Browser opened: http://10.36.38.240:5110
+[2026-09-23 10:44:50] Browser opened: http://10.36.38.240:5731
+[2026-09-23 10:44:53] Browser opened: http://10.36.38.240:5050
+[2026-09-23 10:45:50] Browser opened: http://10.36.38.240:5106
+[2026-09-23 10:55:56] Started wish_pool pid=12060
+[2026-09-23 10:56:11] Browser opened: http://localhost:5101
+[2026-09-23 10:56:15] Started lv3 pid=5620
+[2026-09-23 10:56:23] Started lv3keyin pid=11520
+[2026-09-23 10:56:33] Started yield_query pid=8068
+[2026-09-23 10:56:59] Browser opened: http://localhost:5101
+[2026-09-23 10:57:03] Browser opened: http://localhost:5102
+[2026-09-23 10:57:10] Browser opened: http://localhost:5103
+[2026-09-23 10:57:14] Browser opened: http://localhost:5104
+[2026-09-23 10:57:18] Browser opened: http://10.36.38.240:5105
+[2026-09-23 10:57:27] Browser opened: http://10.36.38.240:5106
+[2026-09-23 10:57:32] Browser opened: http://10.36.38.240:5110
+[2026-09-23 10:57:35] Browser opened: http://10.36.38.240:5731
+[2026-09-23 10:57:38] Browser opened: http://10.36.38.240:5050
+[2026-09-23 10:57:42] Browser opened: http://10.36.38.240:5203
+[2026-09-23 11:30:41] api_log_clear db error: no such table: access_log
+[2026-09-23 11:30:41] Cleared log file: boss_site.log
+[2026-09-23 11:30:41] Cleared log file: fma_trend.log
+[2026-09-23 11:30:41] Cleared log file: id_convert.log
+[2026-09-23 11:30:41] Cleared log file: lv3.log
+[2026-09-23 11:30:41] Cleared log file: lv3keyin.log
+[2026-09-23 11:30:41] Cleared log file: pi_insp.log
+[2026-09-23 11:30:41] Cleared log file: roller_mark.log
+[2026-09-23 11:30:41] Cleared log file: wish_pool.log
+[2026-09-23 11:30:41] Cleared log file: yield_dashboard.log
+[2026-09-23 11:30:41] Cleared log file: yield_query.log
+[2026-09-23 11:30:43] api_access_logs error: no such table: access_log
+[2026-09-23 11:30:43] api_access_stats error: no such table: access_log
+[2026-09-23 11:30:43] api_access_logs error: no such table: access_log
+[2026-09-23 11:30:43] api_access_stats error: no such table: access_log
+[2026-09-23 11:30:48] api_access_stats error: no such table: access_log
+[2026-09-23 11:30:48] api_access_logs error: no such table: access_log
+[2026-09-23 11:30:53] api_access_logs error: no such table: access_log
+[2026-09-23 11:30:53] api_access_stats error: no such table: access_log
+[2026-09-23 11:30:58] api_access_logs error: no such table: access_log
+[2026-09-23 11:30:58] api_access_stats error: no such table: access_log
+[2026-09-23 11:31:02] api_ip_summary error: no such table: access_log
+[2026-09-23 11:31:09] api_ip_summary error: no such table: access_log
+[2026-09-23 11:31:39] Browser opened: http://localhost:5101
+[2026-09-23 11:38:47] api_ip_summary error: no such table: access_log
+[2026-09-23 11:39:43] api_ip_summary error: no such table: access_log
+[2026-09-23 11:44:09] Browser opened: http://localhost:5101
+[2026-09-23 11:44:12] Browser opened: http://localhost:5102
+[2026-09-23 11:44:22] Browser opened: http://localhost:5103
+[2026-09-23 11:44:34] Browser opened: http://10.36.38.240:5731
+[2026-09-23 11:44:37] Browser opened: http://10.36.38.240:5050
+[2026-09-23 11:44:54] Browser opened: http://10.36.38.240:5203
+[2026-09-23 11:44:54] Browser opened: http://10.36.38.240:5203
+[2026-09-23 11:58:36] api_ip_summary error: no such table: access_log
+[2026-09-23 11:58:39] api_ip_summary error: no such table: access_log
+[2026-09-23 12:02:00] Browser opened: http://10.36.38.240:5106
+[2026-09-23 12:08:36] Browser opened: http://10.36.38.240:5106
+[2026-09-23 13:11:54] api_ip_summary error: no such table: access_log
+[2026-09-23 13:12:03] Shutting down all services...
+[2026-09-23 13:12:04] Done.
+[2026-09-23 13:12:31] name_map 載入：56 筆
+[2026-09-23 13:12:31] 每日 07:00 自動清空排程已啟動
+[2026-09-23 13:12:31] ============================================================
+[2026-09-23 13:12:31] HTA Work Platform Launcher v2.9.3
+[2026-09-23 13:12:31] Management @ http://localhost:5100
+[2026-09-23 13:12:31] ============================================================
+[2026-09-23 13:12:33] Auto-start: 開始啟動 11 個服務...
+[2026-09-23 13:12:33] Auto-start: wish_pool pid=2780
+[2026-09-23 13:12:34] Auto-start: roller_mark pid=5948
+[2026-09-23 13:12:34] Auto-start: lv3 pid=7256
+[2026-09-23 13:12:35] Auto-start: lv3keyin pid=12840
+[2026-09-23 13:12:35] Auto-start: yield_query pid=2484
+[2026-09-23 13:12:36] Auto-start: pi_insp pid=13596
+[2026-09-23 13:12:36] Auto-start: id_convert pid=12220
+[2026-09-23 13:12:37] Auto-start: boss_site pid=6256
+[2026-09-23 13:12:37] Auto-start: fma_trend pid=16008
+[2026-09-23 13:12:38] Auto-start: SRP pid=11628
+[2026-09-23 13:12:39] Auto-start: yield_dashboard pid=8468
+[2026-09-23 13:12:39] Auto-start: 完成
+[2026-09-23 13:14:18] Browser opened: http://localhost:5101
+[2026-09-23 13:14:30] Browser opened: http://10.36.38.240:5106
+[2026-09-23 13:14:34] Browser opened: http://10.36.38.240:5110
+[2026-09-23 13:14:43] Browser opened: http://10.36.38.240:5731
+[2026-09-23 13:14:46] Browser opened: http://10.36.38.240:5050
+[2026-09-23 13:15:04] Browser opened: http://10.36.38.240:5202
+[2026-09-23 13:15:08] Browser opened: http://10.36.38.240:5203
+[2026-09-23 13:19:02] Started roller_mark pid=11948
+[2026-09-23 13:28:00] Started roller_mark pid=14112
+[2026-09-23 13:28:10] Browser opened: http://localhost:5102
+[2026-09-23 13:28:13] Started lv3 pid=10560
+[2026-09-23 13:28:25] Browser opened: http://localhost:5103
+[2026-09-23 13:28:29] Started lv3keyin pid=1812
+[2026-09-23 13:28:37] Browser opened: http://localhost:5104
+[2026-09-23 13:28:42] Started yield_query pid=15668
+[2026-09-23 13:28:52] Browser opened: http://10.36.38.240:5105
+[2026-09-23 13:51:26] Stopped roller_mark
+[2026-09-23 13:52:50] Started roller_mark pid=10572
+[2026-09-23 13:53:24] Browser opened: http://localhost:5101
+[2026-09-23 13:53:36] Browser opened: http://localhost:5103
+[2026-09-23 13:53:39] Browser opened: http://localhost:5104
+[2026-09-23 13:53:43] Browser opened: http://10.36.38.240:5105
+[2026-09-23 13:53:48] Browser opened: http://10.36.38.240:5106
+[2026-09-23 13:53:52] Browser opened: http://10.36.38.240:5110
+[2026-09-23 13:53:55] Browser opened: http://10.36.38.240:5731
+[2026-09-23 13:53:58] Browser opened: http://10.36.38.240:5050
+[2026-09-23 13:54:02] Browser opened: http://10.36.38.240:5202
+[2026-09-23 13:54:02] Browser opened: http://localhost:5102
+[2026-09-23 13:54:06] Browser opened: http://10.36.38.240:5203
+[2026-09-23 13:57:55] Browser opened: http://localhost:5102
+[2026-09-23 13:57:57] Browser opened: http://localhost:5102
+[2026-09-23 13:58:35] Stopped roller_mark
+[2026-09-23 13:58:38] Started roller_mark pid=13736
+[2026-09-23 13:59:00] Browser opened: http://localhost:5102
+[2026-09-23 14:00:56] Browser opened: http://10.36.38.240:5203
+[2026-09-23 14:01:02] Browser opened: http://10.36.38.240:5202
+[2026-09-23 14:01:05] Browser opened: http://10.36.38.240:5050
+[2026-09-23 14:01:08] Browser opened: http://10.36.38.240:5731
+[2026-09-23 14:01:10] Browser opened: http://10.36.38.240:5110
+[2026-09-23 14:01:14] Browser opened: http://10.36.38.240:5106
+[2026-09-23 14:01:18] Browser opened: http://10.36.38.240:5105
+[2026-09-23 14:01:22] Browser opened: http://localhost:5104
+[2026-09-23 14:01:26] Browser opened: http://localhost:5103
+[2026-09-23 14:01:30] Browser opened: http://localhost:5102
+[2026-09-23 14:01:33] Browser opened: http://localhost:5101
+[2026-09-23 14:16:58] Browser opened: http://10.36.38.240:5203
+[2026-09-23 14:17:20] Browser opened: http://localhost:5104
+[2026-09-23 14:17:33] Browser opened: http://10.36.38.240:5050
+[2026-09-23 14:24:52] Browser opened: http://10.36.38.240:5202
+[2026-09-23 14:26:25] Browser opened: http://10.36.38.240:5202
+[2026-09-23 14:27:36] Browser opened: http://10.36.38.240:5202
+[2026-09-23 14:50:40] Stopped SRP
+[2026-09-23 14:50:43] Started SRP pid=15228
+[2026-09-23 14:50:51] Browser opened: http://10.36.38.240:5202
+[2026-09-23 14:52:07] Browser opened: http://10.36.38.240:5202
+[2026-09-23 14:53:59] Browser opened: http://10.36.38.240:5202
+[2026-09-23 14:57:07] Stopped SRP
+[2026-09-23 14:57:11] Started SRP pid=5616
+[2026-09-23 14:57:23] Browser opened: http://10.36.38.240:5202
+[2026-09-23 15:11:21] Browser opened: http://localhost:5101
+[2026-09-23 15:11:24] Browser opened: http://localhost:5102
+[2026-09-23 15:11:27] Browser opened: http://localhost:5103
+[2026-09-23 15:11:31] Browser opened: http://localhost:5104
+[2026-09-23 15:11:34] Browser opened: http://10.36.38.240:5105
+[2026-09-23 15:11:38] Browser opened: http://10.36.38.240:5106
+[2026-09-23 15:11:41] Browser opened: http://10.36.38.240:5110
+[2026-09-23 15:11:44] Browser opened: http://10.36.38.240:5731
+[2026-09-23 15:11:48] Browser opened: http://10.36.38.240:5050
+[2026-09-23 15:11:52] Browser opened: http://10.36.38.240:5203
+[2026-09-23 15:12:26] Stopped yield_dashboard
+[2026-09-23 15:12:29] Started yield_dashboard pid=11452
+[2026-09-23 15:12:40] Browser opened: http://10.36.38.240:5202
+[2026-09-23 15:12:47] Stopped SRP
+[2026-09-23 15:12:52] Started SRP pid=13732
+[2026-09-23 15:12:59] Browser opened: http://10.36.38.240:5202
+[2026-09-23 15:14:13] Browser opened: http://localhost:5102
+[2026-09-23 15:17:06] Browser opened: http://10.36.38.240:5203
+[2026-09-23 15:17:16] Browser opened: http://10.36.38.240:5202
+[2026-09-23 15:17:28] Browser opened: http://10.36.38.240:5106
+[2026-09-23 15:26:59] Browser opened: http://10.36.38.240:5203
+[2026-09-23 15:27:03] Browser opened: http://10.36.38.240:5202
+[2026-09-23 15:33:27] Browser opened: http://localhost:5101
+[2026-09-23 15:33:30] Browser opened: http://localhost:5102
+[2026-09-23 15:33:34] Browser opened: http://localhost:5103
+[2026-09-23 15:33:37] Browser opened: http://localhost:5104
+[2026-09-23 15:33:41] Browser opened: http://10.36.38.240:5105
+[2026-09-23 15:33:43] Browser opened: http://10.36.38.240:5106
+[2026-09-23 15:33:49] Browser opened: http://10.36.38.240:5110
+[2026-09-23 15:33:53] Browser opened: http://10.36.38.240:5731
+[2026-09-23 15:33:56] Browser opened: http://10.36.38.240:5050
+[2026-09-23 15:33:59] Browser opened: http://10.36.38.240:5202
+[2026-09-23 15:34:03] Browser opened: http://10.36.38.240:5203
+[2026-09-23 15:35:53] Browser opened: http://localhost:5104
+[2026-09-23 15:43:23] Browser opened: http://localhost:5104
+[2026-09-23 15:45:47] Browser opened: http://localhost:5104
+[2026-09-23 15:46:25] Browser opened: http://localhost:5101
+[2026-09-23 15:46:28] Browser opened: http://localhost:5102
+[2026-09-23 15:46:31] Browser opened: http://localhost:5103
+[2026-09-23 15:46:34] Browser opened: http://localhost:5104
+[2026-09-23 15:46:37] Browser opened: http://10.36.38.240:5105
+[2026-09-23 15:46:39] Browser opened: http://10.36.38.240:5106
+[2026-09-23 15:46:43] Browser opened: http://10.36.38.240:5110
+[2026-09-23 15:46:45] Browser opened: http://10.36.38.240:5731
+[2026-09-23 15:46:47] Browser opened: http://10.36.38.240:5050
+[2026-09-23 15:46:49] Browser opened: http://10.36.38.240:5202
+[2026-09-23 15:46:54] Browser opened: http://10.36.38.240:5203
+[2026-09-23 15:57:25] Browser opened: http://localhost:5103
+[2026-09-23 15:59:29] Browser opened: http://localhost:5103
+[2026-09-23 16:07:04] Browser opened: http://10.36.38.240:5731

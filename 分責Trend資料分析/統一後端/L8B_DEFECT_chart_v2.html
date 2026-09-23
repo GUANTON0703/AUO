@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L8B CELL FIRST 常見 DEFECT監控報表</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Segoe UI", "Microsoft JhengHei", sans-serif; background: #f0f2f5; min-height: 100vh; padding: 4px 8px; }
+    #filter-row { display: none !important; }
+    #settings-toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #4361ee; cursor: pointer; background: #eef0fb; border: none; border-radius: 8px; padding: 5px 12px; font-weight: 600; margin-bottom: 4px; transition: background .2s; }
+    #settings-toggle:hover { background: #dde1f7; }
+    #settings-panel { display: none; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 24px; margin-bottom: 20px; }
+    #settings-panel.open { display: block; }
+    .setting-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 4px; }
+    .setting-row label { font-size: 13px; color: #444; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .setting-row input[type=checkbox] { accent-color: #4361ee; width: 15px; height: 15px; }
+    .setting-row select { padding: 5px 10px; border: 1.5px solid #d0d5dd; border-radius: 6px; font-size: 13px; color: #222; outline: none; cursor: pointer; }
+    .setting-row span { font-size: 13px; color: #444; }
+    .clip-row, .iw-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+    .clip-row span, .iw-row span { font-size: 13px; color: #444; }
+    .clip-row input[type=range], .iw-row input[type=range] { accent-color: #4361ee; width: 160px; }
+    #clip-val, #iw-val { font-size: 13px; font-weight: 700; color: #4361ee; min-width: 44px; }
+    .clip-hint, .iw-hint { font-size: 11px; color: #aaa; }
+    .setting-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
+    .setting-actions button { padding: 9px 22px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .2s; }
+    #btn-gen { background: #4361ee; color: #fff; } #btn-gen:hover { background: #3451d1; }
+    #btn-save { background: #2ecc71; color: #fff; } #btn-save:hover { background: #27ae60; }
+    #btn-clear-save { background: #fff3cd; color: #856404; border: 1px solid #ffc107; } #btn-clear-save:hover { background: #ffe69c; }
+    #btn-clear { background: #eef0fb; color: #4361ee; } #btn-clear:hover { background: #dde1f7; }
+    #save-status { font-size: 12px; color: #27ae60; font-weight: 600; opacity: 0; transition: opacity .4s; display: flex; align-items: center; gap: 4px; }
+    #save-status.show { opacity: 1; }
+    #saved-banner { display: none; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 12px; color: #2d6a4f; background: #d8f3dc; border: 1px solid #95d5b2; border-radius: 8px; padding: 8px 14px; margin-bottom: 6px; }
+    #saved-banner.show { display: flex; }
+    #saved-banner strong { font-weight: 700; }
+    #saved-banner .banner-products { color: #1b4332; font-weight: 600; max-width: 600px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #tab-bar { display: none !important; }
+    .tab-btn { padding: 10px 28px; border: 2px solid #d0d5dd; border-bottom: none; border-radius: 10px 10px 0 0; background: #f7f8fc; color: #666; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background .15s, color .15s, border-color .15s; }
+    .tab-btn:hover { background: #eef0fb; color: #4361ee; border-color: #b0bcf7; }
+    .tab-btn.active { background: #fff; color: #4361ee; border-color: #4361ee; border-bottom: 2px solid #fff; margin-bottom: -2px; position: relative; z-index: 2; }
+    #matrix-wrap { border: 2px solid #4361ee; border-radius: 12px; background: #fff; box-shadow: 0 2px 16px rgba(0,0,0,0.08); overflow-x: auto; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    table { border-collapse: collapse; background: #fff; width: 100%; table-layout: fixed; }
+    th, td { border: 1px solid #e8eaf2; padding: 0; }
+    col.col-product { width: 200px; }
+    th.corner { background: #f7f8fc; padding: 4px 8px; font-size: 11px; color: #aaa; font-weight: 400; white-space: nowrap; text-align: center; }
+    th.defect-head { background: #4361ee; color: #fff; font-size: 16px; font-weight: 600; text-align: center; white-space: nowrap; padding: 4px 8px; }
+    td.product-head { background: #eef0fb; color: #4361ee; font-size: 20px; font-weight: 700; padding: 0 12px; white-space: nowrap; text-align: center; vertical-align: middle; position: sticky; left: 0; z-index: 10; box-shadow: 2px 0 6px rgba(0,0,0,0.08); }
+    .sticky-thead-clone { position: fixed; z-index: 30; overflow: hidden; pointer-events: none; display: none; }
+    .sticky-thead-clone.active { display: block; }
+    .sticky-thead-clone table { border-collapse: collapse; table-layout: fixed; }
+    .sticky-thead-clone th.corner { background: #f7f8fc; padding: 4px 8px; font-size: 11px; color: #aaa; font-weight: 400; white-space: nowrap; text-align: center; }
+    .sticky-thead-clone th.defect-head { background: #4361ee; color: #fff; font-size: 16px; font-weight: 600; text-align: center; white-space: nowrap; padding: 4px 8px; }
+    td.cell-link { padding: 0; overflow: hidden; position: relative; }
+    .thumb-box { width: 100%; overflow: hidden; position: relative; background: #f3f4f9; }
+    .thumb-box iframe { position: absolute; top: 0; left: 0; border: none; display: block; pointer-events: none; transform-origin: top left; }
+    .loading-mask { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: #f3f4f9; transition: opacity .4s; }
+    .loading-mask.done { opacity: 0; pointer-events: none; }
+    .loading-mask.failed { background: rgba(255,235,235,0.95); }
+    .spinner { width: 20px; height: 20px; border: 2.5px solid #d0d5dd; border-top-color: #4361ee; border-radius: 50%; animation: spin .8s linear infinite; }
+    .spinner.retrying { border-top-color: #f39c12; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-mask .load-label { font-size: 10px; color: #aaa; text-align: center; padding: 0 4px; }
+    .loading-mask.failed .load-label { color: #e74c3c; font-weight: 600; }
+    .loading-mask.waiting .spinner { border-top-color: #ccc; animation: none; }
+    .loading-mask.waiting .load-label { color: #ccc; }
+    .fail-icon { display: none; font-size: 18px; line-height: 1; }
+    .loading-mask.failed .fail-icon { display: block; }
+    .loading-mask.failed .spinner { display: none; }
+    .row-progress { display: block; height: 3px; background: #d0d5dd; margin-top: 4px; border-radius: 2px; overflow: hidden; }
+    .row-progress-bar { height: 100%; width: 0%; background: #4361ee; transition: width .3s ease; border-radius: 2px; }
+    .row-progress-bar.done { background: #2ecc71; width: 100%; }
+    .hover-label { position: absolute; bottom: 8px; left: 0; right: 0; z-index: 3; display: flex; align-items: center; justify-content: center; gap: 5px; color: #4361ee; font-size: 12px; font-weight: 700; opacity: 0; transition: opacity .15s; pointer-events: none; text-shadow: 0 0 6px #fff, 0 0 10px #fff; }
+    a.cell-anchor:hover .hover-label { opacity: 1; }
+    a.cell-anchor:hover .thumb-box { outline: 3px solid #4361ee; outline-offset: -3px; }
+    a.cell-anchor { display: block; width: 100%; text-decoration: none; position: relative; cursor: pointer; }
+    #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 1000; align-items: center; justify-content: center; }
+    #overlay.active { display: flex; }
+    #modal { background: #fff; border-radius: 14px; overflow: hidden; width: 92vw; height: 90vh; display: flex; flex-direction: column; box-shadow: 0 8px 40px rgba(0,0,0,.3); }
+    #modal-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: #4361ee; color: #fff; flex-shrink: 0; }
+    #modal-title { font-size: 14px; font-weight: 600; }
+    #modal-actions { display: flex; align-items: center; gap: 12px; }
+    #modal-newtab { background: rgba(255,255,255,.2); border: none; color: #fff; font-size: 12px; padding: 5px 12px; border-radius: 6px; cursor: pointer; }
+    #modal-newtab:hover { background: rgba(255,255,255,.35); }
+    #modal-close { background: rgba(255,255,255,.15); border: none; color: #fff; font-size: 20px; line-height: 1; padding: 2px 8px; border-radius: 6px; cursor: pointer; }
+    #modal-close:hover { background: rgba(255,255,255,.3); }
+    #modal-frame { flex: 1; border: none; width: 100%; }
+    .empty-msg { padding: 40px; text-align: center; color: #aaa; font-size: 14px; }
+    .link-cell { display: flex; align-items: center; justify-content: center; height: 100%; padding: 8px; }
+    .link-cell a { display: inline-flex; align-items: center; gap: 6px; color: #4361ee; font-size: 13px; font-weight: 600; text-decoration: none; padding: 8px 16px; border: 2px solid #4361ee; border-radius: 8px; transition: background .15s, color .15s; }
+    .link-cell a:hover { background: #eef0fb; }
+  </style>
+</head>
+<body>
+
+  <!-- 隱藏的篩選列：欄位保留以接收 postMessage 連動，視覺上不顯示 -->
+  <div id="filter-row">
+    <input type="hidden" id="product-input" value="">
+    <input type="hidden" id="defect-input" value="">
+  </div>
+
+  <div id="saved-banner">
+    <strong>💾 已套用儲存設定</strong>
+    <span>PRODUCT：</span>
+    <span class="banner-products" id="banner-products-text"></span>
+    <span id="banner-defects-text" style="color:#1b4332;font-weight:600;"></span>
+  </div>
+
+  <button id="settings-toggle">⚙ 顯示設定</button>
+  <div id="settings-panel">
+    <div class="setting-row">
+      <label><input type="checkbox" id="chk-thumb" checked> 顯示縮圖預覽</label>
+      <span>縮圖大小：</span>
+      <select id="sel-size">
+        <option value="small">小</option>
+        <option value="medium" selected>中</option>
+        <option value="large">大</option>
+      </select>
+    </div>
+    <div class="clip-row">
+      <span>頁面裁切高度：</span>
+      <input type="range" id="clip-range" min="400" max="2000" step="50" value="400">
+      <span id="clip-val">400 px</span>
+      <span class="clip-hint">（只擷取來源頁面頂部這個高度）</span>
+    </div>
+    <div class="iw-row">
+      <span>來源頁面寬度：</span>
+      <input type="range" id="iw-range" min="800" max="2560" step="40" value="960">
+      <span id="iw-val">960 px</span>
+      <span class="iw-hint">（iframe 縮放基準）</span>
+    </div>
+    <div class="setting-actions">
+      <button id="btn-gen">套用 / 重新產生</button>
+      <button id="btn-save">💾 儲存設定</button>
+      <button id="btn-clear-save">✕ 清除已儲存設定</button>
+      <button id="btn-clear">清除報表</button>
+      <span id="save-status">✔ 設定已儲存！下次開啟會自動套用。</span>
+    </div>
+  </div>
+
+  <div id="tab-bar"></div>
+  <div id="matrix-wrap"></div>
+  <div id="sticky-clone" class="sticky-thead-clone"></div>
+
+  <div id="overlay">
+    <div id="modal">
+      <div id="modal-header">
+        <span id="modal-title">—</span>
+        <div id="modal-actions">
+          <button id="modal-newtab">↗ 新分頁開啟</button>
+          <button id="modal-close">×</button>
+        </div>
+      </div>
+      <iframe id="modal-frame" src=""></iframe>
+    </div>
+  </div>
+
+  <script>
+    /* ── 預設值（沒有 localStorage 且沒有 postMessage 時使用）── */
+    const DEFAULT_PRODUCT = "P550HVN06";
+    const DEFAULT_DEFECT  = "CPD";
+
+    const BASE            = "http://tw100049089/L8BC1/CELL_TEST/FirstYieldRES_EDA.aspx";
+    const DEFECTS_PER_TAB = 3;
+    const PRODUCT_COL_W   = 200;
+    const ROW_H           = { small: 180, medium: 270, large: 360 };
+    const LOAD_TIMEOUT    = 12000;
+    const MAX_RETRIES     = 3;
+    const LS_KEY          = "L8B_DEFECT_MONITOR_SETTINGS";
+
+    let currentModalURL = "";
+    const loadedPanels  = new Set();
+
+    const parseList = raw => raw.split(/[\n,]/).map(s=>s.trim()).filter(Boolean);
+    const buildURL  = (p,d) => `${BASE}?PRODUCT=${encodeURIComponent(p)}&DEFECT=${encodeURIComponent(d)}`;
+    const esc  = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    const escA = s => s.replace(/"/g,"&quot;");
+    const chunk = (arr,n) => { const r=[]; for(let i=0;i<arr.length;i+=n) r.push(arr.slice(i,i+n)); return r; };
+
+    let stickyRAF = null;
+    const clone   = document.getElementById("sticky-clone");
+
+    function buildClone(panel) {
+      const thead = panel.querySelector("thead");
+      if (!thead) { clone.innerHTML=""; return; }
+      const origTr = thead.querySelector("tr:last-child");
+      if (!origTr) { clone.innerHTML=""; return; }
+      const ths = [...origTr.querySelectorAll("th")];
+      const firstRow = panel.querySelector("tbody tr");
+      const tds = firstRow ? [...firstRow.querySelectorAll("td")] : [];
+      let colHtml = "";
+      ths.forEach((th, i) => { const w = tds[i] ? tds[i].getBoundingClientRect().width : th.getBoundingClientRect().width; colHtml += `<col style="width:${w}px">`; });
+      let thHtml = "";
+      ths.forEach(th => { thHtml += `<th class="${th.className}" style="${th.getAttribute("style")||""}">${th.innerHTML}</th>`; });
+      clone.innerHTML = `<table style="border-collapse:collapse;table-layout:fixed;"><colgroup>${colHtml}</colgroup><thead><tr>${thHtml}</tr></thead></table>`;
+    }
+
+    function updateStickyHeader() {
+      const tabBar   = document.getElementById("tab-bar");
+      const wrap     = document.getElementById("matrix-wrap");
+      const panel    = wrap.querySelector(".tab-panel.active");
+      if (!panel) { clone.classList.remove("active"); return; }
+      const thead    = panel.querySelector("thead");
+      if (!thead) { clone.classList.remove("active"); return; }
+      const tabH     = tabBar.getBoundingClientRect().bottom;
+      const wrapRect = wrap.getBoundingClientRect();
+      const theadH   = thead.getBoundingClientRect().height || 44;
+      const tbodyEnd = panel.querySelector("tbody")?.getBoundingClientRect().bottom ?? 0;
+      const shouldShow = wrapRect.top < tabH && tbodyEnd > tabH + theadH;
+      if (shouldShow) {
+        if (!clone.classList.contains("active")) { buildClone(panel); }
+        clone.classList.add("active");
+        clone.style.top  = tabH + "px";
+        clone.style.left  = wrapRect.left + "px";
+        clone.style.width = wrapRect.width + "px";
+        clone.querySelector("table").style.transform = `translateX(${-wrap.scrollLeft}px)`;
+      } else { clone.classList.remove("active"); }
+    }
+
+    function scheduleSticky() { if (stickyRAF) return; stickyRAF = requestAnimationFrame(()=>{ stickyRAF=null; updateStickyHeader(); }); }
+    window.addEventListener("scroll", scheduleSticky, { passive: true });
+
+    function bindWrapScroll() { const wrap = document.getElementById("matrix-wrap"); wrap.addEventListener("scroll", scheduleSticky, { passive: true }); }
+
+    function updateTabH() { const tabBar = document.getElementById("tab-bar"); const h = tabBar.getBoundingClientRect().height || tabBar.offsetHeight || 0; document.documentElement.style.setProperty("--tab-h", h + "px"); }
+
+    function saveSettings() {
+      const cfg = { products:document.getElementById("product-input").value, defects:document.getElementById("defect-input").value, showThumb:document.getElementById("chk-thumb").checked, sizeKey:document.getElementById("sel-size").value, clipH:document.getElementById("clip-range").value, iframeW:document.getElementById("iw-range").value };
+      try { localStorage.setItem(LS_KEY, JSON.stringify(cfg)); } catch(e) { alert("儲存失敗"); return; }
+      const s=document.getElementById("save-status"); s.classList.add("show"); setTimeout(()=>s.classList.remove("show"),2800);
+      updateBanner(cfg);
+    }
+    function loadSettings() { try{const r=localStorage.getItem(LS_KEY);return r?JSON.parse(r):null;}catch(e){return null;} }
+    function clearSavedSettings() { localStorage.removeItem(LS_KEY); document.getElementById("saved-banner").classList.remove("show"); alert("已清除儲存的篩選設定。"); }
+    function applySettingsToForm(cfg) {
+      if(!cfg) return;
+      if(cfg.products!=null) document.getElementById("product-input").value=cfg.products;
+      if(cfg.defects!=null)  document.getElementById("defect-input").value=cfg.defects;
+      if(cfg.showThumb!=null) document.getElementById("chk-thumb").checked=cfg.showThumb;
+      if(cfg.sizeKey!=null)  document.getElementById("sel-size").value=cfg.sizeKey;
+      if(cfg.clipH!=null)    { document.getElementById("clip-range").value=cfg.clipH; document.getElementById("clip-val").textContent=cfg.clipH+" px"; }
+      if(cfg.iframeW!=null)  { document.getElementById("iw-range").value=cfg.iframeW; document.getElementById("iw-val").textContent=cfg.iframeW+" px"; }
+    }
+    function updateBanner(cfg) {
+      if(!cfg){document.getElementById("saved-banner").classList.remove("show");return;}
+      const products=parseList(cfg.products||""), defects=parseList(cfg.defects||"");
+      document.getElementById("banner-products-text").textContent=products.length?products.join(", "):"（無）";
+      document.getElementById("banner-defects-text").textContent=defects.length?`DEFECT：${defects.join(", ")}` :"";
+      document.getElementById("saved-banner").classList.add("show");
+    }
+
+    const clipRange=document.getElementById("clip-range"), clipVal=document.getElementById("clip-val");
+    clipRange.addEventListener("input",()=>{clipVal.textContent=clipRange.value+" px";});
+    const iwRange=document.getElementById("iw-range"), iwVal=document.getElementById("iw-val");
+    iwRange.addEventListener("input",()=>{iwVal.textContent=iwRange.value+" px";});
+    function getIframeW(){return parseInt(iwRange.value,10);}
+    function getClipH(){return parseInt(clipRange.value,10);}
+    function getCellH(){return ROW_H[document.getElementById("sel-size").value];}
+
+    function loadIframe(iframe,mask){
+      return new Promise(resolve=>{
+        const src=iframe.getAttribute("data-src")||iframe.src;
+        const label=mask?.querySelector(".load-label"), spinner=mask?.querySelector(".spinner");
+        if(iframe.hasAttribute("data-src")) iframe.removeAttribute("data-src");
+        let attempt=0;
+        function tryLoad(){
+          attempt++;
+          if(attempt>1){if(label)label.textContent=`重試 ${attempt-1}/${MAX_RETRIES}`;if(spinner)spinner.classList.add("retrying");}
+          let timer=null;
+          const onLoad=()=>{clearTimeout(timer);if(mask)mask.classList.add("done");resolve(true);};
+          timer=setTimeout(()=>{
+            iframe.removeEventListener("load",onLoad);
+            try{iframe.src="about:blank";}catch(e){}
+            if(attempt<MAX_RETRIES){ setTimeout(()=>{ try{iframe.src=src;}catch(e){} iframe.addEventListener("load",onLoad,{once:true}); tryLoad.timer=null; setTimeout(tryLoad,200); },300); }
+            else{ if(mask){ mask.classList.add("failed"); if(label)label.textContent="載入失敗"; } resolve(false); }
+          },LOAD_TIMEOUT);
+          iframe.addEventListener("load",onLoad,{once:true});
+          if(attempt===1) try{iframe.src=src;}catch(e){}
+        }
+        if(mask) mask.classList.add("waiting");
+        tryLoad();
+      });
+    }
+
+    async function loadPanelSequential(panel){
+      if(loadedPanels.has(panel)) return;
+      loadedPanels.add(panel);
+      const rows=[...panel.querySelectorAll("tbody tr")];
+      for(const row of rows){
+        const iframes=[...row.querySelectorAll("iframe[data-src]")];
+        if(!iframes.length) continue;
+        const masks=iframes.map(f=>f.closest(".thumb-box")?.querySelector(".loading-mask"));
+        masks.forEach(m=>{if(m)m.classList.remove("waiting");});
+        await Promise.all(iframes.map((f,i)=>loadIframe(f,masks[i])));
+        const bar=row.querySelector(".row-progress-bar");
+        if(bar) bar.classList.add("done");
+      }
+    }
+
+    function applyScaleAll(){
+      const wrap=document.getElementById("matrix-wrap");
+      const cellW=wrap.querySelector("col.col-defect")?.offsetWidth||300;
+      const clipH=getClipH(), iframeW=getIframeW(), cellH=getCellH();
+      const scale=cellW/iframeW;
+      wrap.querySelectorAll(".thumb-box").forEach(box=>{
+        box.style.height=cellH+"px";
+        const iframe=box.querySelector("iframe");
+        if(iframe){ iframe.style.width=iframeW+"px"; iframe.style.height=(clipH/scale)+"px"; iframe.style.transform=`scale(${scale})`; }
+      });
+      wrap.querySelectorAll("td.cell-link").forEach(td=>{ td.style.height=cellH+"px"; });
+      wrap.querySelectorAll("td.product-head").forEach(td=>{ td.style.height=cellH+"px"; });
+      wrap.querySelectorAll("tbody tr").forEach(tr=>{ tr.style.height=cellH+"px"; });
+      clone.classList.remove("active");
+    }
+
+    function buildMatrix(){
+      const products=parseList(document.getElementById("product-input").value);
+      const defects=parseList(document.getElementById("defect-input").value);
+      const showThumb=document.getElementById("chk-thumb").checked;
+      const tabBar=document.getElementById("tab-bar"), wrap=document.getElementById("matrix-wrap");
+      loadedPanels.clear(); tabBar.innerHTML=""; wrap.innerHTML="";
+      clone.classList.remove("active"); clone.innerHTML="";
+      if(!products.length||!defects.length){ wrap.innerHTML=`<p class="empty-msg">請至少選擇一筆 PRODUCT 及 DEFECT</p>`; return; }
+      const groups=chunk(defects,DEFECTS_PER_TAB);
+      groups.forEach((grp,i)=>{
+        const btn=document.createElement("button");
+        btn.className="tab-btn"+(i===0?" active":"");
+        btn.textContent=grp.join(" / "); btn.dataset.tab=i;
+        btn.addEventListener("click",()=>switchTab(i)); tabBar.appendChild(btn);
+      });
+      let html="";
+      groups.forEach((grp,tabIdx)=>{
+        html+=`<div class="tab-panel${tabIdx===0?" active":""}" data-panel="${tabIdx}">`;
+        if(showThumb){
+          html+=`<table><colgroup><col class="col-product">${grp.map(()=>`<col class="col-defect">`).join("")}</colgroup><thead><tr><th class="corner">PRODUCT \\ DEFECT</th>${grp.map(d=>`<th class="defect-head">${esc(d)}</th>`).join("")}</tr></thead><tbody>`;
+          for(const p of products){
+            html+=`<tr><td class="product-head"><div>${esc(p)}</div><span class="row-progress"><span class="row-progress-bar"></span></span></td>`;
+            for(const d of grp){
+              const url=buildURL(p,d);
+              html+=`<td class="cell-link"><a class="cell-anchor" data-url="${escA(url)}" data-label="${escA(p+' × '+d)}" href="${escA(url)}"><div class="thumb-box"><iframe data-src="${escA(url)}" scrolling="no" tabindex="-1"></iframe><div class="loading-mask"><div class="fail-icon">⚠</div><div class="spinner"></div><span class="load-label">載入中…</span></div></div><div class="hover-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>點擊放大</div></a></td>`;
+            }
+            html+=`</tr>`;
+          }
+          html+=`</tbody></table>`;
+        } else {
+          html+=`<table><colgroup><col class="col-product">${grp.map(()=>`<col class="col-defect">`).join("")}</colgroup><thead><tr><th class="corner">PRODUCT \\ DEFECT</th>${grp.map(d=>`<th class="defect-head">${esc(d)}</th>`).join("")}</tr></thead><tbody>`;
+          for(const p of products){
+            html+=`<tr><td class="product-head"><div>${esc(p)}</div></td>`;
+            for(const d of grp){
+              const url=buildURL(p,d);
+              html+=`<td class="cell-link"><div class="link-cell"><a href="${escA(url)}" target="_blank"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>開啟</a></div></td>`;
+            }
+            html+=`</tr>`;
+          }
+          html+=`</tbody></table>`;
+        }
+        html+=`</div>`;
+      });
+      wrap.innerHTML=html;
+      bindCellClick(wrap);
+      bindWrapScroll();
+      requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ updateTabH(); applyScaleAll(); updateStickyHeader(); if(showThumb){ const first=wrap.querySelector(".tab-panel[data-panel='0']"); if(first) loadPanelSequential(first); } }); });
+      document.getElementById("settings-panel").classList.remove("open");
+    }
+
+    function switchTab(idx){
+      clone.classList.remove("active"); clone.innerHTML="";
+      document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active",+b.dataset.tab===idx));
+      document.querySelectorAll(".tab-panel").forEach(p=>p.classList.toggle("active",+p.dataset.panel===idx));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{ applyScaleAll(); updateStickyHeader(); }));
+      if(document.getElementById("chk-thumb").checked){ const panel=document.querySelector(`.tab-panel[data-panel="${idx}"]`); if(panel) loadPanelSequential(panel); }
+    }
+
+    function bindCellClick(root){
+      root.querySelectorAll("a.cell-anchor[data-url]").forEach(a=>{
+        a.addEventListener("click",e=>{ e.preventDefault(); if(e.ctrlKey||e.metaKey) window.open(a.dataset.url,"_blank"); else openModal(a.dataset.url,a.dataset.label); });
+      });
+    }
+
+    function openModal(url,label){ currentModalURL=url; document.getElementById("modal-title").textContent=label; document.getElementById("modal-frame").src=url; document.getElementById("overlay").classList.add("active"); }
+    function closeModal(){ document.getElementById("overlay").classList.remove("active"); document.getElementById("modal-frame").src=""; currentModalURL=""; }
+    document.getElementById("modal-close").addEventListener("click",closeModal);
+    document.getElementById("modal-newtab").addEventListener("click",()=>{ if(currentModalURL)window.open(currentModalURL,"_blank"); });
+    document.getElementById("overlay").addEventListener("click",e=>{ if(e.target===document.getElementById("overlay"))closeModal(); });
+    document.addEventListener("keydown",e=>{ if(e.key==="Escape")closeModal(); });
+
+    let resizeTimer;
+    window.addEventListener("resize",()=>{
+      clearTimeout(resizeTimer);
+      clone.classList.remove("active"); clone.innerHTML="";
+      resizeTimer=setTimeout(()=>requestAnimationFrame(()=>requestAnimationFrame(()=>{ updateTabH(); applyScaleAll(); updateStickyHeader(); })),200);
+    });
+
+    document.getElementById("settings-toggle").addEventListener("click",()=>document.getElementById("settings-panel").classList.toggle("open"));
+    document.getElementById("btn-gen").addEventListener("click",buildMatrix);
+    document.getElementById("btn-save").addEventListener("click",saveSettings);
+    document.getElementById("btn-clear-save").addEventListener("click",clearSavedSettings);
+    document.getElementById("btn-clear").addEventListener("click",()=>{
+      loadedPanels.clear();
+      document.getElementById("tab-bar").innerHTML="";
+      document.getElementById("matrix-wrap").innerHTML="";
+      clone.classList.remove("active"); clone.innerHTML="";
+    });
+
+    (function init(){
+      const saved = loadSettings();
+      if(saved){
+        /* 有 localStorage 儲存設定 → 套用儲存的值（含 product/defect） */
+        applySettingsToForm(saved);
+        updateBanner(saved);
+      } else {
+        /* 沒有儲存設定 → 套用預設值 */
+        document.getElementById("product-input").value = DEFAULT_PRODUCT;
+        document.getElementById("defect-input").value  = DEFAULT_DEFECT;
+      }
+      buildMatrix();
+    })();
+  </script>
+
+  <script>
+  /* ── URL 參數讀取 + postMessage 同步（由主報表控制）── */
+  (function(){
+    try {
+      var params=new URLSearchParams(window.location.search);
+      var p=params.get('PRODUCT'),d=params.get('DEFECT');
+      if(p){ document.getElementById('product-input').value=p; }
+      if(d){ document.getElementById('defect-input').value=d; }
+      if(p||d) buildMatrix();
+    } catch(e){}
+    window.addEventListener('message',function(e){
+      if(!e.data||e.data.type!=='L8B_FILTER')return;
+      try{
+        if(e.data.product) document.getElementById('product-input').value=e.data.product;
+        if(e.data.defect)  document.getElementById('defect-input').value=e.data.defect;
+        buildMatrix();
+      }catch(ex){}
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>✨ 許願池</title>
+<style>
+/* ══ 色系變數 ══ */
+body.theme-macaron {
+  --c1:#FFB7C5; --c2:#FFDAB9; --c3:#B5EAD7; --c4:#C9B8F0; --c5:#AED9F0;
+  --bg1:#FFE4EF; --bg2:#EEE4FF; --bg3:#E4F4FF;
+  --zone-bg:linear-gradient(90deg,#FFE4EF,#FFF0D0);
+  --zone-border:#FFB7C5;
+}
+body.theme-ocean {
+  --c1:#48CAE4; --c2:#90E0EF; --c3:#ADE8F4; --c4:#0096C7; --c5:#023E8A;
+  --bg1:#CAF0F8; --bg2:#ADE8F4; --bg3:#90E0EF;
+  --zone-bg:linear-gradient(90deg,#CAF0F8,#ADE8F4);
+  --zone-border:#48CAE4;
+}
+body.theme-forest {
+  --c1:#74C69D; --c2:#52B788; --c3:#40916C; --c4:#B7E4C7; --c5:#D8F3DC;
+  --bg1:#D8F3DC; --bg2:#B7E4C7; --bg3:#95D5B2;
+  --zone-bg:linear-gradient(90deg,#D8F3DC,#B7E4C7);
+  --zone-border:#74C69D;
+}
+body.theme-sunset {
+  --c1:#F4845F; --c2:#F4A261; --c3:#E9C46A; --c4:#E76F51; --c5:#264653;
+  --bg1:#FFE8D6; --bg2:#FFD6B3; --bg3:#FFECD2;
+  --zone-bg:linear-gradient(90deg,#FFE8D6,#FFD6B3);
+  --zone-border:#F4845F;
+}
+body.theme-lavender {
+  --c1:#9B72CF; --c2:#C77DFF; --c3:#E0AAFF; --c4:#7B2FBE; --c5:#3C096C;
+  --bg1:#F0D9FF; --bg2:#E0AAFF; --bg3:#C77DFF33;
+  --zone-bg:linear-gradient(90deg,#F0D9FF,#E0AAFF);
+  --zone-border:#9B72CF;
+}
+
+/* ══ 日間模式 ══ */
+body {
+  --white:#FFFDF9; --text:#3A3A3A; --subtext:#777;
+  --shadow:rgba(0,0,0,0.12); --card-bg:#FFFDF9;
+  --input-bg:#fff; --tab-inactive:#ddd; --tab-inactive-text:#666;
+}
+/* ══ 夜間模式 ══ */
+body.dark {
+  --white:#1E1E2E; --text:#E0E0E0; --subtext:#AAA;
+  --shadow:rgba(0,0,0,0.5); --card-bg:#2A2A3E;
+  --input-bg:#2A2A3E; --tab-inactive:#333; --tab-inactive-text:#999;
+  --bg1:#12121E; --bg2:#1A1A2E; --bg3:#16213E;
+  --zone-bg:linear-gradient(90deg,#1A1A2E,#12121E);
+}
+
+/* ══ 全域 ══ */
+:root { --radius:16px; --font:'Segoe UI','Microsoft JhengHei',sans-serif; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body {
+  font-family:var(--font);
+  background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
+  color:var(--text);
+  display:flex; flex-direction:column; min-height:100vh;
+  transition:background .3s, color .3s;
+}
+button {
+  cursor:pointer; border:2.5px solid #000;
+  border-radius:999px; font-family:var(--font);
+  font-size:1rem; font-weight:bold;
+  transition:all .2s; padding:8px 20px;
+}
+button:hover{opacity:.85;transform:translateY(-1px);}
+input,textarea {
+  font-family:var(--font); font-size:1rem;
+  border:2px solid var(--c4); border-radius:var(--radius);
+  padding:10px 16px; outline:none;
+  background:var(--input-bg); color:var(--text);
+  transition:border-color .2s;
+}
+input:focus,textarea:focus{border-color:var(--c1);}
+
+/* ══ 身份選擇 ══ */
+#roleScreen {
+  position:fixed;inset:0;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  z-index:9999;gap:24px;
+}
+#roleScreen h1{font-size:2.4rem;color:var(--c4);letter-spacing:4px;}
+#roleScreen p{color:var(--subtext);font-size:1.1rem;}
+.role-btns{display:flex;gap:24px;}
+.role-btn {
+  width:160px;height:160px;border-radius:28px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:10px;
+  font-size:1.2rem;font-weight:bold;
+  box-shadow:0 4px 20px var(--shadow);
+  border:3px solid #000;
+}
+.role-btn.user  {background:var(--c3);color:#1A5A3A;}
+.role-btn.admin {background:var(--c4);color:#fff;}
+.role-btn .emoji{font-size:2.8rem;}
+
+/* 密碼彈窗 */
+#pwModal {
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.4);
+  align-items:center;justify-content:center;z-index:10000;
+}
+#pwModal.show{display:flex;}
+.pw-box {
+  background:var(--card-bg);border-radius:24px;
+  padding:40px 36px;display:flex;flex-direction:column;
+  gap:18px;align-items:center;min-width:320px;
+  box-shadow:0 8px 40px var(--shadow);
+  border:2px solid #000;
+}
+.pw-box h2{color:var(--c4);font-size:1.4rem;}
+.pw-box input{width:100%;font-size:1.1rem;}
+.pw-box .btns{display:flex;gap:12px;}
+.btn-confirm{background:var(--c4);color:#fff;}
+.btn-cancel{background:#eee;color:#333;}
+#pwError{color:#E75480;font-size:0.9rem;display:none;}
+
+/* ══ 主畫面 ══ */
+#app{display:flex;flex-direction:column;height:100vh;}
+
+/* 工具列（色系＋日夜） */
+#toolbar {
+  background:var(--card-bg);
+  border-bottom:2px solid #000;
+  padding:6px 20px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+#toolbar span{font-size:0.95rem;font-weight:bold;color:var(--subtext);}
+.theme-dot {
+  width:28px;height:28px;border-radius:50%;
+  cursor:pointer;border:3px solid #000;
+  transition:transform .2s;
+}
+.theme-dot:hover{transform:scale(1.2);}
+.theme-dot.active{box-shadow:0 0 0 3px #fff,0 0 0 5px #000;}
+#darkToggle {
+  margin-left:auto;background:var(--c4);color:#fff;
+  font-size:0.95rem;padding:6px 18px;
+}
+
+/* 上層：許願區 */
+#wishZone {
+  flex:0 0 16.666%;
+  background:var(--zone-bg);
+  border-bottom:3px solid var(--zone-border);
+  display:flex;align-items:center;justify-content:center;
+  padding:0 24px;gap:20px;flex-wrap:wrap;
+  box-shadow:0 4px 16px var(--shadow);
+}
+#wishZone .zone-title{font-size:1.8rem;color:var(--c1);white-space:nowrap;letter-spacing:2px;font-weight:bold;}
+#wishForm{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+#wishForm input[name="name"]{width:130px;}
+#wishForm input[name="wish"]{width:340px;}
+#btnSendWish{
+  background:var(--c1);color:#fff;
+  padding:12px 32px;font-size:1.05rem;
+  box-shadow:0 3px 12px var(--shadow);
+}
+.admin-badge{
+  background:var(--c4);color:#fff;
+  border-radius:999px;padding:6px 18px;font-size:0.9rem;
+  display:flex;align-items:center;gap:8px;border:2px solid #000;
+}
+.logout-btn{
+  background:rgba(255,255,255,0.25);color:#fff;
+  padding:4px 14px;font-size:0.85rem;border:2px solid #fff;
+}
+
+/* 下層：管理區 */
+#mgmtZone{flex:1;display:flex;flex-direction:column;padding:14px 20px;gap:10px;overflow:hidden;}
+.tabs{display:flex;gap:10px;}
+.tab-btn{
+  padding:10px 30px;border-radius:999px;
+  background:var(--tab-inactive);color:var(--tab-inactive-text);
+  font-size:1rem;
+}
+.tab-btn.active{background:var(--c4);color:#fff;box-shadow:0 3px 12px var(--shadow);}
+.tab-pane{display:none;flex:1;overflow-y:auto;}
+.tab-pane.active{display:flex;flex-direction:column;gap:10px;}
+
+/* 願望卡片 */
+.wish-card{
+  background:var(--card-bg);
+  border-radius:var(--radius);
+  padding:14px 18px;
+  box-shadow:0 2px 10px var(--shadow);
+  border:2px solid #000;
+  display:flex;align-items:center;gap:14px;
+  position:relative;transition:box-shadow .2s;
+}
+.wish-card:hover{box-shadow:0 4px 18px var(--shadow);}
+.drag-handle{cursor:grab;font-size:1.4rem;color:var(--subtext);display:none;}
+.card-avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,var(--c1),var(--c4));
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:bold;font-size:1.2rem;
+  flex-shrink:0;border:2px solid #000;
+}
+
+/* 狀態標籤 */
+.status-badge{
+  flex-shrink:0;border-radius:999px;
+  padding:5px 14px;font-size:0.85rem;font-weight:bold;
+  border:2px solid #000;white-space:nowrap;
+}
+.status-pending    {background:var(--c2);color:#5A3A00;}
+.status-in_progress{background:var(--c3);color:#1A5A3A;}
+
+.card-body{flex:1;min-width:0;}
+.card-name{font-weight:bold;font-size:0.9rem;color:var(--subtext);}
+.card-wish{font-size:1.05rem;color:var(--text);margin-top:3px;word-break:break-all;}
+.card-time{font-size:0.8rem;color:var(--subtext);margin-top:3px;}
+
+/* 進度條 */
+.progress-wrap{margin-top:8px;}
+.progress-label{font-size:0.9rem;color:var(--subtext);margin-bottom:4px;font-weight:bold;}
+.progress-bar-bg{
+  background:#ddd;border-radius:999px;
+  height:22px;position:relative;overflow:hidden;
+  border:2px solid #000;
+}
+.progress-bar-fill{
+  height:100%;border-radius:999px;
+  background:linear-gradient(90deg,var(--c4),var(--c1));
+  transition:width .3s;pointer-events:none;
+}
+.progress-bar-bg.draggable{cursor:ew-resize;}
+
+/* 卡片右側按鈕 */
+.card-actions{display:flex;flex-direction:column;gap:8px;align-items:flex-end;flex-shrink:0;}
+.btn-sm{padding:7px 18px;font-size:0.9rem;}
+.btn-start    {background:var(--c3);color:#1A5A3A;}
+.btn-complete {background:var(--c2);color:#5A3A00;}
+.btn-delete   {background:#FFD6D6;color:#900;}
+
+/* 已完成 */
+.wish-card.done{opacity:.85;}
+.done-stamp{
+  position:absolute;right:16px;top:10px;
+  background:var(--c3);color:#1A5A3A;
+  border-radius:999px;padding:3px 14px;font-size:0.8rem;
+  border:2px solid #000;font-weight:bold;
+}
+
+/* Toast */
+#toast{
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
+  background:var(--c4);color:#fff;padding:14px 32px;
+  border-radius:999px;font-size:1rem;font-weight:bold;
+  box-shadow:0 4px 20px var(--shadow);border:2px solid #000;
+  opacity:0;transition:opacity .3s;pointer-events:none;z-index:9998;
+}
+#toast.show{opacity:1;}
+.empty-state{text-align:center;padding:40px;color:var(--subtext);font-size:1.1rem;}
+.empty-state .big{font-size:3rem;}
+</style>
+</head>
+<body class="theme-macaron">
+
+<!-- 身份選擇 -->
+<div id="roleScreen">
+  <h1>✨ 許願池</h1>
+  <p>請選擇你的身份</p>
+  <div class="role-btns">
+    <button class="role-btn user" onclick="enterAsUser()">
+      <span class="emoji">🌸</span>許願者
+    </button>
+    <button class="role-btn admin" onclick="showPwModal()">
+      <span class="emoji">🔑</span>管理者
+    </button>
+  </div>
+</div>
+
+<!-- 管理者密碼彈窗 -->
+<div id="pwModal">
+  <div class="pw-box">
+    <h2>🔑 管理者登入</h2>
+    <input id="pwInput" type="password" placeholder="請輸入密碼"
+           onkeydown="if(event.key==='Enter')confirmPw()"/>
+    <div id="pwError">密碼錯誤，請再試一次</div>
+    <div class="btns">
+      <button class="btn-confirm" onclick="confirmPw()">確認</button>
+      <button class="btn-cancel"  onclick="closePwModal()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- 主畫面 -->
+<div id="app" style="display:none">
+
+  <!-- 工具列 -->
+  <div id="toolbar">
+    <span>🎨 色系</span>
+    <div class="theme-dot active" style="background:linear-gradient(135deg,#FFB7C5,#C9B8F0)"
+         onclick="setTheme('macaron',this)" title="馬卡龍"></div>
+    <div class="theme-dot" style="background:linear-gradient(135deg,#48CAE4,#023E8A)"
+         onclick="setTheme('ocean',this)" title="海洋"></div>
+    <div class="theme-dot" style="background:linear-gradient(135deg,#74C69D,#40916C)"
+         onclick="setTheme('forest',this)" title="森林"></div>
+    <div class="theme-dot" style="background:linear-gradient(135deg,#F4845F,#E9C46A)"
+         onclick="setTheme('sunset',this)" title="日落"></div>
+    <div class="theme-dot" style="background:linear-gradient(135deg,#9B72CF,#3C096C)"
+         onclick="setTheme('lavender',this)" title="薰衣草"></div>
+    <button id="darkToggle" onclick="toggleDark()">🌙 夜間模式</button>
+  </div>
+
+  <!-- 上層：許願區 -->
+  <div id="wishZone">
+    <div class="zone-title">🌟 許願池</div>
+    <form id="wishForm" onsubmit="submitWish(event)">
+      <input name="name" placeholder="你的名字" required maxlength="20"/>
+      <input name="wish" placeholder="輸入你的願望…" required maxlength="100"/>
+      <button type="submit" id="btnSendWish">✨ 許願！</button>
+    </form>
+    <div id="adminBadge" class="admin-badge" style="display:none">
+      🔑 管理者模式
+      <button class="logout-btn" onclick="adminLogout()">登出</button>
+    </div>
+    <div id="userBadge" class="admin-badge" style="display:none;background:var(--c3);color:#1A5A3A;">
+      🌸 一般用戶
+      <button class="logout-btn" style="border-color:#1A5A3A;color:#1A5A3A;" onclick="userLogout()">登出</button>
+    </div>
+  </div>
+
+  <!-- 下層：管理區 -->
+  <div id="mgmtZone">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('active')">🔄 進行中</button>
+      <button class="tab-btn"        onclick="switchTab('completed')">✅ 已完成</button>
+    </div>
+    <div id="tab-active"    class="tab-pane active"></div>
+    <div id="tab-completed" class="tab-pane"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = 'http://localhost:8000';
+let isAdmin = false, adminPw = '', autoTimer = null;
+const AUTO_LOGOUT_MS = 5 * 60 * 1000;
+
+// ══════════════════════════════════════════
+// ★ 心跳機制 — 讓伺服器知道網頁還開著
+// ══════════════════════════════════════════
+let _hbTimer = null;
+
+function startHeartbeat() {
+  if (_hbTimer) return;                        // 避免重複啟動
+  // 立刻打一次，讓 grace period 內就有心跳
+  fetch(API + '/api/heartbeat', { method: 'POST' }).catch(() => {});
+  // 之後每 5 秒持續發送
+  _hbTimer = setInterval(() => {
+    fetch(API + '/api/heartbeat', { method: 'POST' }).catch(() => {});
+  }, 5000);
+  console.log('[心跳] 已啟動，每 5 秒通知伺服器');
+}
+
+// 網頁關閉時：主動通知伺服器（速度更快）
+window.addEventListener('beforeunload', () => {
+  // sendBeacon 在頁面關閉時仍可送出
+  navigator.sendBeacon(API + '/api/shutdown');
+});
+// ══════════════════════════════════════════
+
+// ── 色系 & 日夜 ──
+function setTheme(name, dot) {
+  const themes = ['macaron','ocean','forest','sunset','lavender'];
+  themes.forEach(t => document.body.classList.remove('theme-' + t));
+  document.body.classList.add('theme-' + name);
+  document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+  if (dot) dot.classList.add('active');
+  localStorage.setItem('theme', name);
+}
+function toggleDark() {
+  const isDark = document.body.classList.toggle('dark');
+  document.getElementById('darkToggle').textContent = isDark ? '☀️ 日間模式' : '🌙 夜間模式';
+  localStorage.setItem('dark', isDark ? '1' : '0');
+}
+// 還原設定
+(function(){
+  const t = localStorage.getItem('theme') || 'macaron';
+  const dots = document.querySelectorAll('.theme-dot');
+  const idx = ['macaron','ocean','forest','sunset','lavender'].indexOf(t);
+  setTheme(t, idx >= 0 ? dots[idx] : null);
+  if (localStorage.getItem('dark') === '1') {
+    document.body.classList.add('dark');
+    setTimeout(() => {
+      const btn = document.getElementById('darkToggle');
+      if (btn) btn.textContent = '☀️ 日間模式';
+    }, 0);
+  }
+})();
+
+// ── 身份 ──
+function enterAsUser() {
+  isAdmin = false;
+  document.getElementById('roleScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('userBadge').style.display = 'flex';
+  startHeartbeat();   // ★ 啟動心跳
+  loadWishes();
+}
+function showPwModal() {
+  document.getElementById('pwModal').classList.add('show');
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwError').style.display = 'none';
+  setTimeout(() => document.getElementById('pwInput').focus(), 50);
+}
+function closePwModal() { document.getElementById('pwModal').classList.remove('show'); }
+async function confirmPw() {
+  const pw = document.getElementById('pwInput').value.trim();
+  if (!pw) return;
+  try {
+    await api('POST', '/api/admin/verify', { password: pw });
+    adminPw = pw; isAdmin = true;
+    closePwModal();
+    document.getElementById('roleScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    document.getElementById('adminBadge').style.display = 'flex';
+    startHeartbeat();   // ★ 啟動心跳
+    resetAutoLogout(); loadWishes();
+  } catch { document.getElementById('pwError').style.display = 'block'; }
+}
+function resetAutoLogout() { clearTimeout(autoTimer); autoTimer = setTimeout(adminLogout, AUTO_LOGOUT_MS); }
+function adminLogout() {
+  isAdmin = false; adminPw = ''; clearTimeout(autoTimer);
+  document.getElementById('adminBadge').style.display = 'none';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('roleScreen').style.display = 'flex';
+  showToast('管理者已登出 🔒');
+}
+document.addEventListener('click', () => { if (isAdmin) resetAutoLogout(); });
+
+function userLogout() {
+  document.getElementById('userBadge').style.display = 'none';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('roleScreen').style.display = 'flex';
+  showToast('已登出 🌸');
+}
+
+// ── API ──
+async function api(method, path, body) {
+  const opts = { method, headers: {'Content-Type':'application/json'} };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(API + path, opts);
+  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.detail || '請求失敗'); }
+  return res.json();
+}
+
+// ── 許願 ──
+async function submitWish(e) {
+  e.preventDefault();
+  const form = e.target;
+  try {
+    await api('POST', '/api/wish', { name: form.name.value.trim(), wish: form.wish.value.trim() });
+    form.reset(); showToast('✨ 許願成功！'); loadWishes();
+  } catch(err) { showToast('❌ ' + err.message); }
+}
+
+// ── 載入 ──
+async function loadWishes() {
+  try {
+    const all = await api('GET', '/api/wishes');
+    const active = all.filter(w => w.status === 'pending' || w.status === 'in_progress');
+    const done   = all.filter(w => w.status === 'completed');
+    renderActive(active);
+    renderDone(done);
+  } catch(e) { showToast('❌ 載入失敗：' + e.message); }
+}
+
+function renderActive(wishes) {
+  const el = document.getElementById('tab-active');
+  if (!wishes.length) { el.innerHTML = '<div class="empty-state"><div class="big">🌸</div>目前沒有項目</div>'; return; }
+  el.innerHTML = '';
+  wishes.forEach(w => el.appendChild(buildCard(w)));
+  if (isAdmin) initDragSort(el);
+}
+function renderDone(wishes) {
+  const el = document.getElementById('tab-completed');
+  if (!wishes.length) { el.innerHTML = '<div class="empty-state"><div class="big">🎉</div>尚無已完成項目</div>'; return; }
+  el.innerHTML = '';
+  wishes.forEach(w => el.appendChild(buildCard(w)));
+}
+
+function buildCard(w) {
+  const card = document.createElement('div');
+  card.className = 'wish-card' + (w.status === 'completed' ? ' done' : '');
+  card.dataset.id = w.id;
+
+  const initial = w.name.charAt(0).toUpperCase();
+  const timeStr = (w.created_at || '').replace('T',' ');
+
+  const statusLabel = w.status === 'pending' ? '🕐 待處理' : w.status === 'in_progress' ? '⚙️ 進行中' : '✅ 完成';
+  const statusClass = w.status === 'completed' ? '' : `status-badge status-${w.status}`;
+
+  let progressHtml = '';
+  if (w.status === 'in_progress') {
+    const drag = isAdmin ? 'draggable' : '';
+    progressHtml = `
+      <div class="progress-wrap">
+        <div class="progress-label">進度 <span id="pct-${w.id}">${w.progress}</span>%</div>
+        <div class="progress-bar-bg ${drag}" id="bar-${w.id}"
+             ${isAdmin ? `onmousedown="startBarDrag(event,${w.id})"` : ''}>
+          <div class="progress-bar-fill" id="fill-${w.id}" style="width:${w.progress}%"></div>
+        </div>
+      </div>`;
+  }
+
+  let actionsHtml = '';
+  if (isAdmin) {
+    actionsHtml = '<div class="card-actions">';
+    if (w.status === 'pending')     actionsHtml += `<button class="btn-sm btn-start"    onclick="changeStatus(${w.id},'in_progress')">▶ 開始</button>`;
+    if (w.status === 'in_progress') actionsHtml += `<button class="btn-sm btn-complete" onclick="changeStatus(${w.id},'completed')">✔ 完成</button>`;
+    if (w.status !== 'completed')   actionsHtml += `<button class="btn-sm btn-delete"   onclick="deleteWish(${w.id})">🗑 刪除</button>`;
+    actionsHtml += '</div>';
+  }
+
+  const doneStamp = w.status === 'completed'
+    ? `<div class="done-stamp">✅ ${(w.completed_at||'').replace('T',' ')}</div>` : '';
+
+  card.innerHTML = `
+    ${isAdmin && w.status !== 'completed' ? '<div class="drag-handle" style="display:flex">⠿</div>' : ''}
+    <div class="card-avatar">${initial}</div>
+    ${w.status !== 'completed' ? `<span class="${statusClass}">${statusLabel}</span>` : ''}
+    <div class="card-body">
+      <div class="card-name">🌸 ${escHtml(w.name)}</div>
+      <div class="card-wish">${escHtml(w.wish)}</div>
+      <div class="card-time">${timeStr}</div>
+      ${progressHtml}
+    </div>
+    ${actionsHtml}
+    ${doneStamp}`;
+  return card;
+}
+
+// ── Tab 切換 ──
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) =>
+    b.classList.toggle('active', ['active','completed'][i] === tab));
+  document.querySelectorAll('.tab-pane').forEach(p =>
+    p.classList.toggle('active', p.id === 'tab-' + tab));
+}
+
+// ── 進度條拖曳 ──
+let barDrag = null;
+function startBarDrag(e, id) {
+  e.preventDefault();
+  barDrag = { id, bar: document.getElementById('bar-' + id) };
+  document.addEventListener('mousemove', onBarMove);
+  document.addEventListener('mouseup',   onBarUp);
+}
+function onBarMove(e) {
+  if (!barDrag) return;
+  const rect = barDrag.bar.getBoundingClientRect();
+  let pct = Math.round((e.clientX - rect.left) / rect.width * 100);
+  pct = Math.max(0, Math.min(100, pct));
+  document.getElementById('fill-' + barDrag.id).style.width = pct + '%';
+  document.getElementById('pct-'  + barDrag.id).textContent = pct;
+  barDrag.pct = pct;
+}
+async function onBarUp() {
+  document.removeEventListener('mousemove', onBarMove);
+  document.removeEventListener('mouseup',   onBarUp);
+  if (!barDrag || barDrag.pct == null) { barDrag = null; return; }
+  try { await api('PATCH', `/api/wish/${barDrag.id}/progress`, { password: adminPw, progress: barDrag.pct }); }
+  catch(e) { showToast('❌ ' + e.message); }
+  barDrag = null;
+}
+
+// ── 狀態 & 刪除 ──
+async function changeStatus(id, status) {
+  try { await api('PATCH', `/api/wish/${id}/status`, { password: adminPw, status }); loadWishes(); }
+  catch(e) { showToast('❌ ' + e.message); }
+}
+async function deleteWish(id) {
+  if (!confirm('確定刪除這個願望嗎？')) return;
+  try {
+    const res = await fetch(API + `/api/wish/${id}`, {
+      method:'DELETE', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ password: adminPw })
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.detail); }
+    showToast('🗑 已刪除'); loadWishes();
+  } catch(e) { showToast('❌ ' + e.message); }
+}
+
+// ── 拖曳排序 ──
+function initDragSort(container) {
+  let dragged = null;
+  container.querySelectorAll('.wish-card').forEach(card => {
+    card.setAttribute('draggable','true');
+    card.addEventListener('dragstart', e => { dragged = card; card.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; });
+    card.addEventListener('dragend', async () => {
+      card.classList.remove('dragging');
+      const ids = [...container.querySelectorAll('.wish-card')].map(c => +c.dataset.id);
+      try { await api('PATCH','/api/wishes/reorder',{password:adminPw,ordered_ids:ids}); }
+      catch { showToast('❌ 排序儲存失敗'); }
+      dragged = null;
+    });
+    card.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (card === dragged) return;
+      const mid = card.getBoundingClientRect().top + card.getBoundingClientRect().height / 2;
+      container.insertBefore(dragged, e.clientY < mid ? card : card.nextSibling);
+    });
+  });
+}
+
+// ── 工具 ──
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
+}
+setInterval(()=>{ if(document.getElementById('app').style.display!=='none') loadWishes(); },10000);
+</script>
+</body>
+</html>

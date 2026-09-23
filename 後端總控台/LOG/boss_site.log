@@ -1,0 +1,66 @@
+
+====================================================
+[ 啟動於 2026-09-23 13:12:37 ]
+====================================================
+[15:36:28] ----------------------------------------
+[15:36:28] Exception occurred during processing of request from ('10.36.38.240', 50812)
+[15:36:29] Traceback (most recent call last):
+[15:36:29]   File "\\tw100049089\00_MyAgent\Boss SITE_百分比計算工具\C1_bridge.py", line 268, in _serve_file
+[15:36:29]     handler.wfile.write(body)
+[15:36:29]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[15:36:29]     self._sock.sendall(b)
+[15:36:29] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[15:36:29] 
+[15:36:29] During handling of the above exception, another exception occurred:
+[15:36:29] 
+[15:36:29] Traceback (most recent call last):
+[15:36:29]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 318, in _handle_request_noblock
+[15:36:29]     self.process_request(request, client_address)
+[15:36:29]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 349, in process_request
+[15:36:29]     self.finish_request(request, client_address)
+[15:36:29]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 362, in finish_request
+[15:36:29]     self.RequestHandlerClass(request, client_address, self)
+[15:36:29]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 766, in __init__
+[15:36:29]     self.handle()
+[15:36:29]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 436, in handle
+[15:36:29]     self.handle_one_request()
+[15:36:29]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 424, in handle_one_request
+[15:36:29]     method()
+[15:36:29]   File "\\tw100049089\00_MyAgent\Boss SITE_百分比計算工具\C1_bridge.py", line 299, in do_GET
+[15:36:29]     _serve_file(self, _HTML_FILE, "text/html; charset=utf-8")
+[15:36:29]   File "\\tw100049089\00_MyAgent\Boss SITE_百分比計算工具\C1_bridge.py", line 283, in _serve_file
+[15:36:29]     handler.end_headers()
+[15:36:29]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 538, in end_headers
+[15:36:29]     self.flush_headers()
+[15:36:29]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 542, in flush_headers
+[15:36:29]     self.wfile.write(b"".join(self._headers_buffer))
+[15:36:29]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[15:36:29]     self._sock.sendall(b)
+[15:36:29] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[15:36:29] ----------------------------------------
+[16:07:18]   [自動安裝] beautifulsoup4 ...
+[16:07:18] ============================================================
+[16:07:18]   C1 橋接程式 v17.1 已啟動  (port 5731)
+[16:07:18] 
+[16:07:18]   [工具] http://10.36.38.240:5731/
+[16:07:18]   [JS  ] http://10.36.38.240:5731/xlsx.full.min.js
+[16:07:18]   [抓取] http://10.36.38.240:5731/fetch?mode=Monthly&date=20260802
+[16:07:18]   [除錯] http://10.36.38.240:5731/debug?platform=4K2K&date=20260802
+[16:07:18] 
+[16:07:18]   ✅ xlsx.full.min.js 已找到（861 KB），本機模式啟用
+[16:07:18] ============================================================
+[16:07:18] 
+[16:07:18] [FETCH] mode=monthly date=202608
+[16:07:18]   隱藏欄位取得完成（7 個），開始並行抓取...
+[16:07:18] 
+[16:07:18]   ⬇  抓取 n-4K-PD（BU=TV Platform=Non4K8K）...
+[16:07:18]     POST: RBL_PRODUCT=n-4K-PD  RBL_PERIOD=Monthly  TB_PERIOD2=202608  StartDate=2026/08/01
+[16:07:18] 
+[16:07:18]   ⬇  抓取 4K2K（BU=TV Platform=4K）...
+[16:07:18]     POST: RBL_PRODUCT=4K2K  RBL_PERIOD=Monthly  TB_PERIOD2=202608  StartDate=2026/08/01
+[16:07:18] 
+[16:07:18]   ⬇  抓取 AHVA-DT（BU=DT Platform=AHVA）...
+[16:07:18] 
+[16:07:18]   ⬇  抓取 n-AHVA（BU=DT Platform=NonAHVA）...
+[16:07:18] 
+[16:07:18]   ⬇  抓取 AHVA-MP（BU=MP Platform=AHVA）...

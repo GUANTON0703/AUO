@@ -1,0 +1,108 @@
+
+====================================================
+[ 啟動於 2026-09-23 13:12:38 ]
+====================================================
+[14:28:39] ----------------------------------------
+[14:28:39] Exception occurred during processing of request from ('10.36.38.240', 63251)
+[14:28:39] Traceback (most recent call last):
+[14:28:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 318, in _handle_request_noblock
+[14:28:39]     self.process_request(request, client_address)
+[14:28:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 349, in process_request
+[14:28:39]     self.finish_request(request, client_address)
+[14:28:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 362, in finish_request
+[14:28:39]     self.RequestHandlerClass(request, client_address, self)
+[14:28:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 766, in __init__
+[14:28:39]     self.handle()
+[14:28:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 436, in handle
+[14:28:39]     self.handle_one_request()
+[14:28:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 424, in handle_one_request
+[14:28:39]     method()
+[14:28:39]   File "\\tw100049089\00_MyAgent\領用報廢\共用後端\app_rs0342.py", line 184, in do_GET
+[14:28:39]     self._send_json({'error': 'Not found'}, 404)
+[14:28:39]   File "\\tw100049089\00_MyAgent\領用報廢\共用後端\app_rs0342.py", line 164, in _send_json
+[14:28:39]     self.wfile.write(body)
+[14:28:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[14:28:39]     self._sock.sendall(b)
+[14:28:39] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[14:28:39] ----------------------------------------
+
+====================================================
+[ 啟動於 2026-09-23 14:50:43 ]
+====================================================
+[14:51:39] ----------------------------------------
+[14:51:39] Exception occurred during processing of request from ('127.0.0.1', 64456)
+[14:51:39] Traceback (most recent call last):
+[14:51:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 318, in _handle_request_noblock
+[14:51:39]     self.process_request(request, client_address)
+[14:51:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 349, in process_request
+[14:51:39]     self.finish_request(request, client_address)
+[14:51:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 362, in finish_request
+[14:51:39]     self.RequestHandlerClass(request, client_address, self)
+[14:51:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 766, in __init__
+[14:51:39]     self.handle()
+[14:51:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 436, in handle
+[14:51:39]     self.handle_one_request()
+[14:51:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 424, in handle_one_request
+[14:51:39]     method()
+[14:51:39]   File "\\tw100049089\00_MyAgent\領用報廢\共用後端\app_rs0342.py", line 200, in do_GET
+[14:51:39]     self._send_json({'start': start, 'end': end})
+[14:51:39]   File "\\tw100049089\00_MyAgent\領用報廢\共用後端\app_rs0342.py", line 164, in _send_json
+[14:51:39]     self.wfile.write(body)
+[14:51:39]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[14:51:39]     self._sock.sendall(b)
+[14:51:39] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[14:51:39] ----------------------------------------
+
+====================================================
+[ 啟動於 2026-09-23 14:57:11 ]
+====================================================
+
+====================================================
+[ 啟動於 2026-09-23 15:12:52 ]
+====================================================
+[15:18:19] ----------------------------------------
+[15:18:19] Exception occurred during processing of request from ('10.36.38.240', 49854)
+[15:18:19] Traceback (most recent call last):
+[15:18:19]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 318, in _handle_request_noblock
+[15:18:19]     self.process_request(request, client_address)
+[15:18:19]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 349, in process_request
+[15:18:19]     self.finish_request(request, client_address)
+[15:18:19]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 362, in finish_request
+[15:18:19]     self.RequestHandlerClass(request, client_address, self)
+[15:18:19]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 766, in __init__
+[15:18:19]     self.handle()
+[15:18:19]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 436, in handle
+[15:18:19]     self.handle_one_request()
+[15:18:19]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 424, in handle_one_request
+[15:18:19]     method()
+[15:18:19]   File "\\tw100049089\00_MyAgent\領用報廢\共用後端\app_rs0342.py", line 195, in do_GET
+[15:18:19]     self._serve_html(os.path.join(here, 'rs0342.html'))
+[15:18:19]   File "\\tw100049089\00_MyAgent\領用報廢\共用後端\app_rs0342.py", line 186, in _serve_html
+[15:18:19]     self.wfile.write(body)
+[15:18:19]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[15:18:19]     self._sock.sendall(b)
+[15:18:19] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[15:18:19] ----------------------------------------
+[15:35:09] ----------------------------------------
+[15:35:09] Exception occurred during processing of request from ('127.0.0.1', 50738)
+[15:35:09] Traceback (most recent call last):
+[15:35:09]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 318, in _handle_request_noblock
+[15:35:09]     self.process_request(request, client_address)
+[15:35:09]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 349, in process_request
+[15:35:09]     self.finish_request(request, client_address)
+[15:35:09]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 362, in finish_request
+[15:35:09]     self.RequestHandlerClass(request, client_address, self)
+[15:35:09]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 766, in __init__
+[15:35:09]     self.handle()
+[15:35:09]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 436, in handle
+[15:35:09]     self.handle_one_request()
+[15:35:09]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 424, in handle_one_request
+[15:35:09]     method()
+[15:35:09]   File "\\tw100049089\00_MyAgent\領用報廢\共用後端\app_rs0342.py", line 200, in do_GET
+[15:35:09]     self._send_json({'start': start, 'end': end})
+[15:35:09]   File "\\tw100049089\00_MyAgent\領用報廢\共用後端\app_rs0342.py", line 164, in _send_json
+[15:35:09]     self.wfile.write(body)
+[15:35:09]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[15:35:09]     self._sock.sendall(b)
+[15:35:09] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[15:35:09] ----------------------------------------

@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"><title>L8B CELL FIRST DEFECT Monitor v17</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Microsoft JhengHei',Arial,sans-serif;background:#f0f0f0;color:#222;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+#fb{background:#dde3ea;border-bottom:2px solid #aab5c2;padding:5px 12px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+.logo{font-size:14px;font-weight:bold;color:#c0392b;white-space:nowrap;margin-right:6px;}
+.fg{display:flex;align-items:center;gap:5px;}
+.fg label{font-size:11px;color:#555;white-space:nowrap;}
+.fg select{background:#fff;color:#222;border:1px solid #aab5c2;border-radius:4px;padding:3px 7px;font-size:12px;min-width:100px;}
+.abtn{background:#c0392b;color:#fff;border:none;border-radius:4px;padding:5px 14px;font-size:12px;cursor:pointer;font-weight:bold;}
+.abtn:hover{background:#a93226;}
+#mg{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:2fr 3fr;gap:5px;padding:5px;flex:1;min-height:0;}
+.panel{background:#fff;border:1px solid #c8d0da;border-radius:6px;display:flex;flex-direction:column;overflow:hidden;min-height:0;box-shadow:0 1px 3px rgba(0,0,0,0.08);}
+.ph{background:#dde3ea;padding:5px 10px;font-size:12px;font-weight:bold;color:#2c3e50;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid #c8d0da;}
+.pb{flex:1;overflow:auto;min-height:0;}.pb>iframe{width:100%;height:100%;border:none;}
+.tbar{display:flex;background:#eaeff4;flex-shrink:0;border-bottom:1px solid #c8d0da;overflow-x:auto;}
+.tbtn{padding:5px 12px;font-size:11px;cursor:pointer;color:#7090b0;background:none;border:none;border-bottom:2px solid transparent;white-space:nowrap;}
+.tbtn.on{color:#2980b9;border-bottom-color:#2980b9;font-weight:bold;}.tbtn:hover{color:#2980b9;}
+.tpane{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0;}.tpane.on{display:flex;}
+.split{display:flex;flex:1;min-height:0;overflow:hidden;}
+.half{flex:1;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #c8d0da;}.half:last-child{border-right:none;}
+.htitle{background:#eaeff4;padding:4px 8px;font-size:11px;font-weight:bold;color:#2c3e50;border-bottom:1px solid #c8d0da;flex-shrink:0;}
+.btn{border:none;border-radius:4px;padding:4px 11px;font-size:11px;cursor:pointer;color:#fff;white-space:nowrap;}
+.bb{background:#2980b9;}.bg{background:#27ae60;}.bo{background:#e67e22;}.bk{background:#95a5a6;}.bv{background:#8e44ad;}
+.bb:hover{background:#1f6fa3;}.bg:hover{background:#1e8449;}.bo:hover{background:#ca6f1e;}.bk:hover{background:#7f8c8d;}.bv:hover{background:#7d3c98;}
+.ctrl{padding:5px 8px;background:#eaeff4;display:flex;gap:7px;align-items:center;flex-shrink:0;flex-wrap:wrap;border-bottom:1px solid #dde3ea;}
+.ctrl label{font-size:11px;color:#555;}.ctrl select{background:#fff;color:#222;border:1px solid #aab5c2;border-radius:3px;padding:2px 5px;font-size:11px;}
+textarea.pi{flex:1;background:#fafafa;color:#333;border:1px dashed #aab5c2;border-radius:4px;padding:7px;font-size:11px;font-family:monospace;resize:none;margin:6px;}
+.tw{flex:1;overflow:auto;padding:5px;}
+table.dt{border-collapse:collapse;font-size:11px;width:max-content;min-width:100%;}
+table.dt th{background:#dde3ea;color:#2c3e50;border:1px solid #c8d0da;padding:3px 8px;white-space:nowrap;position:sticky;top:0;z-index:1;}
+table.dt td{border:1px solid #dde6ed;padding:2px 8px;white-space:nowrap;color:#333;}
+table.dt tr:hover td{background:#eaf2fb;}table.dt tr:nth-child(even) td{background:#f7f9fb;}
+.rn{text-align:right;}.pc{text-align:right;color:#e67e22;font-weight:bold;}.tot{font-weight:bold;color:#c0392b;background:#fdecea!important;}
+.site-sum{margin-top:8px;padding:5px 6px;background:#f7f9fb;border:1px solid #c8d0da;border-radius:4px;}
+.site-sum .ss-t{font-weight:bold;color:#2c3e50;margin-bottom:3px;font-size:11px;}
+.site-sum table{border-collapse:collapse;width:100%;}
+.site-sum th{background:#dde3ea;color:#2c3e50;border:1px solid #c8d0da;padding:2px 7px;font-size:11px;}
+.site-sum td{border:1px solid #dde6ed;padding:2px 7px;color:#333;font-size:11px;}
+.site-sum .sp{text-align:right;color:#e67e22;font-weight:bold;}.site-sum .sn{text-align:right;}
+.sc-wrap{display:flex;flex-direction:column;align-items:center;padding:20px 6px 4px 6px;min-height:0;}
+.sc14-half .sc-wrap{justify-content:flex-start;align-items:center;}
+canvas.sc{display:block;background:#fff;border:1.5px solid #aab5c2;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+.lb{padding:3px 6px;display:flex;flex-wrap:wrap;gap:3px;background:#eaeff4;flex-shrink:0;max-height:none;overflow-y:visible;border-top:1px solid #dde3ea;width:100%;}
+.li{display:flex;align-items:center;gap:3px;font-size:10px;cursor:pointer;padding:1px 4px;border-radius:3px;user-select:none;}
+.li:hover{background:#d6e4f0;}.li.dim{opacity:0.3;}.ld{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+#fpv{width:0;overflow:hidden;transition:width 0.2s;background:#f7f9fb;border-left:1px solid #c8d0da;display:flex;flex-direction:column;}
+/* V17 P2: fpv 分界往右（FMA 座標圖獲得更多空間）*/
+#fpv.open{width:44%;}
+#fph{padding:5px 8px;font-size:11px;color:#2980b9;background:#dde3ea;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-bottom:1px solid #c8d0da;}
+#fif{flex:1;border:none;width:100%;}
+.st{font-size:10px;margin-left:4px;}.ok{color:#27ae60;}.er{color:#c0392b;}
+select.ms{font-size:10px;background:#fff;color:#222;border:1px solid #aab5c2;border-radius:3px;min-width:70px;max-width:110px;height:52px;}
+#fma-auto-st{font-size:10px;padding:2px 8px;background:#eef6fb;border-bottom:1px solid #c8d0da;flex-shrink:0;color:#555;min-height:18px;display:flex;align-items:center;gap:6px;}
+#fma-auto-st.loading{color:#2980b9;}#fma-auto-st.ok{color:#27ae60;}#fma-auto-st.er{color:#c0392b;}
+::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-track{background:#f0f0f0;}::-webkit-scrollbar-thumb{background:#aab5c2;border-radius:3px;}
+.wt-title{font-size:11px;font-weight:bold;color:#2c3e50;background:#dde3ea;padding:3px 8px;border-left:3px solid #2980b9;margin:6px 0 3px 0;}
+.wt-final td,.wt-final th{background:#fef9e7!important;font-weight:bold;}
+.wt-final .pc{color:#c0392b!important;}
+#fpd{font-size:12px;background:#fff;color:#222;border:1px solid #aab5c2;border-radius:4px;padding:2px 4px;}
+.pie-item{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.pie-item canvas{display:block;}
+.pie-label{font-size:12px;color:#2c3e50;font-weight:bold;}
+.pie-legend{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px;}
+.pie-leg-item{display:flex;align-items:center;gap:3px;font-size:11px;color:#333;}
+.pie-leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+#pie-tab-pane{flex-direction:row!important;align-items:center;justify-content:space-evenly;padding:16px 10px;}
+#fpc{height:52px;font-size:12px;background:#fff;color:#222;border:1px solid #aab5c2;border-radius:4px;padding:2px 4px;min-width:120px;}
+#fma-col-inner{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;}
+/* V17 P1: FMA 座標圖與 DEFECT LOCATION 各佔 1/2 */
+#sc2-section{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;}
+#sc3-section{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;border-top:1px solid #c8d0da;}
+.dot-sbar{display:flex;align-items:center;gap:5px;padding:2px 8px;background:#eaeff4;border-bottom:1px solid #dde3ea;flex-shrink:0;font-size:10px;color:#555;}
+.dot-sbar input[type=range]{width:72px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div id="fb">
+  <span class="logo">L8B CELL FIRST DEFECT 監控 v17</span>
+  <div class="fg"><label>PRODUCT CODE</label>
+    <select id="fpc" multiple onchange="syncChart()">
+      <option value="P550HVN06" selected>P550HVN06</option><option value="T850QVN08">T850QVN08</option>
+      <option value="T650QVN07">T650QVN07</option><option value="T550QVN11">T550QVN11</option>
+      <option value="T550QVN10">T550QVN10</option><option value="T550QVN09">T550QVN09</option>
+      <option value="T550QVN07">T550QVN07</option><option value="T430QVN05">T430QVN05</option>
+      <option value="T430QVN04">T430QVN04</option><option value="T430QVN03">T430QVN03</option>
+      <option value="T430HVN03">T430HVN03</option><option value="T430HVN01">T430HVN01</option>
+      <option value="T215HVN05">T215HVN05</option><option value="T215HVN03">T215HVN03</option>
+      <option value="P550QVR01">P550QVR01</option><option value="P490QAR01">P490QAR01</option>
+      <option value="M490AVR01">M490AVR01</option><option value="M315HVR01">M315HVR01</option>
+      <option value="M315DVR06">M315DVR06</option><option value="M315DVR01">M315DVR01</option>
+      <option value="M270QAN11">M270QAN11</option><option value="M270HVR03">M270HVR03</option>
+      <option value="M270HVR01">M270HVR01</option><option value="M270HAN01">M270HAN01</option>
+      <option value="M270DAN13">M270DAN13</option><option value="M270DAN11">M270DAN11</option>
+      <option value="M270DAN07">M270DAN07</option><option value="M238HAN05">M238HAN05</option>
+      <option value="M238HAN03">M238HAN03</option><option value="M236HVR01">M236HVR01</option>
+      <option value="M215HVN02">M215HVN02</option><option value="B160UAN04">B160UAN04</option>
+      <option value="B156HAN02">B156HAN02</option>
+    </select>
+  </div>
+  <div class="fg"><label>DEFECT CODE</label>
+    <select id="fdc" onchange="syncChart()">
+      <option value="CPD" selected>CPD</option><option value="CP">CP</option>
+      <option value="BP_BP IN GRAY">BP_BP IN GRAY</option><option value="C-S">C-S</option>
+      <option value="V-LINE">V-LINE</option><option value="DP">DP</option><option value="AD">AD</option>
+      <option value="V-OPEN">V-OPEN</option><option value="COLOR SPOT">COLOR SPOT</option>
+      <option value="RUBBING MURA">RUBBING MURA</option><option value="EGG MURA">EGG MURA</option>
+    </select>
+  </div>
+  <div class="fg"><label>PERIOD TYPE</label>
+    <select id="fpt" onchange="populatePeriod()"><option value="MONTHLY">MONTHLY</option><option value="WEEKLY">WEEKLY</option></select>
+  </div>
+  <div class="fg"><label>PERIOD</label><select id="fpd" style="min-width:80px;height:52px;" multiple></select></div>
+  <button class="abtn" onclick="applyFilters()">&#9654; 套用</button>
+  <span id="st-fb" class="st"></span>
+</div>
+<div id="mg">
+<div class="panel">
+  <div class="ph"><span>&#128202; 常見 DEFECT 監控圖表</span></div>
+  <div class="pb"><iframe id="chart-if" src="L8B_DEFECT_chart_v2.html"></iframe></div>
+</div>
+<div class="panel" style="grid-row:span 2;">
+  <div class="ph">&#128205; FMA 座標圖
+    <div style="display:flex;gap:5px;align-items:flex-start;">
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;">
+        <label style="font-size:10px;color:#555;">SITE</label>
+        <select id="s2s" class="ms" multiple onchange="redrawS2()"></select>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;">
+        <label style="font-size:10px;color:#555;">DEPT</label>
+        <select id="s2d" class="ms" multiple onchange="redrawS2()"></select>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;">
+        <label style="font-size:10px;color:#555;">DESC</label>
+        <select id="s2c" class="ms" multiple onchange="redrawS2()"></select>
+      </div>
+      <button class="btn bk" style="margin-top:18px;font-size:10px;padding:3px 8px;" onclick="clearS2Filter()">全清</button>
+    </div>
+  </div>
+  <div style="display:flex;flex:1;min-height:0;overflow:hidden;">
+    <div id="fma-col-inner">
+      <!-- sc2: FMA 座標圖 (flex:1) -->
+      <div id="sc2-section">
+        <div class="dot-sbar">點大小 <input type="range" id="ds2" min="1" max="10" value="4" oninput="document.getElementById('ds2v').textContent=this.value;redrawS2();"><span id="ds2v">4</span></div>
+        <div class="sc-wrap" style="flex:1;min-height:0;">
+          <canvas class="sc" id="sc2" width="340" height="250"></canvas>
+          <div class="lb" id="lb2"></div>
+        </div>
+      </div>
+      <!-- sc3: DEFECT LOCATION (flex:1, 與 sc2 各半) -->
+      <div id="sc3-section">
+        <div class="htitle">DEFECT LOCATION（同步 FMA 篩選）</div>
+        <div class="dot-sbar">點大小 <input type="range" id="ds3" min="1" max="10" value="4" oninput="document.getElementById('ds3v').textContent=this.value;redrawS3();"><span id="ds3v">4</span></div>
+        <div class="sc-wrap" style="flex:1;min-height:0;">
+          <!-- V17: sc3 canvas height=250 與 sc2 同大，長寬比 2.2:2.5 -->
+          <canvas class="sc" id="sc3" width="340" height="250"></canvas>
+          <div class="lb" id="lb3"></div>
+        </div>
+      </div>
+    </div>
+    <div id="fpv">
+      <div id="fph"><span id="fph-id">FMA 圖片</span><button class="btn bk" style="font-size:10px;padding:2px 6px;" onclick="closeFMA()">&#10005;</button></div>
+      <iframe id="fif" src="about:blank"></iframe>
+    </div>
+  </div>
+</div>
+<div class="panel">
+  <div class="tbar">
+    <button class="tbtn on" onclick="swTab(0)">&#128203; RAW DATA 分析</button>
+    <button class="tbtn" onclick="swTab(1)">&#128302; FMA 分析</button>
+    <button class="tbtn" onclick="swTab(2)">&#128204; ALIGN CODE MAP</button>
+    <button class="tbtn" onclick="swTab(3)">&#9878; 加權分責</button>
+    <button class="tbtn" onclick="swTab(4)">&#129381; 圓餅圖</button>
+  </div>
+  <div id="fma-auto-st">&#9203; 貼入 RAW DATA 後將自動查詢 FMA 資料</div>
+  <div class="tpane on">
+    <div class="ctrl">
+      <label>SITE</label>
+      <select id="s1s" style="font-size:10px;padding:1px 4px;min-width:60px;" onchange="redrawS1()"><option value="">全部</option></select>
+      <button class="btn bb" onclick="parseRaw()">&#9654; 解析</button>
+      <button class="btn bv" onclick="importFromDB()" id="btnDBImport">&#128196; 從資料庫匯入</button>
+      <button class="btn bo" onclick="openRaw()">&#127760; 開啟原始頁面</button>
+      <button class="btn bk" onclick="document.getElementById('pr').value='';RD=[];document.getElementById('p1w').innerHTML='';document.getElementById('st-raw').textContent='';resetFMAStatus();">清除</button>
+      <span id="st-raw" class="st"></span>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="htitle">RESPONSE 統計 <span style="font-weight:normal;font-size:10px;color:#555;">前 <input type="number" id="topN" value="10" min="1" max="999" style="width:36px;font-size:10px;border:1px solid #aab5c2;border-radius:3px;padding:0 2px;text-align:center;" onchange="buildP1()"> 名</span></div>
+        <div class="tw" id="p1w"><div style="color:#888;font-size:12px;padding:10px;">請先貼上資料</div></div>
+      </div>
+      <div class="half">
+        <div class="htitle">貼上 RAW DATA（Tab 分隔）</div>
+        <textarea class="pi" id="pr" placeholder="從系統複製後貼入，含標題列..."></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="tpane">
+    <div class="ctrl">
+      <button class="btn bg" onclick="fetchFMAManual()">&#128260; 重新查詢 FMA</button>
+      <button class="btn bb" onclick="toggleFMAMode()" id="btnFMAMode">&#9998; 手動輸入</button>
+      <button class="btn bg" onclick="parseFMAData()" id="btnParseFMA" style="display:none;">&#9654; 解析手動資料</button>
+      <button class="btn bv" onclick="window.open('http://tw100049089/L8BC1/CInt_FMA/FMA_Query.aspx','_blank')">&#128279; FMA 查詢</button>
+      <button class="btn bk" onclick="clearFMAData()">清除</button>
+      <button class="btn bo" onclick="exportFMADetailCSV()" style="background:#e67e22;">&#11015; 匯出 Excel</button>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="htitle">FMA 彙整</div>
+        <div class="tw" id="p2w"><div style="color:#888;font-size:12px;padding:10px;">解析 RAW DATA 後自動載入</div></div>
+      </div>
+      <div class="half">
+        <div id="fma-auto-mode" style="display:flex;flex-direction:column;flex:1;min-height:0;">
+          <div class="htitle">FMA 明細（自動查詢）</div>
+          <div class="tw" id="fma-detail-w"><div style="color:#888;font-size:12px;padding:10px;">解析 RAW DATA 後自動載入</div></div>
+        </div>
+        <div id="fma-manual-mode" style="display:none;flex-direction:column;flex:1;min-height:0;">
+          <div class="htitle">手動貼入 FMA 資料</div>
+          <div style="padding:3px 10px;font-size:10px;color:#888;flex-shrink:0;">&#128161; 從 Excel 含超連結的 FMA 資料複製貼入（含標題行，第一欄 CHIP_ID）</div>
+          <textarea class="pi" id="pf" placeholder="從 Excel 複製含 CHIP_ID 超連結的完整 FMA 資料表格貼入..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tpane">
+    <div class="dot-sbar">點大小 <input type="range" id="ds14" min="1" max="10" value="4" oninput="document.getElementById('ds14v').textContent=this.value;redrawS1();"><span id="ds14v">4</span></div>
+    <div class="split">
+      <div class="half sc14-half">
+        <div class="htitle">RESPONSE SITE（同步 RAW 篩選）</div>
+        <div class="sc-wrap" style="justify-content:flex-start;flex:1;">
+          <canvas class="sc" id="sc1" width="260" height="220"></canvas>
+          <div class="lb" id="lb1"></div>
+        </div>
+      </div>
+      <div class="half sc14-half">
+        <div class="htitle">ALIGN DEFECT CODE（同步 RAW 篩選）</div>
+        <div class="sc-wrap" style="justify-content:flex-start;flex:1;">
+          <canvas class="sc" id="sc4" width="260" height="220"></canvas>
+          <div class="lb" id="lb4"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tpane">
+    <div class="tw" id="pw"><div style="color:#888;font-size:12px;padding:10px;">解析 RAW DATA 後自動計算</div></div>
+  </div>
+  <div class="tpane" id="pie-tab-pane">
+    <div class="pie-item"><span class="pie-label">RAW DATA 分析</span><canvas id="pie-raw" width="180" height="180"></canvas><div class="pie-legend" id="pie-raw-leg"></div></div>
+    <div class="pie-item"><span class="pie-label">FMA 分析</span><canvas id="pie-fma" width="180" height="180"></canvas><div class="pie-legend" id="pie-fma-leg"></div></div>
+    <div class="pie-item"><span class="pie-label">加權分責</span><canvas id="pie-wt" width="180" height="180"></canvas><div class="pie-legend" id="pie-wt-leg"></div></div>
+  </div>
+</div>
+</div>
+<script>
+var RD=[],FMAMap={},FMAHeaders=[],HL1={},HL2={},HL3={},SP1=[],SP2=[],SP3=[];
+var MX=2500000,MY=2200000;
+var DISTINCT_PAL=[
+  '#e6194b','#3cb44b','#4363d8','#f58231','#911eb4',
+  '#00c4cc','#f032e6','#469990','#9A6324','#800000',
+  '#aaffc3','#808000','#000075','#008080','#c77dff',
+  '#ffe119','#ff6eb4','#ffd8b1','#b5e550','#0080ff',
+  '#ff6600','#6600cc','#00cc44','#cc0066','#996633',
+  '#003366','#ff9900','#336600','#cc3300','#0099cc'
+];
+var PALc=DISTINCT_PAL;
+var RC_COLOR={'ARRAY':'#2980b9','CELL':'#27ae60','CF':'#e74c3c'};
+var LOC_COLOR={'TFT':'#2980b9','CF':'#f1c40f','BOTH':'#e74c3c','UCT':'#95a5a6'};
+var _BASE='http://'+location.hostname+':5050';
+var FMA_PROXY_URL=_BASE+'/api/fma';
+function setFMAStatus(msg,cls){var el=document.getElementById('fma-auto-st');el.textContent=msg;el.className=cls||'';}
+function resetFMAStatus(){setFMAStatus('⏳ 貼入 RAW DATA 後將自動查詢 FMA 資料','');}
+function fetchFMAFromProxy(chipIds,productCode){
+  if(!chipIds||!chipIds.length)return;
+  setFMAStatus('🔄 查詢 FMA 資料中…（'+chipIds.length+' 筆）','loading');
+  fetch(FMA_PROXY_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chip_ids:chipIds,product_code:productCode})})
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(function(json){
+    if(json.error){setFMAStatus('⚠ FMA 查詢錯誤：'+json.error,'er');return;}
+    var data=json.data||{},cnt=Object.keys(data).length;
+    FMAMap={};
+    Object.keys(data).forEach(function(chipId){
+      var d=data[chipId];
+      FMAMap[chipId]={__url:d.IMAGE_URL||'',DEFECT_LOCATION:d.DEFECT_LOCATION||'',TEST_TYPE:d.TEST_TYPE||'',
+        FMA_TIME:d.FMA_TIME||'',SIGNAL_NO:d.SIGNAL_NO||'',GATE_NO:d.GATE_NO||'',
+        LOCATION_FLAG:d.LOCATION_FLAG||'',NOTE:d.NOTE||'',
+        DEFECT_CODE_DESC:d.DEFECT_CODE_DESC||'',FMA_DEFECT_CODE_DESC:d.FMA_DEFECT_CODE_DESC||''};
+    });
+    setFMAStatus('✔ FMA 查詢完成：'+cnt+' 筆匹配（共 '+chipIds.length+' 個 CHIP）','ok');
+    buildFMADetail(data);buildP2();upS2();redrawS2();updatePieFMA();
+  })
+  .catch(function(err){setFMAStatus('✕ FMA Proxy 連線失敗（'+err.message+'）— 請確認 app.py 已啟動','er');});
+}
+function fetchFMAManual(){
+  if(!RD.length){setFMAStatus('⚠ 請先解析 RAW DATA','er');return;}
+  var chipIds=[...new Set(RD.map(function(r){return r.TFT_CHIP_ID||'';}).filter(Boolean))];
+  fetchFMAFromProxy(chipIds,document.getElementById('fpc').value||'');
+}
+function buildFMADetail(data){
+  var w=document.getElementById('fma-detail-w'),keys=Object.keys(data);
+  if(!keys.length){w.innerHTML='<div style="color:#888;font-size:12px;padding:10px;">無 FMA 資料</div>';return;}
+  var rdMap={};RD.forEach(function(r){if(r.TFT_CHIP_ID)rdMap[r.TFT_CHIP_ID]=r;});
+  var h='<table class="dt" id="fma-detail-table"><thead><tr>'
+    +'<th style="position:sticky;left:0;z-index:3;background:#dde3ea;">CHIP_ID</th><th>PRODUCT</th>'
+    +'<th>DEFECT_CODE_DESC</th><th>FMA_DEFECT_CODE_DESC</th><th>DEFECT_LOC</th><th>FMA_TIME</th>'
+    +'<th>PIC</th><th>PIC_DAY</th><th>PA</th><th>PA_DAY</th><th>ODF</th><th>ODF_DAY</th>'
+    +'<th>SIGNAL_NO</th><th>GATE_NO</th><th>LOC_FLAG</th><th>NOTE</th><th>圖片連結</th>'
+    +'</tr></thead><tbody>';
+  keys.forEach(function(id){
+    var d=data[id],rd=rdMap[id]||{},imgUrl=d.IMAGE_URL||'';
+    h+='<tr><td style="position:sticky;left:0;background:#fff;z-index:2;box-shadow:2px 0 3px rgba(0,0,0,.08);">'+esc(id)+'</td>'
+      +'<td>'+esc(rd.PRODUCT_CODE||d.PRODUCT_CODE||'')+'</td><td>'+esc(d.DEFECT_CODE_DESC)+'</td>'
+      +'<td>'+esc(d.FMA_DEFECT_CODE_DESC)+'</td><td>'+esc(d.DEFECT_LOCATION)+'</td><td>'+esc(d.FMA_TIME)+'</td>'
+      +'<td>'+esc(rd.PIC||'')+'</td><td>'+esc(rd.PIC_DAY||'')+'</td>'
+      +'<td>'+esc(rd.PA||'')+'</td><td>'+esc(rd.PA_DAY||'')+'</td>'
+      +'<td>'+esc(rd.ODF||'')+'</td><td>'+esc(rd.ODF_DAY||'')+'</td>'
+      +'<td>'+esc(d.SIGNAL_NO)+'</td><td>'+esc(d.GATE_NO)+'</td>'
+      +'<td>'+esc(d.LOCATION_FLAG)+'</td><td>'+esc(d.NOTE)+'</td>'
+      +'<td>'+(imgUrl?'<a href="'+imgUrl+'" target="_blank" style="color:#2980b9;font-size:10px;">&#128279;</a>'
+        +' <span class="img-url" style="display:none">'+esc(imgUrl)+'</span>':'—')+'</td></tr>';
+  });
+  w.innerHTML=h+'</tbody></table>';
+}
+function getWeekNum(d){var d2=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));var dayN=d2.getUTCDay()||7;d2.setUTCDate(d2.getUTCDate()+4-dayN);var y=d2.getUTCFullYear(),jan1=new Date(Date.UTC(y,0,1));return{year:y,week:Math.ceil((((d2-jan1)/86400000)+1)/7)};}
+function populatePeriod(){
+  var pt=document.getElementById('fpt').value,sel=document.getElementById('fpd'),now=new Date();
+  sel.innerHTML='';
+  if(pt==='MONTHLY'){
+    for(var i=0;i<6;i++){var m=now.getMonth()+1-i,y=now.getFullYear();if(m<=0){m+=12;y--;}var o=document.createElement('option');o.value=String(y*100+m);o.textContent=String(y*100+m);sel.appendChild(o);}
+  } else {
+    var d=new Date(now),day=d.getDay();d.setDate(d.getDate()+(day===0?-6:1-day));
+    for(var i=0;i<8;i++){var wd=new Date(d.getTime()-i*7*86400000),wk=getWeekNum(wd),o=document.createElement('option'),v=wk.year*100+wk.week;o.value=String(v);o.textContent=String(v);sel.appendChild(o);}
+  }
+  if(sel.options.length>0)sel.options[0].selected=true;
+}
+function syncChart(){
+  var sel=document.getElementById('fpc');
+  var pcs=[...sel.options].filter(function(o){return o.selected;}).map(function(o){return o.value;});
+  var pc=pcs.length>0?pcs[0]:(sel.options.length?sel.options[0].value:'');
+  var dc=document.getElementById('fdc').value;
+  var iframe=document.getElementById('chart-if');
+  try{iframe.contentWindow.postMessage({type:'L8B_FILTER',product:pc,defect:dc},'*');}
+  catch(e){iframe.src='L8B_DEFECT_chart_v2.html?PRODUCT='+encodeURIComponent(pc)+'&DEFECT='+encodeURIComponent(dc);}
+}
+function applyFilters(){document.getElementById('st-fb').textContent='✔ 套用完成';document.getElementById('st-fb').className='st ok';syncChart();}
+function swTab(n){document.querySelectorAll('.tbtn').forEach(function(b,i){b.classList.toggle('on',i===n);});document.querySelectorAll('.tpane').forEach(function(p,i){p.classList.toggle('on',i===n);});if(n===4)updateAllPies();}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function getFMAField(rec,name){if(!rec)return '';if(rec[name]!==undefined)return rec[name];var norm=name.toUpperCase().replace(/[\s_]/g,''),keys=Object.keys(rec);for(var i=0;i<keys.length;i++){if(keys[i]==='__url')continue;if(keys[i].toUpperCase().replace(/[\s_]/g,'')===norm)return rec[keys[i]];}return '';}
+function parseHtmlClip(html){
+  var doc=new DOMParser().parseFromString(html,'text/html'),trs=doc.querySelectorAll('tr'),lines=[];
+  if(trs.length>0){trs.forEach(function(tr){var cells=tr.querySelectorAll('td,th');if(!cells.length)return;var parts=[];cells.forEach(function(cell,ci){if(ci===0){var a=cell.querySelector('a');parts.push((cell.textContent||'').trim()+'\x01'+(a?a.href:''));}else parts.push((cell.textContent||'').trim());});if(parts.length)lines.push(parts.join('\t'));});}
+  else{doc.querySelectorAll('a').forEach(function(a){var id=(a.textContent||'').trim();if(id)lines.push(id+'\t'+a.href);});}
+  return lines;
+}
+function splitIdUrl(first){
+  if(first.indexOf('\x01')>=0){var p=first.split('\x01');return{id:(p[0]||'').trim(),url:(p[1]||'').trim()};}
+  var hi=first.search(/https?:\/\//);
+  if(hi>0)return{id:first.substring(0,hi).trim(),url:first.substring(hi).trim()};
+  return{id:first.trim(),url:''};
+}
+function mergeLines(txt){
+  var raw=txt.split('\n'),merged=[];
+  raw.forEach(function(line){if(merged.length>0&&(line.charAt(0)===' '||line.charAt(0)==='\t')){merged[merged.length-1]+=line;}else if(line.trim()){merged.push(line);}});
+  return merged;
+}
+function parseRaw(){
+  var txt=document.getElementById('pr').value.trim(),st=document.getElementById('st-raw');
+  if(!txt){st.textContent='⚠ 請貼上資料';st.className='st er';return;}
+  var lines=txt.split('\n').filter(function(l){return l.trim();});
+  if(lines.length<2){st.textContent='⚠ 資料不足';st.className='st er';return;}
+  var hdrs=lines[0].split('\t').map(function(h){return h.trim();});
+  RD=lines.slice(1).map(function(l){var c=l.split('\t'),o={};hdrs.forEach(function(h,i){o[h]=(c[i]||'').trim();});return o;});
+  st.textContent='✔ '+RD.length+' 筆 / '+hdrs.length+' 欄';st.className='st ok';
+  buildP1();upS1();redrawS1();buildWeighted();setTimeout(filterTopN,0);updateAllPies();
+  setTimeout(function(){if(typeof redrawS4==='function')redrawS4();},80);
+  var chipIds=[...new Set(RD.map(function(r){return r.TFT_CHIP_ID||'';}).filter(Boolean))];
+  fetchFMAFromProxy(chipIds,document.getElementById('fpc').value||'');
+}
+function buildP1(){
+  var w=document.getElementById('p1w');
+  if(!RD.length){w.innerHTML='<div style="color:#888;font-size:12px;padding:10px;">請先貼上資料</div>';return;}
+  var ex=function(v){return !v||v==='-'||v.toUpperCase()==='UCT';};
+  var f=RD.filter(function(r){return !ex(r.RESPONSE_SITE)&&!ex(r.RESPONSE_DEPT)&&!ex(r.ALIGN_DEFECT_CODE);});
+  var g={};
+  f.forEach(function(r){var k=r.RESPONSE_SITE+'||'+r.RESPONSE_DEPT+'||'+r.ALIGN_DEFECT_CODE;g[k]=(g[k]||0)+1;});
+  var rows=Object.keys(g).map(function(k){var p=k.split('||');return{s:p[0],d:p[1],c:p[2],n:g[k]};});
+  var SO={'ARRAY':0,'CELL':1,'CF':2};
+  function sr(s){var u=(s||'').toUpperCase();for(var k in SO){if(u===k||u.indexOf(k)===0)return SO[k];}return 99;}
+  rows.sort(function(a,b){var d=sr(a.s)-sr(b.s);if(d)return d;d=a.d.localeCompare(b.d);if(d)return d;return b.n-a.n;});
+  var tot=rows.reduce(function(s,r){return s+r.n;},0);
+  var over20=rows.map(function(r){return r.n;}).filter(function(n){return n>20;});
+  over20.sort(function(a,b){return b-a;});
+  var uniq=[],seen={};over20.forEach(function(n){if(!seen[n]){uniq.push(n);seen[n]=1;}});
+  var top3=new Set(uniq.slice(0,3));
+  var _n=parseInt((document.getElementById('topN')||{value:'10'}).value)||10;
+  var _disp=rows.slice().sort(function(a,b){return b.n-a.n;}).slice(0,_n);
+  _disp.sort(function(a,b){var d=sr(a.s)-sr(b.s);if(d)return d;d=a.d.localeCompare(b.d);if(d)return d;return b.n-a.n;});
+  var h='<table class="dt"><thead><tr><th>RESPONSE_SITE</th><th>RESPONSE_DEPT</th><th>ALIGN_DEFECT_CODE</th><th>片數</th><th>%</th></tr></thead><tbody>';
+  _disp.forEach(function(r){var pct=tot>0?(r.n/tot*100).toFixed(1)+'%':'0%';var nc=top3.has(r.n)?'<b style="color:#c0392b;">'+r.n+'</b>':String(r.n);h+='<tr><td>'+esc(r.s)+'</td><td>'+esc(r.d)+'</td><td>'+esc(r.c)+'</td><td class="rn">'+nc+'</td><td class="pc">'+pct+'</td></tr>';});
+  h+='<tr><td colspan="3" class="tot">合計</td><td class="rn tot">'+tot+'</td><td class="pc tot">100%</td></tr></tbody></table>'+makeSiteSum(rows,tot);
+  w.innerHTML=h;
+}
+function makeSiteSum(rows,tot){
+  var sites=['ARRAY','CELL','CF'];
+  function sk(s){var u=(s||'').toUpperCase();for(var i=0;i<sites.length;i++){if(u===sites[i]||u.indexOf(sites[i])===0)return sites[i];}return 'OTHER';}
+  var sg={};rows.forEach(function(r){var s=sk(r.s);sg[s]=(sg[s]||0)+r.n;});
+  var h='<div class="site-sum"><div class="ss-t">SITE 合計</div><table><thead><tr>';
+  sites.forEach(function(s){h+='<th>'+s+'</th>';});
+  h+='<th>合計</th></tr></thead><tbody><tr>';
+  var stot=0;sites.forEach(function(s){h+='<td class="sn">'+(sg[s]||0)+'</td>';stot+=(sg[s]||0);});
+  h+='<td class="sn">'+stot+'</td></tr>';
+  sites.forEach(function(s){h+='';});
+  h+='</tbody></table>';
+  var prow='<tr>';sites.forEach(function(s){var pct=stot>0?((sg[s]||0)/stot*100).toFixed(1)+'%':'0%';prow+='<td class="sp">'+pct+'</td>';});prow+='<td class="sp">100%</td></tr>';
+  h=h.replace('</tbody>',prow+'</tbody>')+'</div>';
+  return h;
+}
+function importFromDB(){
+  var products=getSelectedProducts(),pt=document.getElementById('fpt').value,dc=document.getElementById('fdc').value,periods=getSelectedPeriods();
+  var st=document.getElementById('st-raw'),btn=document.getElementById('btnDBImport');
+  if(btn)btn.disabled=true;st.textContent='⏳ 從資料庫查詢中...';st.className='st';
+  fetch(_BASE+'/api/rawdata_db',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({products:products,periods:periods,period_type:pt,defect_group:dc})})
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(function(json){if(btn)btn.disabled=false;if(json.error){st.textContent='✕ '+json.error;st.className='st er';return;}if(!json.data||json.data.trim()===''){st.textContent='⚠ 無資料';st.className='st er';return;}document.getElementById('pr').value=json.data;st.textContent='✔ DB 匯入完成：'+(json.data.split('\n').length-1)+' 筆，點▶解析';st.className='st ok';})
+  .catch(function(err){if(btn)btn.disabled=false;st.textContent='✕ 連線失敗（Server 未啟動？）';st.className='st er';});
+}
+function exportFMADetailCSV(){
+  var tbl=document.getElementById('fma-detail-table');if(!tbl){alert('請先查詢 FMA 資料');return;}
+  var rows=[...tbl.querySelectorAll('tr')];
+  var lines=rows.map(function(tr){return[...tr.querySelectorAll('th,td')].map(function(td){var urlSpan=td.querySelector('.img-url');var t=urlSpan?(urlSpan.textContent||''):(td.innerText||td.textContent||'');t=t.replace(/\n/g,' ').trim();if(t.indexOf(',')>=0||t.indexOf('"')>=0)t='"'+t.replace(/"/g,'""')+'"';return t;}).join(',');});
+  var blob=new Blob(['\uFEFF'+lines.join('\n')],{type:'text/csv;charset=utf-8;'});
+  var url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='FMA_Detail_'+new Date().toISOString().replace(/[:.]/g,'-').substring(0,19)+'.csv';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+}
+function filterTopN(){
+  var nEl=document.getElementById('topN'),n=nEl?parseInt(nEl.value)||10:10;
+  var tbl=document.querySelector('#p1w table');if(!tbl)return;
+  var allRows=[].slice.call(tbl.rows);
+  var dataRows=allRows.filter(function(tr){return tr.cells.length>=4&&!tr.querySelector('td[colspan]')&&!tr.querySelector('th');});
+  var pairs=dataRows.map(function(tr){var txt=(tr.cells[3]?tr.cells[3].textContent:'').replace(/[^0-9]/g,'');return{tr:tr,n:parseInt(txt)||0};});
+  pairs.sort(function(a,b){return b.n-a.n;});
+  var topSet=new Set(pairs.slice(0,n).map(function(x){return x.tr;}));
+  pairs.forEach(function(p){p.tr.style.display=topSet.has(p.tr)?'':'none';});
+}
+var _fmaManual=false;
+function toggleFMAMode(){
+  _fmaManual=!_fmaManual;
+  var a=document.getElementById('fma-auto-mode'),m=document.getElementById('fma-manual-mode');
+  var btn=document.getElementById('btnFMAMode'),pb=document.getElementById('btnParseFMA');
+  if(a)a.style.display=_fmaManual?'none':'flex';if(m)m.style.display=_fmaManual?'flex':'none';
+  if(btn)btn.textContent=_fmaManual?'\uD83D\uDD04 自動查詢':'\u270E 手動輸入';if(pb)pb.style.display=_fmaManual?'':'none';
+}
+function parseFMAData(){
+  var txt=document.getElementById('pf').value.trim();if(!txt){alert('請先貼上 FMA 資料');return;}
+  var lines=mergeLines(txt);if(lines.length<2){alert('資料不足');return;}
+  FMAHeaders=lines[0].split('\t').map(function(h){return splitIdUrl(h).id||h.trim();});
+  FMAMap={};var cnt=0,urlCnt=0;
+  lines.slice(1).forEach(function(l){var cells=l.split('\t'),parsed=splitIdUrl(cells[0]||'');var id=parsed.id,url=parsed.url;if(!id)return;if(url)urlCnt++;var rec={__url:url};FMAHeaders.forEach(function(h,i){if(i===0)return;rec[h]=(cells[i]||'').split('\x01')[0].trim();});FMAMap[id]=rec;cnt++;});
+  var matchCnt=RD.filter(function(r){return !!FMAMap[r.TFT_CHIP_ID];}).length;
+  alert('✔ '+cnt+' 筆 FMA，匹配 RD '+matchCnt+' 筆，含連結 '+urlCnt+' 筆');
+  buildP2();upS2();redrawS2();if(typeof updateAllPies==='function')updateAllPies();
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var fpcEl=document.getElementById('fpc');if(fpcEl&&fpcEl.options.length>0)fpcEl.options[0].selected=true;
+  var pfEl=document.getElementById('pf');
+  if(pfEl){pfEl.addEventListener('paste',function(e){var h=e.clipboardData&&e.clipboardData.getData('text/html');if(!h)return;e.preventDefault();var lines=parseHtmlClip(h);pfEl.value=lines.length?lines.join('\n'):e.clipboardData.getData('text/plain');});}
+  populatePeriod();
+  document.getElementById('sc2').addEventListener('click',function(e){
+    var r=this.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,best=null,bd=Infinity;
+    SP2.forEach(function(p){var d=Math.hypot(p.sx-mx,p.sy-my);if(d<bd){bd=d;best=p;}});
+    if(best&&bd<14&&best.d){var id=best.d.TFT_CHIP_ID||'',fma=FMAMap[id],url=fma?fma.__url:'';document.getElementById('fph-id').textContent=id+(url?'':' (無連結)');document.getElementById('fif').src=url||'about:blank';document.getElementById('fpv').classList.add('open');setTimeout(redrawS2,250);}
+  });
+  document.getElementById('sc1').addEventListener('click',function(e){
+    var r=this.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,best=null,bd=Infinity;
+    SP1.forEach(function(p){var d=Math.hypot(p.sx-mx,p.sy-my);if(d<bd){bd=d;best=p;}});
+    if(best&&bd<14&&best.d){var d=best.d;alert('CHIP_ID: '+(d.TFT_CHIP_ID||'-')+'\nSITE: '+(d.RESPONSE_SITE||'-')+'\nDEPT: '+(d.RESPONSE_DEPT||'-')+'\nALIGN: '+(d.ALIGN_DEFECT_CODE||'-')+'\nCOORD: ('+d.COORD_X+', '+d.COORD_Y+')');}
+  });
+  document.getElementById('sc3').addEventListener('click',function(e){
+    var r=this.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,best=null,bd=Infinity;
+    SP3.forEach(function(p){var d=Math.hypot(p.sx-mx,p.sy-my);if(d<bd){bd=d;best=p;}});
+    if(best&&bd<14&&best.d){var d=best.d,fma=FMAMap[d.TFT_CHIP_ID]||{},loc=getFMAField(fma,'DEFECT_LOCATION');alert('CHIP_ID: '+(d.TFT_CHIP_ID||'-')+'\nDEFECT_LOCATION: '+(loc||'-')+'\nCOORD: ('+d.COORD_X+', '+d.COORD_Y+')');}
+  });
+  var sc4el=document.getElementById('sc4');
+  if(sc4el){sc4el.addEventListener('click',function(e){
+    var r=this.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,best=null,bd=Infinity;
+    if(typeof SP4!=='undefined')SP4.forEach(function(p){var d=Math.hypot(p.sx-mx,p.sy-my);if(d<bd){bd=d;best=p;}});
+    if(best&&bd<14&&best.d){var d=best.d;alert('CHIP_ID: '+(d.TFT_CHIP_ID||'-')+'\nALIGN_DEFECT_CODE: '+(d.ALIGN_DEFECT_CODE||'-')+'\nSITE: '+(d.RESPONSE_SITE||'-')+'\nCOORD: ('+d.COORD_X+', '+d.COORD_Y+')');}
+  });}
+});
+function clearFMAData(){FMAMap={};document.getElementById('fma-detail-w').innerHTML='<div style="color:#888;font-size:12px;padding:10px;">已清除</div>';document.getElementById('p2w').innerHTML='<div style="color:#888;font-size:12px;padding:10px;">已清除</div>';resetFMAStatus();redrawS2();}
+function closeFMA(){document.getElementById('fpv').classList.remove('open');document.getElementById('fif').src='about:blank';setTimeout(redrawS2,250);}
+function mkCM(vals,fixedMap){var m={};vals.forEach(function(v,i){m[v]=(fixedMap&&fixedMap[v])||PALc[i%PALc.length];});return m;}
+function mkCM_FMA(vals){
+  var m={};var palIdx=0;
+  vals.forEach(function(v){
+    if(v==='-') m[v]='#d5d8dc';
+    else if(v.toUpperCase()==='UCT') m[v]='#85929e';
+    else { m[v]=DISTINCT_PAL[palIdx%DISTINCT_PAL.length]; palIdx++; }
+  });
+  return m;
+}
+function getPanelConfig(){
+  var pc=(document.getElementById('fpc').value||'').toUpperCase();
+  var std='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'.split('');
+  var colL='ABCDEFGHJKLMNPQRSTUVWXYZ'.split('');
+  var rowL='ABCDEFGH'.split('');
+  function mkReg(c,r,arr){var labels=[],i=0;for(var ci=0;ci<c;ci++)for(var ri=0;ri<r;ri++)labels.push([arr[i++],ci,ri]);return{type:'regular',c:c,r:r,labels:labels};}
+  function mkAA(c,r,cL,rL){var labels=[];for(var ci=0;ci<c;ci++)for(var ri=0;ri<r;ri++)labels.push([cL[ci]+rL[ri],ci,ri]);return{type:'regular',c:c,r:r,labels:labels};}
+  if(pc==='T550QVN09'||pc.indexOf('650')>=0)return{type:'irreg_650',splitY:1473300,c:3,r:2};
+  if(pc==='T430QVN04')return{type:'irreg_qvn04',splitX:560500,c:3,r:4};
+  if(pc==='T850QVN08'||pc.indexOf('850')>=0)return{type:'split_x1',splitX:580000,c:2,r:2,labels:[['A',0,0],['B',0,1],['C',1,0],['D',1,1]]};
+  if(pc==='T430HVN03'||pc==='T430QVN05')return{type:'split_x1',splitX:580000,c:2,r:2,labels:[['A',0,0],['B',0,1],['C',1,0],['D',1,1]]};
+  if(pc==='T430HVN01'||pc==='T430QVN03'||pc==='T215HVN03'||pc==='T215HVN05')return{type:'split_x3',splitX:[295000,1250000,1535000],c:4,r:4,labels:mkReg(4,4,std).labels};
+  if(pc.indexOf('M215')===0)return mkAA(5,8,['A','B','C','D','E'],rowL);
+  if(pc.indexOf('156')>=0)return mkAA(12,6,colL.slice(0,12),rowL.slice(0,6));
+  if(pc.indexOf('160')>=0)return mkAA(11,6,colL.slice(0,11),rowL.slice(0,6));
+  if(pc.indexOf('238')>=0)return mkReg(8,4,std);
+  if(pc.indexOf('P490')===0)return mkReg(4,2,std);
+  if(pc.indexOf('M49')===0)return mkReg(2,6,std);
+  if(pc.indexOf('315')>=0)return mkReg(6,3,std);
+  if(pc.indexOf('270')>=0)return mkReg(4,6,std);
+  if(pc.indexOf('550')>=0)return mkReg(2,3,std);
+  return mkReg(2,3,std);
+}
+function drawSc(cv,pts,cmap,hidden,radius){
+  if(!cv)return[];
+  var dotR=radius||4;
+  var W=cv.width,H=cv.height,ctx=cv.getContext('2d');
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  var PL=28,PB=18,PR=8,PT=8,pw=W-PL-PR,ph=H-PT-PB;
+  var cfg=getPanelConfig();
+  ctx.strokeStyle='#2c3e50';ctx.lineWidth=1.5;ctx.strokeRect(PL,PT,pw,ph);
+  ctx.strokeStyle='#c8d0da';ctx.lineWidth=0.7;
+  function scX(dx){return PL+(dx/MX)*pw;}
+  function scY(dy){return PT+ph-(dy/MY)*ph;}
+  ctx.fillStyle='#c8d0da';var fs=8;
+  if(cfg.type==='regular'){
+    var cw=pw/cfg.c,ch=ph/cfg.r;fs=Math.max(6,Math.min(cw,ch)*0.28);
+    for(var ci=1;ci<cfg.c;ci++){var gx=PL+ci*cw;ctx.beginPath();ctx.moveTo(gx,PT);ctx.lineTo(gx,PT+ph);ctx.stroke();}
+    for(var ri=1;ri<cfg.r;ri++){var gy=PT+ri*ch;ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+pw,gy);ctx.stroke();}
+    ctx.font='bold '+fs+'px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+    cfg.labels.forEach(function(item){ctx.fillText(item[0],PL+(item[1]+0.5)*cw,PT+(cfg.r-1-item[2]+0.5)*ch);});
+  } else if(cfg.type==='split_x1'){
+    var xBrk=scX(cfg.splitX),midY=PT+ph/2;
+    ctx.beginPath();ctx.moveTo(xBrk,PT);ctx.lineTo(xBrk,PT+ph);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(PL,midY);ctx.lineTo(PL+pw,midY);ctx.stroke();
+    var colCX=[(PL+xBrk)/2,(xBrk+PL+pw)/2],rowCY=[PT+ph*3/4,PT+ph/4];
+    fs=Math.max(7,Math.min(xBrk-PL,PL+pw-xBrk,ph/2)*0.28);
+    ctx.font='bold '+fs+'px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+    cfg.labels.forEach(function(item){ctx.fillText(item[0],colCX[item[1]],rowCY[item[2]]);});
+  } else if(cfg.type==='split_x3'){
+    var sp=cfg.splitX.map(function(v){return scX(v);}),xB=[PL,sp[0],sp[1],sp[2],PL+pw];
+    sp.forEach(function(x){ctx.beginPath();ctx.moveTo(x,PT);ctx.lineTo(x,PT+ph);ctx.stroke();});
+    var ch4=ph/4;
+    for(var ri=1;ri<4;ri++){var gy=PT+ri*ch4;ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+pw,gy);ctx.stroke();}
+    var colCX4=xB.slice(0,4).map(function(x,i){return(x+xB[i+1])/2;});
+    fs=Math.max(6,ch4*0.28);ctx.font='bold '+fs+'px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+    cfg.labels.forEach(function(item){ctx.fillText(item[0],colCX4[item[1]],PT+(3-item[2]+0.5)*ch4);});
+  } else if(cfg.type==='irreg_650'){
+    var yBrk=scY(cfg.splitY),cw3=pw/3;
+    ctx.beginPath();ctx.moveTo(PL,yBrk);ctx.lineTo(PL+pw,yBrk);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(PL+cw3,yBrk);ctx.lineTo(PL+cw3,PT+ph);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(PL+2*cw3,yBrk);ctx.lineTo(PL+2*cw3,PT+ph);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(PL+pw/2,PT);ctx.lineTo(PL+pw/2,yBrk);ctx.stroke();
+    fs=Math.max(7,Math.min(cw3,PT+ph-yBrk,pw/2,yBrk-PT)*0.28);
+    ctx.font='bold '+fs+'px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+    var bCY=(yBrk+PT+ph)/2,tCY=(PT+yBrk)/2;
+    ctx.fillText('A',PL+cw3/2,bCY);ctx.fillText('C',PL+cw3*1.5,bCY);ctx.fillText('E',PL+cw3*2.5,bCY);
+    ctx.fillText('B',PL+pw/4,tCY);ctx.fillText('D',PL+pw*3/4,tCY);
+  } else if(cfg.type==='irreg_qvn04'){
+    var xBrk=scX(cfg.splitX),rMidX=(xBrk+PL+pw)/2;
+    ctx.beginPath();ctx.moveTo(xBrk,PT);ctx.lineTo(xBrk,PT+ph);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(PL,PT+ph/2);ctx.lineTo(xBrk,PT+ph/2);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(rMidX,PT);ctx.lineTo(rMidX,PT+ph);ctx.stroke();
+    var ch4=ph/4;
+    for(var ri=1;ri<4;ri++){var gy=PT+ri*ch4;ctx.beginPath();ctx.moveTo(xBrk,gy);ctx.lineTo(PL+pw,gy);ctx.stroke();}
+    fs=Math.max(7,Math.min(xBrk-PL,ph/2,(PL+pw-xBrk)/2,ch4)*0.28);
+    ctx.font='bold '+fs+'px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+    var lCX=(PL+xBrk)/2,rC0=(xBrk+rMidX)/2,rC1=(rMidX+PL+pw)/2;
+    ctx.fillText('A',lCX,PT+ph*3/4);ctx.fillText('B',lCX,PT+ph/4);
+    ['C','D','E','F'].forEach(function(lb,i){ctx.fillText(lb,rC0,PT+(3-i+0.5)*ch4);});
+    ['G','H','J','K'].forEach(function(lb,i){ctx.fillText(lb,rC1,PT+(3-i+0.5)*ch4);});
+  }
+  ctx.fillStyle='#7f8c8d';ctx.font='8px Arial';ctx.textAlign='left';ctx.textBaseline='alphabetic';
+  ctx.fillText('0,0',PL-20,PT+ph+13);ctx.fillText('2.5M',PL+pw-14,PT+ph+13);
+  ctx.save();ctx.translate(9,PT+ph/2+8);ctx.rotate(-Math.PI/2);ctx.fillText('2.2M',0,0);ctx.restore();
+  ctx.fillStyle='#aab5c2';ctx.font='8px Arial';ctx.textAlign='left';ctx.textBaseline='alphabetic';
+  ctx.fillText(cfg.c+'x'+cfg.r,PL+2,PT+9);
+  var stored=[];
+  pts.forEach(function(p){
+    if(hidden&&hidden[p.col])return;
+    var dx=parseFloat(p.cx),dy=parseFloat(p.cy);if(isNaN(dx)||isNaN(dy))return;
+    var spx=PL+(dx/MX)*pw,spy=PT+ph-(dy/MY)*ph;
+    ctx.beginPath();ctx.arc(spx,spy,dotR,0,Math.PI*2);
+    ctx.fillStyle=cmap[p.col]||'#333';ctx.globalAlpha=0.85;ctx.fill();ctx.globalAlpha=1;
+    stored.push({sx:spx,sy:spy,d:p.d,hl:p.hl});
+  });
+  return stored;
+}
+function bLeg(lid,vals,cmap,hidden,fn){
+  var box=document.getElementById(lid);if(!box)return;
+  box.style.maxHeight='none';box.style.overflowY='visible';box.innerHTML='';
+  vals.forEach(function(v){
+    var el=document.createElement('div');el.className='li'+(hidden[v]?' dim':'');
+    el.innerHTML='<div class="ld" style="background:'+(cmap[v]||'#888')+'"></div><span>'+esc(v)+'</span>';
+    el.onclick=function(){hidden[v]=!hidden[v];fn();};box.appendChild(el);
+  });
+}
+function upS1(){var vals=[...new Set(RD.map(function(r){return r.RESPONSE_SITE||'';}))].filter(Boolean).sort();var sel=document.getElementById('s1s'),cur=sel.value;sel.innerHTML='<option value="">全部</option>';vals.forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;if(v===cur)o.selected=true;sel.appendChild(o);});}
+function redrawS1(){
+  var fs=document.getElementById('s1s').value,data=RD.filter(function(r){return r.RESPONSE_SITE;});
+  if(fs)data=data.filter(function(r){return r.RESPONSE_SITE===fs;});
+  var cm2=Object.assign({},RC_COLOR),vals=[...new Set(data.map(function(r){return r.RESPONSE_SITE||'';}))].sort();
+  vals.forEach(function(v){if(!cm2[v]){if(v==='-')cm2[v]='#d5d8dc';else if(v.toUpperCase()==='UCT')cm2[v]='#85929e';}});
+  var cmap=mkCM(vals,cm2);
+  var dotR=parseInt((document.getElementById('ds14')||{value:'4'}).value)||4;
+  SP1=drawSc(document.getElementById('sc1'),data.map(function(r){return{cx:r.COORD_X,cy:r.COORD_Y,col:r.RESPONSE_SITE||'',d:r,hl:false};}),cmap,HL1,dotR);
+  bLeg('lb1',vals,cmap,HL1,redrawS1);
+  if(typeof redrawS4==='function')redrawS4();
+}
+function upS2(){
+  function up(sid,field){
+    var vals=[...new Set(RD.map(function(r){return r[field]||'';}))].filter(Boolean).sort();
+    var sel=document.getElementById(sid);
+    var prevSelected=new Set([...sel.options].filter(function(o){return o.selected;}).map(function(o){return o.value;}));
+    sel.innerHTML='';
+    vals.forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;if(prevSelected.has(v))o.selected=true;sel.appendChild(o);});
+  }
+  up('s2s','FMA_RESPONSE_SITE');up('s2d','FMA_RESPONSE_DEPT');up('s2c','FMA_DEFECT_CODE_DESC');
+}
+function getSelVals(sid){var sel=document.getElementById(sid);return new Set([...sel.options].filter(function(o){return o.selected;}).map(function(o){return o.value;}));}
+function clearS2Filter(){['s2s','s2d','s2c'].forEach(function(sid){var sel=document.getElementById(sid);[...sel.options].forEach(function(o){o.selected=false;});});redrawS2();}
+/* V17: redrawS2 加入 HL3 過濾 — 點 sc3 legend 時 sc2 也跟著篩選 */
+function redrawS2(){
+  var ss=getSelVals('s2s'),sd=getSelVals('s2d'),sc=getSelVals('s2c'),hasFilter=ss.size||sd.size||sc.size;
+  var data=RD.filter(function(r){
+    if(ss.size&&!ss.has(r.FMA_RESPONSE_SITE||''))return false;
+    if(sd.size&&!sd.has(r.FMA_RESPONSE_DEPT||''))return false;
+    if(sc.size&&!sc.has(r.FMA_DEFECT_CODE_DESC||''))return false;
+    return true;
+  });
+  /* V17: HL3 過濾 */
+  var hl3active=Object.keys(HL3).some(function(k){return HL3[k];});
+  if(hl3active){
+    data=data.filter(function(r){
+      var fma=FMAMap[r.TFT_CHIP_ID];if(!fma)return true;
+      var loc=locLabel(getFMAField(fma,'DEFECT_LOCATION'));
+      return !HL3[loc];
+    });
+  }
+  var vals=[...new Set(data.map(function(r){return r.FMA_DEFECT_CODE_DESC||'(無)';}))].sort();
+  var cmap=mkCM_FMA(vals);
+  var pts=data.map(function(r){return{cx:r.COORD_X,cy:r.COORD_Y,col:r.FMA_DEFECT_CODE_DESC||'(無)',d:r,hl:!hasFilter&&!hl3active&&!!FMAMap[r.TFT_CHIP_ID]};});
+  var dotR=parseInt((document.getElementById('ds2')||{value:'4'}).value)||4;
+  SP2=drawSc(document.getElementById('sc2'),pts,cmap,HL2,dotR);
+  if(!hasFilter&&!hl3active){
+    var cv=document.getElementById('sc2');
+    if(cv){var ctx=cv.getContext('2d');SP2.forEach(function(p){if(p.hl){ctx.beginPath();ctx.arc(p.sx,p.sy,dotR+3,0,Math.PI*2);ctx.strokeStyle='#c0392b';ctx.lineWidth=1.5;ctx.stroke();}});}
+  }
+  bLeg('lb2',vals,cmap,HL2,redrawS2);
+  redrawS3();
+}
+function locLabel(v){
+  if(!v||v==='-')return '未知';var u=v.toUpperCase().trim();
+  if(u==='TFT-P'||u==='TFT')return 'TFT';if(u==='CF-P'||u==='CF')return 'CF';
+  if(u==='BOTH-P'||u==='BOTH')return 'BOTH';if(u==='UCT')return 'UCT';
+  if(u.indexOf('BOTH')>=0)return 'BOTH';if(u.indexOf('TFT')>=0)return 'TFT';
+  if(u.indexOf('UCT')>=0)return 'UCT';if(u.indexOf('CF')>=0)return 'CF';return v;
+}
+/* V17: redrawS3 的 bLeg callback 改成同時觸發 sc2 依 HL3 重繪 */
+function redrawS3(){
+  var ss=getSelVals('s2s'),sd=getSelVals('s2d'),sc=getSelVals('s2c'),pts=[];
+  RD.forEach(function(r){
+    if(ss.size&&!ss.has(r.FMA_RESPONSE_SITE||''))return;
+    if(sd.size&&!sd.has(r.FMA_RESPONSE_DEPT||''))return;
+    if(sc.size&&!sc.has(r.FMA_DEFECT_CODE_DESC||''))return;
+    var fma=FMAMap[r.TFT_CHIP_ID];if(!fma)return;
+    pts.push({cx:r.COORD_X,cy:r.COORD_Y,col:locLabel(getFMAField(fma,'DEFECT_LOCATION')),d:r,hl:false});
+  });
+  var vals=[...new Set(pts.map(function(p){return p.col;}))].sort(),cmap=mkCM(vals,LOC_COLOR);
+  var dotR=parseInt((document.getElementById('ds3')||{value:'4'}).value)||4;
+  SP3=drawSc(document.getElementById('sc3'),pts,cmap,HL3,dotR);
+  /* V17: legend callback 同時觸發 redrawS2（含 HL3 過濾）*/
+  bLeg('lb3',vals,cmap,HL3,function(){
+    redrawS3();
+    /* 重繪 sc2，HL3 狀態已更新，redrawS2 內部會自動讀取 */
+    var ss2=getSelVals('s2s'),sd2=getSelVals('s2d'),sc2=getSelVals('s2c'),hf=ss2.size||sd2.size||sc2.size;
+    var data2=RD.filter(function(r){
+      if(ss2.size&&!ss2.has(r.FMA_RESPONSE_SITE||''))return false;
+      if(sd2.size&&!sd2.has(r.FMA_RESPONSE_DEPT||''))return false;
+      if(sc2.size&&!sc2.has(r.FMA_DEFECT_CODE_DESC||''))return false;
+      return true;
+    });
+    var hl3act=Object.keys(HL3).some(function(k){return HL3[k];});
+    if(hl3act){data2=data2.filter(function(r){var fma=FMAMap[r.TFT_CHIP_ID];if(!fma)return true;return !HL3[locLabel(getFMAField(fma,'DEFECT_LOCATION'))];});}
+    var vals2=[...new Set(data2.map(function(r){return r.FMA_DEFECT_CODE_DESC||'(無)';}))].sort();
+    var cm2=mkCM_FMA(vals2);
+    var pts2=data2.map(function(r){return{cx:r.COORD_X,cy:r.COORD_Y,col:r.FMA_DEFECT_CODE_DESC||'(無)',d:r,hl:false};});
+    var dr2=parseInt((document.getElementById('ds2')||{value:'4'}).value)||4;
+    SP2=drawSc(document.getElementById('sc2'),pts2,cm2,HL2,dr2);
+    bLeg('lb2',vals2,cm2,HL2,redrawS2);
+  });
+}
+var SP4=[],HL4={};
+function redrawS4(){
+  var fs=document.getElementById('s1s')?document.getElementById('s1s').value:'';
+  var data=RD.filter(function(r){return r.RESPONSE_SITE;});
+  if(fs)data=data.filter(function(r){return r.RESPONSE_SITE===fs;});
+  if(Object.keys(HL1).some(function(k){return HL1[k];})){
+    data=data.filter(function(r){return !HL1[r.RESPONSE_SITE||''];});
+  }
+  /* V17: 依數量排序（多→少）*/
+  var cnt={};data.forEach(function(r){var v=r.ALIGN_DEFECT_CODE||'(無)';cnt[v]=(cnt[v]||0)+1;});
+  var vals=Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a];});
+  var cmap={};var palIdx=0;
+  vals.forEach(function(v){
+    if(v==='-') cmap[v]='#d5d8dc';
+    else if(v.toUpperCase()==='UCT') cmap[v]='#85929e';
+    else if(v.toUpperCase()==='NOT FOUND') cmap[v]='#d5d8dc';
+    else { cmap[v]=DISTINCT_PAL[palIdx%DISTINCT_PAL.length]; palIdx++; }
+  });
+  var pts=data.map(function(r){return{cx:r.COORD_X,cy:r.COORD_Y,col:r.ALIGN_DEFECT_CODE||'(無)',d:r,hl:false};});
+  var dotR=parseInt((document.getElementById('ds14')||{value:'4'}).value)||4;
+  SP4=drawSc(document.getElementById('sc4'),pts,cmap,HL4,dotR);bLeg('lb4',vals,cmap,HL4,redrawS4);
+}
+function buildP2(){
+  var w=document.getElementById('p2w');
+  if(!RD.length){w.innerHTML='<div style="color:#888;font-size:12px;padding:10px;">請先貼上資料</div>';return;}
+  var f=RD.filter(function(r){return r.FMA_RESPONSE_SITE&&r.FMA_RESPONSE_SITE!=='-';});
+  var g={};
+  f.forEach(function(r){var k=[r.GRADE||'',r.REWORK_DEFECT_CODE_DESC||'',r.FMA_RESPONSE_SITE||'',r.FMA_RESPONSE_DEPT||'',r.FMA_DEFECT_CODE_DESC||''].join('||');g[k]=(g[k]||0)+1;});
+  var rows=Object.keys(g).map(function(k){var p=k.split('||');return{s:p[2],d:p[3],c:p[4],gr:p[0],ls:p[1],n:g[k]};});
+  var SO={'ARRAY':0,'CELL':1,'CF':2};
+  function sr(s){var u=(s||'').toUpperCase();for(var k in SO){if(u===k||u.indexOf(k)===0)return SO[k];}return 99;}
+  rows.sort(function(a,b){var d=sr(a.s)-sr(b.s);if(d)return d;d=a.d.localeCompare(b.d);if(d)return d;return b.n-a.n;});
+  var tot=rows.reduce(function(s,r){return s+r.n;},0);
+  var h='<table class="dt"><thead><tr><th>GRADE</th><th>LSR</th><th>FMA SITE</th><th>FMA DEPT</th><th>FMA DESC</th><th>片數</th><th>%</th></tr></thead><tbody>';
+  rows.forEach(function(r){var pct=tot>0?(r.n/tot*100).toFixed(1)+'%':'0%';h+='<tr><td>'+esc(r.gr)+'</td><td>'+esc(r.ls)+'</td><td>'+esc(r.s)+'</td><td>'+esc(r.d)+'</td><td>'+esc(r.c)+'</td><td class="rn">'+r.n+'</td><td class="pc">'+pct+'</td></tr>';});
+  h+='<tr><td colspan="5" class="tot">合計</td><td class="rn tot">'+tot+'</td><td class="pc tot">100%</td></tr></tbody></table>'+makeSiteSum(rows,tot);
+  w.innerHTML=h;
+}
+function getSelectedProducts(){var sel=document.getElementById('fpc');var pcs=[...sel.options].filter(function(o){return o.selected;}).map(function(o){return o.value;});if(!pcs.length&&sel.options.length)pcs=[sel.options[0].value];return pcs;}
+function getSelectedPeriods(){var sel=document.getElementById('fpd');var ps=[...sel.options].filter(function(o){return o.selected;}).map(function(o){return o.value;});if(!ps.length&&sel.options.length)ps=[sel.options[0].value];return ps;}
+function getRawUrls(){var pcs=getSelectedProducts(),pt=document.getElementById('fpt').value,dc=document.getElementById('fdc').value,periods=getSelectedPeriods(),urls=[];pcs.forEach(function(pc){periods.forEach(function(pd){urls.push('http://tw100049089/L8BC1/CELL_TEST/FirstYieldRES_RawData.aspx?MODEL='+encodeURIComponent(pc)+'&PERIOD2='+encodeURIComponent(pd)+'&TOOL_ID=PIC&PERIOD='+encodeURIComponent(pt)+'&DEFECT_GROUP='+encodeURIComponent(dc));});});return urls;}
+function importFromDB(){
+  var products=getSelectedProducts(),pt=document.getElementById('fpt').value,dc=document.getElementById('fdc').value,periods=getSelectedPeriods();
+  var st=document.getElementById('st-raw'),btn=document.getElementById('btnDBImport');
+  if(btn)btn.disabled=true;st.textContent='⏳ 從資料庫查詢中...';st.className='st';
+  fetch(_BASE+'/api/rawdata_db',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({products:products,periods:periods,period_type:pt,defect_group:dc})})
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(function(json){if(btn)btn.disabled=false;if(json.error){st.textContent='✕ '+json.error;st.className='st er';return;}if(!json.data||json.data.trim()===''){st.textContent='⚠ 無資料';st.className='st er';return;}document.getElementById('pr').value=json.data;st.textContent='✔ DB 匯入完成：'+(json.data.split('\n').length-1)+' 筆，點▶解析';st.className='st ok';})
+  .catch(function(err){if(btn)btn.disabled=false;st.textContent='✕ 連線失敗（Server 未啟動？）';st.className='st er';});
+}
+function buildWeighted(){
+  var w=document.getElementById('pw');
+  if(!RD.length){w.innerHTML='<div style="color:#888;font-size:12px;padding:10px;">請先貼上資料</div>';return;}
+  var SITES=['ARRAY','CELL','CF'];
+  function siteKey(s){var u=(s||'').toUpperCase().trim();for(var i=0;i<SITES.length;i++){if(u===SITES[i]||u.indexOf(SITES[i])===0)return SITES[i];}if(!u||u==='-')return '-';if(u==='UCT')return 'UCT';return u;}
+  var r1={},r1Un=0;
+  RD.forEach(function(r){var rt=(r.RESPONSE_TYPE||'').toUpperCase();if(rt==='FMA')return;if(rt==='YIELD TRACE')return;var sk=siteKey(r.RESPONSE_SITE),dk=(r.RESPONSE_DEPT||'-').trim();if(sk==='-'||sk==='UCT'){r1Un++;return;}var k=sk+'||'+dk;r1[k]=(r1[k]||0)+1;});
+  var r2={},r2Tot=0;
+  RD.forEach(function(r){var rt=(r.RESPONSE_TYPE||'').toUpperCase();if(rt!=='FMA')return;var sk=siteKey(r.RESPONSE_SITE),dk=(r.RESPONSE_DEPT||'-').trim();if(sk==='-'||sk==='UCT')return;var k=sk+'||'+dk;r2[k]=(r2[k]||0)+1;r2Tot++;});
+  var r3={};
+  RD.forEach(function(r){var rt=(r.RESPONSE_TYPE||'').toUpperCase();if(rt!=='YIELD TRACE')return;var sk=siteKey(r.RESPONSE_SITE),dk=(r.RESPONSE_DEPT||'-').trim();if(sk==='-'||sk==='UCT')return;var k=sk+'||'+dk;r3[k]=(r3[k]||0)+1;});
+  var allK=new Set(Object.keys(r1).concat(Object.keys(r2)).concat(Object.keys(r3)));
+  var wTot={},grand=0;
+  allK.forEach(function(k){var alloc=r2Tot>0?r1Un*((r2[k]||0)/r2Tot):0;var t=(r1[k]||0)+(r2[k]||0)+alloc+(r3[k]||0);wTot[k]=t;grand+=t;});
+  var sT={ARRAY:0,CELL:0,CF:0};
+  Object.keys(wTot).forEach(function(k){var s=k.split('||')[0];if(sT[s]!==undefined)sT[s]+=wTot[k];});
+  var sGrand=sT.ARRAY+sT.CELL+sT.CF;
+  var piT=0,odfT=0;
+  Object.keys(wTot).forEach(function(k){var d=k.split('||')[1].toUpperCase();if(d==='PI'||d.indexOf('PI')===0)piT+=wTot[k];else if(d==='ODF'||d.indexOf('ODF')===0)odfT+=wTot[k];});
+  function pct(n,t){return t>0?(n/t*100).toFixed(1)+'%':'0%';}
+  function sRank(s){return{ARRAY:0,CELL:1,CF:2}[s]||99;}
+  var sKeys=[...allK].sort(function(a,b){var d=sRank(a.split('||')[0])-sRank(b.split('||')[0]);return d||a.split('||')[1].localeCompare(b.split('||')[1]);});
+  var h='<div class="wt-title">① 直接分責（非FMA、非YIELD TRACE）</div>';
+  h+='<table class="dt"><thead><tr><th>SITE</th><th>DEPT</th><th>片數</th></tr></thead><tbody>';
+  sKeys.forEach(function(k){if(!r1[k])return;var p=k.split('||');h+='<tr><td>'+esc(p[0])+'</td><td>'+esc(p[1])+'</td><td class="rn">'+r1[k]+'</td></tr>';});
+  h+='<tr class="tot"><td colspan="2">未分攤（- + UCT）</td><td class="rn">'+r1Un+'</td></tr></tbody></table>';
+  h+='<div class="wt-title">② FMA 群組（實際片數 + 未分攤分配）</div>';
+  h+='<table class="dt"><thead><tr><th>SITE</th><th>DEPT</th><th>FMA片數</th><th>佔比</th><th>分攤量</th></tr></thead><tbody>';
+  sKeys.forEach(function(k){if(!r2[k])return;var p=k.split('||'),alloc=r2Tot>0?r1Un*(r2[k]/r2Tot):0;h+='<tr><td>'+esc(p[0])+'</td><td>'+esc(p[1])+'</td><td class="rn">'+r2[k]+'</td><td class="pc">'+pct(r2[k],r2Tot)+'</td><td class="rn">'+alloc.toFixed(1)+'</td></tr>';});
+  h+='<tr class="tot"><td colspan="3">FMA合計</td><td class="pc">100%</td><td class="rn">'+r1Un+'</td></tr></tbody></table>';
+  h+='<div class="wt-title">③ YIELD TRACE 分責</div>';
+  h+='<table class="dt"><thead><tr><th>SITE</th><th>DEPT</th><th>片數</th></tr></thead><tbody>';
+  sKeys.forEach(function(k){if(!r3[k])return;var p=k.split('||');h+='<tr><td>'+esc(p[0])+'</td><td>'+esc(p[1])+'</td><td class="rn">'+r3[k]+'</td></tr>';});
+  h+='</tbody></table>';
+  h+='<div class="wt-title">▶ 加權分責明細</div>';
+  h+='<table class="dt"><thead><tr><th>SITE</th><th>DEPT</th><th>①直接</th><th>②FMA實際</th><th>②分攤</th><th>③YT</th><th>合計</th><th>%</th></tr></thead><tbody>';
+  sKeys.forEach(function(k){var p=k.split('||'),alloc=r2Tot>0?r1Un*((r2[k]||0)/r2Tot):0;h+='<tr class="wt-final"><td>'+esc(p[0])+'</td><td>'+esc(p[1])+'</td><td class="rn">'+(r1[k]||0)+'</td><td class="rn">'+(r2[k]||0)+'</td><td class="rn">'+alloc.toFixed(1)+'</td><td class="rn">'+(r3[k]||0)+'</td><td class="rn">'+wTot[k].toFixed(1)+'</td><td class="pc">'+pct(wTot[k],grand)+'</td></tr>';});
+  h+='<tr class="tot"><td colspan="6">合計</td><td class="rn">'+grand.toFixed(1)+'</td><td class="pc">100%</td></tr></tbody></table>';
+  h+='<div class="wt-title">▶ 加權分責合計（by SITE）</div>';
+  h+='<table class="dt"><thead><tr><th>SITE</th><th>加權合計</th><th>加權%</th></tr></thead><tbody>';
+  SITES.forEach(function(s){h+='<tr class="wt-final"><td>'+s+'</td><td class="rn">'+sT[s].toFixed(1)+'</td><td class="pc">'+pct(sT[s],sGrand)+'</td></tr>';});
+  h+='<tr class="tot"><td>合計</td><td class="rn">'+sGrand.toFixed(1)+'</td><td class="pc">100%</td></tr></tbody></table>';
+  h+='<div class="wt-title">▶ PI / ODF 佔比</div>';
+  h+='<table class="dt"><thead><tr><th>DEPT</th><th>加權合計</th><th>佔%（全部）</th></tr></thead><tbody>';
+  h+='<tr class="wt-final"><td><b>PI</b></td><td class="rn">'+piT.toFixed(1)+'</td><td class="pc">'+pct(piT,grand)+'</td></tr>';
+  h+='<tr class="wt-final"><td><b>ODF</b></td><td class="rn">'+odfT.toFixed(1)+'</td><td class="pc">'+pct(odfT,grand)+'</td></tr>';
+  h+='</tbody></table>';
+  w.innerHTML=h;updatePieWeighted();
+}
+function openRaw(){var urls=getRawUrls();urls.forEach(function(url,i){setTimeout(function(){window.open(url,'_blank');},i*400);});}
+var SITE_COLORS={'ARRAY':'#2980b9','CELL':'#27ae60','CF':'#e74c3c'};
+function drawPieChart(canvasId,legendId,data){
+  var cv=document.getElementById(canvasId),lg=document.getElementById(legendId);if(!cv||!lg)return;
+  var ctx=cv.getContext('2d'),W=cv.width,H=cv.height,R=Math.min(W,H)/2-6;ctx.clearRect(0,0,W,H);
+  var total=data.reduce(function(s,d){return s+d.value;},0);
+  if(total<=0){ctx.fillStyle='#dde3ea';ctx.beginPath();ctx.arc(W/2,H/2,R,0,Math.PI*2);ctx.fill();lg.innerHTML='<span style="font-size:10px;color:#aaa;">無資料</span>';return;}
+  var angle=-Math.PI/2;
+  data.forEach(function(d){if(d.value<=0)return;var slice=(d.value/total)*Math.PI*2;ctx.beginPath();ctx.moveTo(W/2,H/2);ctx.arc(W/2,H/2,R,angle,angle+slice);ctx.closePath();ctx.fillStyle=d.color;ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();angle+=slice;});
+  lg.innerHTML=data.filter(function(d){return d.value>0;}).map(function(d){var pct=total>0?(d.value/total*100).toFixed(1):'0';return '<div class="pie-leg-item"><div class="pie-leg-dot" style="background:'+d.color+'"></div>'+esc(d.label)+' '+pct+'%</div>';}).join('');
+}
+function updatePieRaw(){var SO={ARRAY:0,CELL:0,CF:0};function sk(s){var u=(s||'').toUpperCase();for(var k in SO){if(u===k||u.indexOf(k)===0)return k;}return null;}RD.forEach(function(r){var k=sk(r.RESPONSE_SITE);if(k)SO[k]++;});drawPieChart('pie-raw','pie-raw-leg',[{label:'ARRAY',value:SO.ARRAY,color:SITE_COLORS.ARRAY},{label:'CELL',value:SO.CELL,color:SITE_COLORS.CELL},{label:'CF',value:SO.CF,color:SITE_COLORS.CF}]);}
+function updatePieFMA(){var SO={ARRAY:0,CELL:0,CF:0};function sk(s){var u=(s||'').toUpperCase();for(var k in SO){if(u===k||u.indexOf(k)===0)return k;}return null;}RD.forEach(function(r){if(r.FMA_RESPONSE_SITE&&r.FMA_RESPONSE_SITE!=='-'){var k=sk(r.FMA_RESPONSE_SITE);if(k)SO[k]++;}});drawPieChart('pie-fma','pie-fma-leg',[{label:'ARRAY',value:SO.ARRAY,color:SITE_COLORS.ARRAY},{label:'CELL',value:SO.CELL,color:SITE_COLORS.CELL},{label:'CF',value:SO.CF,color:SITE_COLORS.CF}]);}
+function updatePieWeighted(){
+  var SITES=['ARRAY','CELL','CF'];
+  function siteKey(s){var u=(s||'').toUpperCase().trim();for(var i=0;i<SITES.length;i++){if(u===SITES[i]||u.indexOf(SITES[i])===0)return SITES[i];}if(!u||u==='-')return '-';if(u==='UCT')return 'UCT';return u;}
+  var r1={},r1Un=0,r2={},r2Tot=0,r3={};
+  RD.forEach(function(r){var rt=(r.RESPONSE_TYPE||'').toUpperCase();if(rt==='FMA')return;if(rt==='YIELD TRACE')return;var sk=siteKey(r.RESPONSE_SITE),dk=(r.RESPONSE_DEPT||'-').trim();if(sk==='-'||sk==='UCT'){r1Un++;return;}var k=sk+'||'+dk;r1[k]=(r1[k]||0)+1;});
+  RD.forEach(function(r){var rt=(r.RESPONSE_TYPE||'').toUpperCase();if(rt!=='FMA')return;var sk=siteKey(r.RESPONSE_SITE),dk=(r.RESPONSE_DEPT||'-').trim();if(sk==='-'||sk==='UCT')return;var k=sk+'||'+dk;r2[k]=(r2[k]||0)+1;r2Tot++;});
+  RD.forEach(function(r){var rt=(r.RESPONSE_TYPE||'').toUpperCase();if(rt!=='YIELD TRACE')return;var sk=siteKey(r.RESPONSE_SITE),dk=(r.RESPONSE_DEPT||'-').trim();if(sk==='-'||sk==='UCT')return;var k=sk+'||'+dk;r3[k]=(r3[k]||0)+1;});
+  var allK=new Set(Object.keys(r1).concat(Object.keys(r2)).concat(Object.keys(r3))),sT={ARRAY:0,CELL:0,CF:0};
+  allK.forEach(function(k){var alloc=r2Tot>0?r1Un*((r2[k]||0)/r2Tot):0;var t=(r1[k]||0)+(r2[k]||0)+alloc+(r3[k]||0);var s=k.split('||')[0];if(sT[s]!==undefined)sT[s]+=t;});
+  drawPieChart('pie-wt','pie-wt-leg',[{label:'ARRAY',value:sT.ARRAY,color:SITE_COLORS.ARRAY},{label:'CELL',value:sT.CELL,color:SITE_COLORS.CELL},{label:'CF',value:sT.CF,color:SITE_COLORS.CF}]);
+}
+function updateAllPies(){updatePieRaw();updatePieFMA();updatePieWeighted();}
+</script>
+</body>
+</html>

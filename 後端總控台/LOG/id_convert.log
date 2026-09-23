@@ -1,0 +1,25 @@
+
+====================================================
+[ 啟動於 2026-09-23 13:12:36 ]
+====================================================
+[13:15:37] ----------------------------------------
+[13:15:37] Exception occurred during processing of request from ('10.36.38.240', 60288)
+[13:15:37] Traceback (most recent call last):
+[13:15:37]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 318, in _handle_request_noblock
+[13:15:37]     self.process_request(request, client_address)
+[13:15:37]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 349, in process_request
+[13:15:37]     self.finish_request(request, client_address)
+[13:15:37]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 362, in finish_request
+[13:15:37]     self.RequestHandlerClass(request, client_address, self)
+[13:15:37]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 766, in __init__
+[13:15:37]     self.handle()
+[13:15:37]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 436, in handle
+[13:15:37]     self.handle_one_request()
+[13:15:37]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 424, in handle_one_request
+[13:15:37]     method()
+[13:15:37]   File "\\tw100049089\00_MyAgent\ID轉換\api.py", line 142, in do_GET
+[13:15:37]     self.wfile.write(content)
+[13:15:37]   File "C:\Users\1409313\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+[13:15:37]     self._sock.sendall(b)
+[13:15:37] ConnectionAbortedError: [WinError 10053] 連線已被您主機上的軟體中止。
+[13:15:37] ----------------------------------------

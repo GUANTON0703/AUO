@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LV3 資料查詢系統</title>
+  <style>
+    :root {
+      --bg:      #0d1117;
+      --surface: #161b22;
+      --sur2:    #21262d;
+      --border:  #30363d;
+      --accent:  #e94560;
+      --blue:    #58a6ff;
+      --green:   #3fb950;
+      --purple:  #bc8cff;
+      --text:    #e6edf3;
+      --muted:   #8b949e;
+      --r:       12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Microsoft JhengHei", "Segoe UI", system-ui, sans-serif;
+      background: var(--bg); color: var(--text); min-height: 100vh;
+    }
+    .topbar {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 12px 26px; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 99;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-icon {
+      width: 34px; height: 34px; border-radius: 8px;
+      background: linear-gradient(135deg, #e94560, #c0392b);
+      display: flex; align-items: center; justify-content: center; font-size: 17px;
+    }
+    .brand h1 { font-size: .98rem; font-weight: 700; }
+    .brand p  { font-size: .73rem; color: var(--muted); margin-top: 1px; }
+    .db-chip {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--sur2); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 13px; font-size: .77rem; color: var(--muted);
+      transition: all .3s;
+    }
+    .db-chip.loaded { border-color: rgba(63,185,80,.4); color: var(--green); background: rgba(63,185,80,.07); }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: #444; flex-shrink: 0; transition: all .3s; }
+    .dot.on { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .main { max-width: 1200px; margin: 24px auto; padding: 0 22px; display: flex; flex-direction: column; gap: 16px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .ch {
+      padding: 11px 18px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .ct {
+      font-size: .78rem; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .8px;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .cb { padding: 16px 18px; }
+    .year-month-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+    .year-select-wrapper { flex: 0 1 auto; min-width: 200px; }
+    .months-wrapper { flex: 1 1 auto; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      font-size: .82rem; color: var(--muted); margin-bottom: 8px; display: block;
+      text-transform: uppercase; letter-spacing: .5px; font-weight: 700;
+    }
+    select {
+      width: 100%; padding: 10px 12px; background: var(--sur2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: .9rem; outline: none; transition: all .2s;
+    }
+    select:focus { border-color: var(--blue); }
+    .checkbox-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 6px; margin-bottom: 0;
+    }
+    .checkbox-item {
+      display: flex; align-items: center; justify-content: center;
+      background: var(--sur2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 4px; cursor: pointer; transition: all .18s; min-height: 32px;
+    }
+    .checkbox-item:hover { border-color: var(--blue); background: rgba(88,166,255,.08); }
+    .checkbox-item input[type="checkbox"] { width: 13px; height: 13px; cursor: pointer; accent-color: var(--green); margin-right: 2px; }
+    .checkbox-item label { margin: 0; cursor: pointer; font-weight: 600; font-size: .7rem; white-space: nowrap; }
+    .checkbox-item input[type="checkbox"]:checked + label { color: var(--green); }
+    .al { display: flex; gap: 8px; padding: 9px 12px; border-radius: 7px; font-size: .82rem; margin-bottom: 12px; }
+    .al-ok   { background: rgba(63,185,80,.09);  border: 1px solid rgba(63,185,80,.28);  color: var(--green); }
+    .al-err  { background: rgba(233,69,96,.09);  border: 1px solid rgba(233,69,96,.28);  color: var(--accent); }
+    .al-warn { background: rgba(210,153,34,.09); border: 1px solid rgba(210,153,34,.28); color: #e3b341; }
+    .btn-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+    .btn {
+      padding: 20px 20px; border-radius: 8px; font-size: .88rem; font-weight: 700;
+      border: none; cursor: pointer; transition: all .18s; display: flex; align-items: center; gap: 7px;
+    }
+    .btn-q { flex: 1; background: linear-gradient(135deg, var(--accent), #c0392b); color: #fff; }
+    .btn-q:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(233,69,96,.4); }
+    .btn-q:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-g { background: var(--sur2); color: var(--muted); border: 1px solid var(--border); }
+    .btn-g:hover { background: var(--border); color: var(--text); }
+    .btn-report { background: rgba(88,166,255,.15); color: var(--blue); border: 1px solid rgba(88,166,255,.3); }
+    .btn-report:hover:not(:disabled) { background: rgba(88,166,255,.25); }
+    .btn-report:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-copy { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+    .btn-copy:hover:not(:disabled) { background: rgba(63,185,80,.25); }
+    .btn-copy:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-adv { background: rgba(188,140,255,.12); color: var(--purple); border: 1px solid rgba(188,140,255,.3); }
+    .btn-adv:hover { background: rgba(188,140,255,.22); }
+    .btn-adv.active { background: rgba(188,140,255,.25); border-color: var(--purple); }
+    .btn-select-all {
+      padding: 8px 16px; border-radius: 6px; font-size: .82rem; font-weight: 700;
+      border: 1px solid var(--border); background: var(--sur2); color: var(--text);
+      cursor: pointer; transition: all .18s; white-space: nowrap;
+    }
+    .btn-select-all:hover { border-color: var(--blue); background: rgba(88,166,255,.1); }
+    .btn-select-all.selected { background: rgba(63,185,80,.15); border-color: var(--green); color: var(--green); }
+    #queryInput {
+      width: 100%; height: 160px !important; resize: vertical;
+      background: #c0c0c0; border: 2px solid var(--accent) !important;
+      border-radius: 8px; color: #000; outline: none;
+      font-family: "Consolas","Courier New",monospace; font-size: .95rem;
+      padding: 12px 15px; line-height: 1.7; transition: border .2s; font-weight: 600;
+    }
+    #queryInput:focus { border-color: var(--blue) !important; box-shadow: 0 0 8px rgba(88,166,255,.3); }
+    #queryInput::placeholder { color: rgba(0,0,0,.5); }
+    textarea {
+      width: 100%; height: 100px; resize: vertical;
+      background: var(--sur2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); outline: none;
+      font-family: "Consolas","Courier New",monospace; font-size: .93rem;
+      padding: 10px 13px; line-height: 1.65; transition: border .2s;
+    }
+    textarea:focus { border-color: var(--blue); }
+    .hint { font-size: .74rem; color: var(--muted); margin-top: 4px; }
+    .rh { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .badges { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .badge { border-radius: 12px; padding: 2px 11px; font-size: .77rem; font-weight: 700; color: #fff; background: var(--accent); }
+    .badge.g { background: var(--green); }
+    .btn-csv {
+      background: rgba(88,166,255,.1); color: var(--blue); border: 1px solid rgba(88,166,255,.25);
+      padding: 5px 14px; font-size: .8rem; border-radius: 7px; cursor: pointer; font-weight: 700; transition: all .15s;
+    }
+    .btn-csv:hover { background: rgba(88,166,255,.22); }
+    .tscroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .87rem; white-space: nowrap; }
+    thead tr { background: var(--sur2); }
+    th { padding: 9px 13px; text-align: left; font-size: .72rem; font-weight: 700;
+         color: var(--muted); text-transform: uppercase; letter-spacing: .7px; border-bottom: 1px solid var(--border); }
+    td { padding: 9px 13px; border-bottom: 1px solid rgba(48,54,61,.6); }
+    tbody tr:hover { background: rgba(255,255,255,.025); cursor: pointer; }
+    tbody tr:last-child td { border-bottom: none; }
+    .idc { font-family: monospace; font-weight: 700; }
+    .td-model  { color: var(--blue);   font-family: monospace; font-size: .82rem; }
+    .td-defect { color: var(--text);   max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
+    .td-jnd    { color: var(--purple); font-family: monospace; font-size: .85rem; }
+    .empty { text-align: center; color: var(--muted); padding: 40px 20px; font-size: .9rem; }
+    .loader {
+      display: inline-block; width: 20px; height: 20px; border: 3px solid var(--border);
+      border-top-color: var(--blue); border-radius: 50%; animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .adv-panel {
+      display: none; margin-top: 14px; padding: 14px 16px;
+      background: rgba(188,140,255,.04); border: 1px solid rgba(188,140,255,.18); border-radius: 8px;
+    }
+    .adv-panel.open { display: block; }
+    .adv-panel-title { font-size: .8rem; font-weight: 700; color: var(--purple); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .5px; }
+    .adv-section { margin-bottom: 14px; }
+    .adv-section:last-child { margin-bottom: 0; }
+    .adv-section-label { font-size: .76rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 7px; display: block; }
+    .adv-clear-btn { font-size: .76rem; color: var(--muted); background: none; border: none; cursor: pointer; text-decoration: underline; margin-left: 8px; }
+    .adv-clear-btn:hover { color: var(--accent); }
+    .model-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .model-chip {
+      display: flex; align-items: center; gap: 4px;
+      background: var(--sur2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: .78rem; font-weight: 600; transition: all .15s;
+    }
+    .model-chip:hover { border-color: var(--blue); background: rgba(88,166,255,.08); }
+    .model-chip input[type="checkbox"] { width: 12px; height: 12px; accent-color: var(--green); cursor: pointer; }
+    .model-chip input[type="checkbox"]:checked + span { color: var(--green); }
+    .model-chip-loading { font-size: .8rem; color: var(--muted); padding: 4px 0; }
+    .adv-input {
+      width: 100%; padding: 9px 11px; background: var(--sur2); border: 1px solid var(--border);
+      border-radius: 7px; color: var(--text); font-size: .88rem; outline: none; transition: border .2s;
+    }
+    .adv-input:focus { border-color: var(--blue); }
+    .jnd-row { display: flex; gap: 8px; align-items: center; }
+    .jnd-op-group { display: flex; gap: 4px; }
+    .jnd-op-btn {
+      padding: 7px 11px; border-radius: 6px; background: var(--sur2); border: 1px solid var(--border);
+      color: var(--muted); font-size: .84rem; font-weight: 700; cursor: pointer; transition: all .15s;
+    }
+    .jnd-op-btn:hover { border-color: var(--blue); color: var(--text); }
+    .jnd-op-btn.active { background: rgba(63,185,80,.12); border-color: var(--green); color: var(--green); }
+    .jnd-num-input {
+      flex: 1; padding: 7px 11px; background: var(--sur2); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--text); font-size: .88rem; outline: none; transition: border .2s;
+    }
+    .jnd-num-input:focus { border-color: var(--blue); }
+    .progress-container { margin-top: 14px; }
+    .progress-bar-bg { width: 100%; height: 18px; background: var(--sur2); border-radius: 9px; overflow: hidden; }
+    .progress-bar-fill {
+      height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--blue));
+      border-radius: 9px; transition: width .3s; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px;
+    }
+    .progress-bar-fill span { font-size: .65rem; color: #fff; font-weight: 700; }
+    .progress-text { text-align: center; margin-top: 6px; font-size: .78rem; color: var(--muted); }
+    .report-container { text-align: center; cursor: pointer; }
+    .report-container img { max-width: 100%; border-radius: 8px; border: 1px solid var(--border); }
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 9999; align-items: center; justify-content: center; }
+    .lightbox.show { display: flex; }
+    .lightbox-content { position: relative; max-width: 95vw; max-height: 92vh; }
+    .lightbox-close { position: absolute; top: -32px; right: 0; background: none; border: none; color: #fff; font-size: 26px; cursor: pointer; line-height: 1; }
+    .lightbox-image { display: block; max-width: 95vw; max-height: 88vh; border-radius: 6px; }
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: var(--sur2); border: 1px solid var(--green); color: var(--green);
+      padding: 10px 22px; border-radius: 8px; font-size: .85rem; font-weight: 700;
+      z-index: 10000; pointer-events: none; white-space: nowrap;
+    }
+  
+    /* ── 分頁 Tab ── */
+    .tabs {
+      display: flex; gap: 0; border-bottom: 2px solid var(--border);
+      padding: 0 22px; background: var(--surface);
+      position: sticky; top: 57px; z-index: 90;
+    }
+    .tab-btn {
+      padding: 10px 22px; font-size: .88rem; font-weight: 700;
+      border: none; background: none; color: var(--muted);
+      cursor: pointer; border-bottom: 3px solid transparent;
+      margin-bottom: -2px; transition: all .18s;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── 個人日報專用 ── */
+    .daily-filter-row {
+      display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .daily-filter-row .form-group { margin-bottom: 0; flex: 1; min-width: 160px; }
+    .daily-date-input {
+      width: 100%; padding: 10px 12px; background: var(--sur2);
+      border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); font-size: .9rem; outline: none; transition: all .2s;
+    }
+    .daily-date-input:focus { border-color: var(--blue); }
+    .daily-stat {
+      font-size: .78rem; color: var(--muted); margin-bottom: 8px;
+    }
+    .daily-stat span { color: var(--green); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-icon">🔬</div>
+      <div>
+        <h1>LV3 資料查詢系統</h1>
+        <p>L8B Daily Report Query</p>
+      </div>
+    </div>
+    <div class="db-chip" id="dbStatus">
+      <div class="dot" id="dbDot"></div>
+      <span>連接中...</span>
+    </div>
+  </div>
+
+  <!-- Tab 導覽 -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('query')">🔍 資料查詢</button>
+    <button class="tab-btn" onclick="switchTab('daily')">📅 個人日報</button>
+  </div>
+
+  <!-- 查詢分頁 -->
+  <div id="tab-query" class="tab-panel active" style="display:block;">
+  <div class="main">
+    <div class="card">
+      <div class="ch">
+        <div class="ct">🔍 查詢條件</div>
+      </div>
+      <div class="cb">
+
+        <!-- 年份選擇區塊 -->
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label>📅 年份範圍</label>
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 0;">
+              <div class="checkbox-grid" id="yearCheckboxes"></div>
+            </div>
+            <button type="button" class="btn-select-all" id="selectAllYearsBtn" onclick="toggleSelectAllYears()">全選年份</button>
+          </div>
+        </div>
+
+        <!-- 月份選擇區塊 -->
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label>📆 月份範圍</label>
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 0;">
+              <div class="checkbox-grid" id="monthCheckboxes"></div>
+            </div>
+            <button type="button" class="btn-select-all selected" id="selectAllMonthsBtn" onclick="toggleSelectAllMonths()">取消全選</button>
+          </div>
+        </div>
+
+        <!-- ID 輸入框 -->
+        <div class="form-group" style="margin-top: 16px;">
+          <label style="font-size: 0.9rem; color: var(--accent); font-weight: 900; text-transform: none; letter-spacing: normal;">🚀 ID丟這裡（一行一個）</label>
+          <textarea id="queryInput" placeholder="例：TS001&#10;TS002&#10;TS003"></textarea>
+          <div class="hint" id="queryIdHint">💡 進階搜尋模式：編號為選填，可留空僅用下方條件篩選</div>
+        
+        <!-- 進階搜尋面板（預設開啟） -->
+        <div class="adv-panel" id="advPanel">
+          <div class="adv-panel-title">⚙️ 進階篩選條件</div>
+
+          <div class="adv-section">
+            <span class="adv-section-label">📋 型號 (第4欄，9碼)
+              <button class="adv-clear-btn" onclick="clearModelFilter()">清除</button>
+            </span>
+            <div class="model-grid" id="modelGrid">
+              <span class="model-chip-loading">載入中...</span>
+            </div>
+          </div>
+
+          <!-- ★ 改動：DEFECT 多選，逗號分隔 -->
+          <div class="adv-section">
+            <span class="adv-section-label">🔤 DEFECT名稱 可多選用,逗號分開
+              <button class="adv-clear-btn" onclick="clearDefectFilter()">清除</button>
+            </span>
+            <input class="adv-input" id="defectKeyword" type="text"
+              placeholder="例如: LCB,CFM（逗號分隔，符合其中之一即可）">
+            <div class="hint" style="margin-top:4px;">💡 多個關鍵字用逗號分開，符合其中任一即搜尋到，不分大小寫（例如: LCB,CFM）</div>
+          </div>
+
+          <div class="adv-section">
+            <span class="adv-section-label">🔢 JND 數值篩選 (第6欄)
+              <button class="adv-clear-btn" onclick="clearJndFilter()">清除</button>
+            </span>
+            <div class="jnd-row">
+              <div class="jnd-op-group">
+                <button class="jnd-op-btn" id="jndOpEq"  onclick="setJndOp('='">=</button>
+                <button class="jnd-op-btn" id="jndOpGt"  onclick="setJndOp('>')">></button>
+                <button class="jnd-op-btn" id="jndOpLt"  onclick="setJndOp('<')"><</button>
+              </div>
+              <input class="jnd-num-input" id="jndValue" type="number" step="any" placeholder="輸入數值">
+            </div>
+            <div class="hint" style="margin-top:5px;">💡 例如選 &gt; 並輸入 2，即篩選 &gt;2、3、4... 等大於2的資料（含帶符號的欄位值）</div>
+          </div>
+
+
+        </div>
+      </div>
+
+        <!-- btn-row -->
+        <div class="btn-row">
+          <button class="btn btn-q" id="queryBtn" disabled onclick="executeQuery()" style="flex: 1;">🔍 搜尋</button>
+          <button class="btn btn-adv" id="advToggleBtn" onclick="toggleAdvPanel()">⚙️ 進階搜尋</button>
+          <button class="btn btn-g" onclick="clearQuery()">🗑️ 清空</button>
+        </div>
+
+        
+    </div>
+
+    <!-- Results Card -->
+    <div class="card" id="resultCard" style="display: none;">
+      <div class="ch">
+        <div class="ct">📊 查詢結果</div>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-csv" onclick="exportCSV()">📥 匯出 CSV</button>
+        </div>
+      </div>
+      <div class="cb">
+        <div id="resultLoading" style="display: none; text-align: center; padding: 30px; color: var(--muted);">
+          <div class="loader"></div>
+          <p style="margin-top: 12px;">正在查詢中...</p>
+        </div>
+
+        <div id="resultEmpty" style="display: none;" class="empty">❌ 未找到相符結果</div>
+
+        <div id="tableControls" style="display:none; margin-bottom: 10px; gap: 8px; align-items: center;">
+          <button class="btn-select-all" onclick="selectAllRows()">✓ 全選</button>
+          <button class="btn-select-all" onclick="deselectAllRows()">✗ 取消全選</button>
+          <span style="font-size:.78rem; color:var(--muted); margin-left:4px;">已勾選 <span id="checkedCount">0</span> 筆</span>
+        </div>
+
+        <div class="tscroll">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:36px; text-align:center;">選</th>
+                <th>ID</th>
+                <th>MODEL</th>
+                <th>DEFECT</th>
+                <th>JND</th>
+                <th>姓名</th>
+                <th>日期</th>
+                <th>年份</th>
+                <th>月份</th>
+                <th>分頁</th>
+                <th>列號</th>
+              </tr>
+            </thead>
+            <tbody id="resultBody"></tbody>
+          </table>
+        </div>
+
+        <div style="margin-top: 16px;">
+          <button class="btn btn-report" id="generateReportBtn" onclick="generateReport()" style="width: 100%;" disabled>
+            📋 生成報告
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 顯示報告卡片 -->
+    <div class="card" id="reportCard" style="display: none;">
+      <div class="ch">
+        <div class="ct">📋 顯示報告</div>
+        <button class="btn btn-copy" id="copyReportBtn" onclick="copyReportImage()" style="display: none;">
+          📋 複製圖片
+        </button>
+      </div>
+      <div class="cb">
+        <div id="reportLoading" style="display: none; text-align: center; padding: 30px; color: var(--muted);">
+          <div class="loader"></div>
+          <p style="margin-top: 12px; margin-bottom: 16px;">正在生成報告...</p>
+          <div class="progress-container">
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="progressFill" style="width: 0%;">
+                <span id="progressPercent">0%</span>
+              </div>
+            </div>
+            <div class="progress-text" id="progressText">準備中...</div>
+          </div>
+        </div>
+        <div id="reportEmpty" style="display: none;" class="empty">❌ 尚無報告</div>
+        <div class="report-container" id="reportContainer" style="display: none;" onclick="openLightbox()">
+          <img id="reportImage" src="" alt="合成報告">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  </div><!-- /tab-query -->
+
+  <!-- 個人日報分頁 -->
+  <div id="tab-daily" class="tab-panel" style="display:none;">
+    <div class="main">
+
+      <!-- 篩選卡片 -->
+      <div class="card">
+        <div class="ch"><div class="ct">📅 個人日報查詢</div></div>
+        <div class="cb">
+          <div class="daily-filter-row">
+            <div class="form-group">
+              <label>📅 日期</label>
+              <input type="date" id="dailyDate" class="daily-date-input" oninput="onDailyDateChange()">
+            </div>
+            <div class="form-group">
+              <label>👤 人員</label>
+              <select id="dailyName">
+                <option value="">-- 請先選日期 --</option>
+              </select>
+            </div>
+            <div style="padding-bottom:2px;">
+              <button class="btn btn-q" id="dailyQueryBtn" onclick="executeDailyQuery()" disabled
+                style="padding:10px 24px; min-width:100px;">🔍 查詢</button>
+            </div>
+          </div>
+          <div class="daily-stat" id="dailyStat" style="display:none;">
+            共 <span id="dailyCount">0</span> 筆資料
+          </div>
+        </div>
+      </div>
+
+      <!-- 結果卡片 -->
+      <div class="card" id="dailyResultCard" style="display:none;">
+        <div class="ch">
+          <div class="ct">📊 當日結果</div>
+          <button class="btn-csv" onclick="exportDailyCSV()">📥 匯出 CSV</button>
+        </div>
+        <div class="cb">
+          <div id="dailyLoading" style="display:none; text-align:center; padding:30px; color:var(--muted);">
+            <div class="loader"></div>
+            <p style="margin-top:12px;">查詢中...</p>
+          </div>
+          <div id="dailyEmpty" style="display:none;" class="empty">❌ 查無資料</div>
+          <div class="tscroll">
+            <table id="dailyTable" style="display:none;">
+              <thead>
+                <tr>
+                  <th>#</th><th>ID</th><th>MODEL</th><th>DEFECT</th>
+                  <th>JND</th><th>Grade</th><th>描述</th><th>判定畫面</th>
+                  <th>機台</th><th>POL</th><th>左右S/E</th><th>上下S/E</th>
+                </tr>
+              </thead>
+              <tbody id="dailyBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /tab-daily -->
+
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content">
+      <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+      <img class="lightbox-image" id="lightboxImage" src="" alt="放大報告">
+    </div>
+  </div>
+
+  <script>
+    let allYears = [];
+    let selectedYears = new Set();
+    let currentResults = [];
+    let snapshotBlobs = [];
+    let reportResults = [];
+    let mergedCanvas = null;
+
+    let advPanelOpen = false;
+    let selectedModels = new Set();
+    let jndOp = '';
+    let allModels = [];
+
+    const modelBlacklist = new Set([
+      'VT550QVN1',
+      '91"T850QV',
+      'T43QVN03-',
+      'VM270DAN1'
+    ]);
+
+    let reportProgress = { current: 0, total: 0 };
+
+    const queryParams = new URLSearchParams(window.location.search);
+    const API_BASE = (() => {
+      const fromQuery = queryParams.get('apiBase');
+      const fromStorage = localStorage.getItem('LV3_API_BASE');
+      const base = (fromQuery || fromStorage || '').replace(/\/+$/, '');
+      if (base) localStorage.setItem('LV3_API_BASE', base);
+      return base;
+    })();
+
+    function apiUrl(path) {
+      const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+      return API_BASE ? `${API_BASE}${normalizedPath}` : normalizedPath;
+    }
+
+    window.addEventListener('load', () => { loadYears(); initMonthCheckboxes(); });
+
+    function pad2(n) { return String(n).padStart(2, '0'); }
+
+    function initMonthCheckboxes() {
+      const container = document.getElementById('monthCheckboxes');
+      container.innerHTML = '';
+      for (let m = 1; m <= 12; m++) {
+        const item = document.createElement('label');
+        item.className = 'checkbox-item';
+        item.style.justifyContent = 'flex-start';
+        item.style.padding = '6px 8px';
+        item.innerHTML = `
+          <input type="checkbox" value="${m}" class="month-cb" checked onchange="updateSelectAllMonthsBtn(); updateQueryBtn();">
+          <span style="margin-left:4px; font-size:.72rem;">${pad2(m)}</span>
+        `;
+        container.appendChild(item);
+      }
+      updateSelectAllMonthsBtn();
+    }
+
+    function toggleSelectAllMonths() {
+      const checkboxes = Array.from(document.querySelectorAll('.month-cb'));
+      const allChecked = checkboxes.length > 0 && checkboxes.every(cb => cb.checked);
+      checkboxes.forEach(cb => { cb.checked = !allChecked; });
+      updateSelectAllMonthsBtn();
+      updateQueryBtn();
+    }
+
+    function updateSelectAllMonthsBtn() {
+      const btn = document.getElementById('selectAllMonthsBtn');
+      const checkboxes = Array.from(document.querySelectorAll('.month-cb'));
+      const allChecked = checkboxes.length > 0 && checkboxes.every(cb => cb.checked);
+      btn.textContent = allChecked ? '取消全選' : '全選月份';
+      allChecked ? btn.classList.add('selected') : btn.classList.remove('selected');
+    }
+
+    function loadYears() {
+      fetch(apiUrl('/api/years'))
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            allYears = data.years;
+            renderYearCheckboxes();
+            const dbStatus = document.getElementById('dbStatus');
+            dbStatus.classList.add('loaded');
+            dbStatus.querySelector('.dot').classList.add('on');
+            dbStatus.querySelector('span').textContent = '已連接';
+            updateQueryBtn();
+            loadModels();
+          }
+        })
+        .catch(e => {
+          console.error('載入年份失敗:', e);
+          document.getElementById('dbStatus').querySelector('span').textContent = '連接失敗';
+        });
+    }
+
+    function renderYearCheckboxes() {
+      const container = document.getElementById('yearCheckboxes');
+      container.innerHTML = '';
+      selectedYears.clear();
+
+      if (!allYears.length) {
+        container.innerHTML = '<div style="grid-column: 1/-1; color: var(--muted); text-align: center; padding: 20px;">無年份資料</div>';
+        return;
+      }
+
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const defaultYears = new Set([String(currentYear), String(currentYear - 1)]);
+      const sortedYears = [...allYears].sort((a, b) => Number(b.year) - Number(a.year));
+
+      sortedYears.forEach(y => {
+        const year = String(y.year);
+        const isDefault = defaultYears.has(year);
+        const item = document.createElement('label');
+        item.className = 'checkbox-item';
+        item.style.justifyContent = 'flex-start';
+        item.style.padding = '6px 8px';
+        item.innerHTML = `
+          <input type="checkbox" id="year-${year}" value="${year}" ${isDefault ? 'checked' : ''} onchange="updateSelectedYears()">
+          <span style="margin-left:4px; font-size:.72rem;">${year}</span>
+        `;
+        container.appendChild(item);
+        if (isDefault) selectedYears.add(year);
+      });
+
+      updateSelectAllYearsBtn();
+    }
+
+    function updateSelectedYears() {
+      selectedYears.clear();
+      document.querySelectorAll('#yearCheckboxes input[type="checkbox"]:checked').forEach(cb => selectedYears.add(cb.value));
+      updateSelectAllYearsBtn();
+      updateQueryBtn();
+    }
+
+    function toggleSelectAllYears() {
+      const checkboxes = Array.from(document.querySelectorAll('#yearCheckboxes input[type="checkbox"]'));
+      const allChecked = checkboxes.length > 0 && checkboxes.every(cb => cb.checked);
+      checkboxes.forEach(cb => { cb.checked = !allChecked; });
+      updateSelectedYears();
+    }
+
+    function updateSelectAllYearsBtn() {
+      const btn = document.getElementById('selectAllYearsBtn');
+      const checkboxes = Array.from(document.querySelectorAll('#yearCheckboxes input[type="checkbox"]'));
+      const allChecked = checkboxes.length > 0 && checkboxes.every(cb => cb.checked);
+      btn.textContent = allChecked ? '取消全選' : '全選年份';
+      allChecked ? btn.classList.add('selected') : btn.classList.remove('selected');
+    }
+
+    function collectQueryPeriods() {
+      const checkedMonths = Array.from(document.querySelectorAll('.month-cb:checked')).map(cb => Number(cb.value));
+      const periodSet = new Set();
+      selectedYears.forEach(year => {
+        checkedMonths.forEach(month => {
+          periodSet.add(`${year}-${pad2(month)}`);
+        });
+      });
+      return Array.from(periodSet).sort();
+    }
+
+    function updateQueryBtn() {
+      const yearsOk = selectedYears.size > 0;
+      const monthsOk = document.querySelectorAll('.month-cb:checked').length > 0;
+      document.getElementById('queryBtn').disabled = !(yearsOk && monthsOk);
+    }
+
+    function toggleAdvPanel() {
+      advPanelOpen = !advPanelOpen;
+      const panel = document.getElementById('advPanel');
+      const btn   = document.getElementById('advToggleBtn');
+      const hint  = document.getElementById('queryIdHint');
+      if (advPanelOpen) {
+        panel.classList.add('open');
+        btn.classList.add('active');
+        btn.textContent = '⚙️ 進階搜尋';
+        hint.textContent = '💡 進階搜尋模式：編號為選填，可留空僅用下方條件篩選';
+        hint.style.color = 'var(--purple)';
+        loadModels();
+      } else {
+        panel.classList.remove('open');
+        btn.classList.remove('active');
+        btn.textContent = '⚙️ 進階搜尋';
+        hint.textContent = '💡 支援複數個編號，按行分隔';
+        hint.style.color = '';
+      }
+    }
+
+    function loadModels() {
+      const grid = document.getElementById('modelGrid');
+      if (allModels.length > 0) { renderModelGrid(); return; }
+      grid.innerHTML = '<span class="model-chip-loading">載入中...</span>';
+      fetch(apiUrl('/api/models'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ periods: collectQueryPeriods() })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            allModels = data.models
+              .filter(m => m.length === 9 && !modelBlacklist.has(m))
+              .sort((a, b) => {
+                const char_a = a.charCodeAt(1) || 0;
+                const char_b = b.charCodeAt(1) || 0;
+                if (char_a !== char_b) return char_a - char_b;
+                return a.localeCompare(b);
+              });
+            renderModelGrid();
+          } else {
+            grid.innerHTML = '<span class="model-chip-loading" style="color:var(--accent);">載入失敗</span>';
+          }
+        })
+        .catch(() => { grid.innerHTML = '<span class="model-chip-loading" style="color:var(--accent);">連線錯誤</span>'; });
+    }
+
+    function renderModelGrid() {
+      const grid = document.getElementById('modelGrid');
+      if (!allModels.length) { grid.innerHTML = '<span class="model-chip-loading">無9碼型號資料</span>'; return; }
+      grid.innerHTML = '';
+      allModels.forEach(model => {
+        const chip = document.createElement('label');
+        chip.className = 'model-chip';
+        chip.innerHTML = `<input type="checkbox" value="${model}" ${selectedModels.has(model) ? 'checked' : ''} onchange="updateModelFilter(this)"><span>${model}</span>`;
+        grid.appendChild(chip);
+      });
+    }
+
+    function updateModelFilter(cb) {
+      if (cb.checked) selectedModels.add(cb.value); else selectedModels.delete(cb.value);
+    }
+
+    function clearModelFilter() {
+      selectedModels.clear();
+      document.querySelectorAll('#modelGrid input[type="checkbox"]').forEach(cb => { cb.checked = false; });
+    }
+
+    function clearDefectFilter() { document.getElementById('defectKeyword').value = ''; }
+
+    function setJndOp(op) {
+      jndOp = (jndOp === op) ? '' : op;
+      ['=', '>', '<'].forEach(o => {
+        const idMap = { '=': 'jndOpEq', '>': 'jndOpGt', '<': 'jndOpLt' };
+        document.getElementById(idMap[o]).classList.toggle('active', o === jndOp);
+      });
+    }
+
+    function clearJndFilter() {
+      jndOp = '';
+      document.getElementById('jndValue').value = '';
+      ['jndOpEq', 'jndOpGt', 'jndOpLt'].forEach(id => document.getElementById(id).classList.remove('active'));
+    }
+
+    function executeQuery() {
+      const queryIds = document.getElementById('queryInput').value
+        .split('\n').map(s => s.trim()).filter(s => s);
+      const periods = collectQueryPeriods();
+
+      if (!advPanelOpen && !queryIds.length) {
+        alert('請輸入至少一個 ID'); return;
+      }
+      if (advPanelOpen && !queryIds.length) {
+        const defectKwCheck = document.getElementById('defectKeyword').value.trim();
+        const jndValCheck   = document.getElementById('jndValue').value.trim();
+        if (selectedModels.size === 0 && !defectKwCheck && !(jndOp && jndValCheck !== '')) {
+          alert('請輸入編號，或至少設定一個進階篩選條件'); return;
+        }
+      }
+
+      const advFilter = {};
+      if (selectedModels.size > 0) advFilter.models = Array.from(selectedModels);
+      const defectKw = document.getElementById('defectKeyword').value.trim();
+      if (defectKw) advFilter.defect_keyword = defectKw;
+      const jndVal = document.getElementById('jndValue').value.trim();
+      if (jndOp && jndVal !== '') { advFilter.jnd_op = jndOp; advFilter.jnd_value = parseFloat(jndVal); }
+
+      showResult();
+      setResultLoading(true);
+      currentResults = [];
+      document.getElementById('reportCard').style.display = 'none';
+
+      let promises;
+      if (queryIds.length > 0) {
+        promises = queryIds.map(id =>
+          fetch(apiUrl('/api/query'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query_id: id, periods, adv_filter: advFilter })
+          }).then(r => r.json()).catch(() => ({ success: false, results: [] }))
+        );
+      } else {
+        promises = [
+          fetch(apiUrl('/api/query'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query_id: '', periods, adv_filter: advFilter })
+          }).then(r => r.json()).catch(() => ({ success: false, results: [] }))
+        ];
+      }
+
+      Promise.all(promises).then(responses => {
+        responses.forEach(data => {
+          if (data.success && data.results) currentResults.push(...data.results);
+        });
+        setResultLoading(false);
+        if (currentResults.length === 0) {
+          document.getElementById('resultEmpty').style.display = 'block';
+          document.getElementById('tableControls').style.display = 'none';
+          document.getElementById('generateReportBtn').disabled = true;
+        } else {
+          document.getElementById('resultEmpty').style.display = 'none';
+          renderResults(currentResults);
+        }
+      });
+    }
+
+    function renderResults(results) {
+      const tbody = document.getElementById('resultBody');
+      tbody.innerHTML = '';
+      results.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="text-align:center; padding:9px 6px;"><input type="checkbox" class="row-cb" onchange="updateCheckedCount()" style="width:14px;height:14px;cursor:pointer;accent-color:var(--green);"></td>
+          <td class="idc">${escHtml(r.id)}</td>
+          <td class="td-model">${escHtml(r.model  || '-')}</td>
+          <td class="td-defect" title="${escHtml(r.defect || '')}">${escHtml(r.defect || '-')}</td>
+          <td class="td-jnd">${escHtml(r.jnd    || '-')}</td>
+          <td>${escHtml(r.name)}</td>
+          <td>${escHtml(r.date)}</td>
+          <td>${escHtml(String(r.year))}</td>
+          <td>${escHtml(String(r.month))}</td>
+          <td>${escHtml(r.sheet_name || '-')}</td>
+          <td>${escHtml(String(r.row_num || '-'))}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('tableControls').style.display = 'flex';
+      document.getElementById('generateReportBtn').disabled = true;
+      updateCheckedCount();
+      
+      // 搜尋結果預設全選
+      const allCheckboxes = document.querySelectorAll('.row-cb');
+      allCheckboxes.forEach(cb => { cb.checked = true; });
+      updateCheckedCount();
+    }
+
+    function selectAllRows() {
+      document.querySelectorAll('.row-cb').forEach(cb => cb.checked = true);
+      updateCheckedCount();
+    }
+    function deselectAllRows() {
+      document.querySelectorAll('.row-cb').forEach(cb => cb.checked = false);
+      updateCheckedCount();
+    }
+    function updateCheckedCount() {
+      const count = document.querySelectorAll('.row-cb:checked').length;
+      document.getElementById('checkedCount').textContent = count;
+      document.getElementById('generateReportBtn').disabled = count === 0;
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function showResult() { document.getElementById('resultCard').style.display = 'block'; }
+    function setResultLoading(show) { document.getElementById('resultLoading').style.display = show ? 'block' : 'none'; }
+
+    function updateProgress() {
+      const fill = document.getElementById('progressFill');
+      const percent = document.getElementById('progressPercent');
+      const text = document.getElementById('progressText');
+      const percentage = Math.round((reportProgress.current / reportProgress.total) * 100);
+      fill.style.width = percentage + '%';
+      percent.textContent = percentage + '%';
+      if (reportProgress.current === 0) {
+        text.textContent = '準備中...';
+      } else if (reportProgress.current === reportProgress.total - 1) {
+        text.textContent = `已完成 ${reportProgress.current}/${reportProgress.total - 1} 張快照，正在合併...`;
+      } else if (reportProgress.current === reportProgress.total) {
+        text.textContent = '完成！';
+      } else {
+        text.textContent = `已完成 ${reportProgress.current}/${reportProgress.total - 1} 張快照`;
+      }
+    }
+
+    function generateReport() {
+      var checkedCbs = Array.from(document.querySelectorAll('.row-cb:checked'));
+      if (!checkedCbs.length) { alert('\u8acb\u5148\u52fe\u9078\u81f3\u5c11\u4e00\u9805'); return; }
+      var allCbs = Array.from(document.querySelectorAll('.row-cb'));
+      reportResults = checkedCbs.map(function(cb){
+        var idx = allCbs.indexOf(cb); return currentResults[idx];
+      }).filter(function(r){return r;});
+      document.getElementById('reportCard').style.display = 'block';
+      document.getElementById('reportLoading').style.display = 'block';
+      document.getElementById('reportContainer').style.display = 'none';
+      document.getElementById('reportEmpty').style.display = 'none';
+      document.getElementById('copyReportBtn').style.display = 'none';
+      snapshotBlobs = [];
+      reportProgress.total = reportResults.length + 1;
+      reportProgress.current = 0;
+      updateProgress();
+      var imgPromises = reportResults.map(function(r, idx) {
+        var p;
+        if (r.file_path && r.file_path.toLowerCase().endsWith('.png')) {
+          p = fetch(apiUrl('/api/image?path=' + encodeURIComponent(r.file_path)))
+            .then(function(res){ return res.ok ? res.blob() : null; })
+            .catch(function(){ return null; });
+        } else if (r.file_path && r.sheet_name && r.row_num) {
+          p = fetch(apiUrl('/api/snapshot/?file_path=' + encodeURIComponent(r.file_path)
+              + '&sheet_name=' + encodeURIComponent(r.sheet_name) + '&row_num=' + r.row_num))
+            .then(function(res){ return res.blob(); })
+            .catch(function(){ return null; });
+        } else { p = Promise.resolve(null); }
+        return p.then(function(blob){ reportProgress.current++; updateProgress(); return blob; });
+      });
+      Promise.all(imgPromises).then(function(blobs) {
+        finalizeSnapshotSession();
+        buildTableReport(reportResults, blobs);
+      });
+    }
+
+    function finalizeSnapshotSession() {
+      fetch(apiUrl('/api/snapshot/finish'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ done: true })
+      }).catch(e => { console.warn('快照收尾通知失敗:', e); });
+    }
+
+    function mergeAndDisplayReport() { buildTableReport(reportResults, snapshotBlobs); }
+
+    function buildTableReport(records, blobs) {
+      if (!records.length) {
+        document.getElementById('reportLoading').style.display = 'none';
+        document.getElementById('reportEmpty').style.display = 'block'; return;
+      }
+      var COLS = [
+        {label:'NO',        w:44, fn:function(r,i){return String(i+1);}}
+       ,{label:'\u65e5\u671f', w:70, fn:function(r){var d=r.date||'';return d.length>=8?d.slice(4,6)+'/'+d.slice(6,8):(d||'-');}}
+       ,{label:'Model',     w:110,fn:function(r){return r.model||'-';}}
+       ,{label:'CHIP ID',   w:110,fn:function(r){return r.id||'-';}}
+       ,{label:'Grade',     w:48, fn:function(r){return r.grade||'-';}}
+       ,{label:'Defect',    w:155,fn:function(r){return r.defect||'-';}}
+       ,{label:'\u5462\u8c61\u6558\u8ff0', w:155,fn:function(r){return r.description||'-';}}
+       ,{label:'\u5224\u5b9a\u756b\u9762', w:90, fn:function(r){return r.judgment||'-';}}
+       ,{label:'JND',       w:55, fn:function(r){return r.jnd||'-';}}
+       ,{label:'\u5de6\u53f3S/E', w:85,fn:function(r){return (!r.x_start&&!r.x_end)?'-':(r.x_start||'')+(r.x_end?'/'+r.x_end:'');}}
+       ,{label:'\u4e0a\u4e0bS/E', w:85,fn:function(r){return (!r.y_start&&!r.y_end)?'-':(r.y_start||'')+(r.y_end?'/'+r.y_end:'');}}
+       ,{label:'\u6a5f\u53f0', w:88,fn:function(r){return r.tool_id||'-';}}
+       ,{label:'POL',       w:55, fn:function(r){return r.pol||'-';}}
+       ,{label:'\u7167\u7247', w:120,isImg:true}
+      ];
+      var TW = COLS.reduce(function(a,c){return a+c.w;},0);
+      var HH = 45, RH = 95, SCALE = 4;
+
+      // 分類：DB(PNG) vs TXT(Excel快照)
+      var dbIdx = [], txtIdx = [];
+      records.forEach(function(r,i){
+        if (!r.sheet_name) dbIdx.push(i);
+        else txtIdx.push(i);
+      });
+
+      // 載入全部圖片
+      var imgPromises = blobs.map(function(blob){
+        if (!blob) return Promise.resolve(null);
+        return new Promise(function(res){
+          var img = new Image();
+          img.onload = function(){ res(img); };
+          img.onerror = function(){ res(null); };
+          img.src = URL.createObjectURL(blob);
+        });
+      });
+
+      Promise.all(imgPromises).then(function(imgs){
+        // 計算 TXT 快照疊加高度（等比縮放到 TW 寬）
+        var txtTotalH = 0;
+        var txtScales = {};
+        txtIdx.forEach(function(i){
+          var im = imgs[i];
+          if (im){ var sc = TW / im.width; txtScales[i]=sc; txtTotalH += im.height*sc; }
+          else { txtScales[i]=1; txtTotalH += RH; }
+        });
+
+        var dbH = dbIdx.length > 0 ? HH + dbIdx.length * RH : 0;
+        var totalH = dbH + txtTotalH;
+        var canvas = document.createElement('canvas');
+        canvas.width = TW * SCALE; canvas.height = totalH * SCALE;
+        var ctx = canvas.getContext('2d');
+        ctx.scale(SCALE, SCALE);
+
+        // ── DB 表格區 ──────────────────────────────
+        if (dbIdx.length > 0) {
+          ctx.fillStyle = '#9575cd';
+          ctx.fillRect(0, 0, TW, HH);
+          ctx.fillStyle = '#fff';
+          ctx.font = 'bold 22px "Microsoft JhengHei",sans-serif';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          var hx = 0;
+          COLS.forEach(function(col){ ctx.fillText(col.label, hx+col.w/2, HH/2, col.w-4); hx+=col.w; });
+          dbIdx.forEach(function(dataIdx, ri){
+            var r = records[dataIdx];
+            var y = HH + ri * RH;
+            ctx.fillStyle = ri%2===0 ? '#f1f8e9' : '#e8f5e9';
+            ctx.fillRect(0, y, TW, RH);
+            ctx.strokeStyle = '#c8e6c9'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(0,y+RH); ctx.lineTo(TW,y+RH); ctx.stroke();
+            var cx = 0;
+            COLS.forEach(function(col){
+              ctx.strokeStyle='#c8e6c9';
+              ctx.beginPath(); ctx.moveTo(cx+col.w,y); ctx.lineTo(cx+col.w,y+RH); ctx.stroke();
+              if (!col.isImg){
+                ctx.fillStyle='#212121'; ctx.font='20px "Microsoft JhengHei",sans-serif';
+                ctx.textAlign='center'; ctx.textBaseline='middle';
+                ctx.fillText(String(col.fn(r,ri)), cx+col.w/2, y+RH/2, col.w-6);
+              } else {
+                var im = imgs[dataIdx];
+                if (im){ var sc=Math.min((col.w-8)/im.width,(RH-8)/im.height);
+                  ctx.drawImage(im,cx+(col.w-im.width*sc)/2,y+(RH-im.height*sc)/2,im.width*sc,im.height*sc);
+                } else { ctx.fillStyle='#8b949e'; ctx.font='20px sans-serif';
+                  ctx.textAlign='center'; ctx.textBaseline='middle';
+                  ctx.fillText('-',cx+col.w/2,y+RH/2); }
+              }
+              cx += col.w;
+            });
+          });
+        }
+
+        // ── TXT 快照疊加區 ─────────────────────────
+        var ty = dbH;
+        txtIdx.forEach(function(i){
+          var im = imgs[i]; var sc = txtScales[i];
+          if (im){ ctx.drawImage(im, 0, ty, im.width*sc, im.height*sc); ty += im.height*sc; }
+          else { ty += RH; }
+        });
+
+        mergedCanvas = canvas;
+        reportProgress.current = reportProgress.total; updateProgress();
+        document.getElementById('reportImage').src = canvas.toDataURL('image/png');
+        document.getElementById('reportContainer').style.display = 'block';
+        document.getElementById('reportLoading').style.display = 'none';
+        document.getElementById('copyReportBtn').style.display = 'block';
+        canvas.toBlob(function(b){ var rd=new FileReader();
+          rd.onload=function(){ document.getElementById('lightboxImage').src=rd.result; };
+          rd.readAsDataURL(b); });
+      });
+    }
+
+    function copyReportImage() {
+      if (!mergedCanvas) { alert('報告還未生成'); return; }
+      const scale = 0.5;
+      const w = Math.max(1, Math.round(mergedCanvas.width  * scale));
+      const h = Math.max(1, Math.round(mergedCanvas.height * scale));
+      const sc = document.createElement('canvas');
+      sc.width = w; sc.height = h;
+      const sctx = sc.getContext('2d');
+      if (!sctx) { alert('無法建立圖片內容，請重試'); return; }
+      sctx.imageSmoothingEnabled = true;
+      sctx.imageSmoothingQuality = 'high';
+      sctx.drawImage(mergedCanvas, 0, 0, w, h);
+      sc.toBlob(blob => {
+        if (!blob) { alert('縮圖失敗，請重試'); return; }
+        navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+          .then(() => showToast('✅ 圖片已縮小 50% 並複製！'))
+          .catch(err => { console.error('複製失敗:', err); alert('複製失敗，請重試'); });
+      });
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2000);
+    }
+
+    function openLightbox()  { document.getElementById('lightbox').classList.add('show'); }
+    function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+    document.getElementById('lightbox')?.addEventListener('click', e => { if (e.target.id === 'lightbox') closeLightbox(); });
+
+    function exportCSV() {
+      if (!currentResults.length) return;
+      const headers = ['ID', 'MODEL', 'DEFECT', 'JND', '姓名', '日期', '年份', '月份', '分頁', '列號', '檔案'];
+      const rows = currentResults.map(r => [
+        r.id, r.model || '', r.defect || '', r.jnd || '',
+        r.name, r.date, r.year, r.month, r.sheet_name, r.row_num, r.file_path
+      ]);
+      const csv = [headers, ...rows].map(r => r.map(c => '"' + String(c ?? '').replace(/"/g, '""') + '"').join(',')).join('\n');
+      const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'LV3_查詢結果.csv';
+      link.click();
+    }
+
+    function clearQuery() {
+      document.getElementById('queryInput').value = '';
+      currentResults = [];
+      document.getElementById('resultCard').style.display = 'none';
+      document.getElementById('reportCard').style.display = 'none';
+      updateSelectAllYearsBtn();
+      updateQueryBtn();
+      clearModelFilter();
+      clearDefectFilter();
+      clearJndFilter();
+    }
+  
+    // ══════════════════════════════════════════════
+    // 分頁切換
+    // ══════════════════════════════════════════════
+        function switchTab(tab) {
+      var qEl  = document.getElementById('tab-query');
+      var dEl  = document.getElementById('tab-daily');
+      var qBtn = document.getElementById('tabBtnQuery');
+      var dBtn = document.getElementById('tabBtnDaily');
+      if (!qEl || !dEl) {
+        console.error('[switchTab] 找不到元素 tab-query/tab-daily');
+        return;
+      }
+      if (tab === 'query') {
+        qEl.style.display = 'block';
+        dEl.style.display = 'none';
+        if (qBtn) qBtn.classList.add('active');
+        if (dBtn) dBtn.classList.remove('active');
+      } else {
+        qEl.style.display = 'none';
+        dEl.style.display = 'block';
+        if (qBtn) qBtn.classList.remove('active');
+        if (dBtn) dBtn.classList.add('active');
+        // 自動填今天日期
+        var dateEl = document.getElementById('dailyDate');
+        if (dateEl && !dateEl.value) {
+          var t = new Date();
+          var yy = t.getFullYear();
+          var mm = String(t.getMonth()+1).padStart(2,'0');
+          var dd = String(t.getDate()).padStart(2,'0');
+          dateEl.value = yy + '-' + mm + '-' + dd;
+          if (typeof onDailyDateChange === 'function') onDailyDateChange();
+        }
+      }
+    }
+
+    // ══════════════════════════════════════════════
+    // 個人日報
+    // ══════════════════════════════════════════════
+    var dailyResults = [];
+
+    function onDailyDateChange() {
+      var dateVal = document.getElementById('dailyDate').value; // yyyy-mm-dd
+      var nameEl  = document.getElementById('dailyName');
+      var queryBtn = document.getElementById('dailyQueryBtn');
+      nameEl.innerHTML = '<option value="">載入中...</option>';
+      queryBtn.disabled = true;
+
+      if (!dateVal) {
+        nameEl.innerHTML = '<option value="">-- 請先選日期 --</option>';
+        return;
+      }
+
+      // 轉成 YYYYMM 取得年月，用來縮小掃描範圍
+      var parts = dateVal.split('-');
+      var yr = parts[0]; var mo = parts[1];
+
+      fetch(apiUrl('/api/names?year=' + yr + '&month=' + parseInt(mo)))
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          nameEl.innerHTML = '<option value="">（全部人員）</option>';
+          if (data.success && data.names.length) {
+            data.names.forEach(function(n){
+              var opt = document.createElement('option');
+              opt.value = n; opt.textContent = n;
+              nameEl.appendChild(opt);
+            });
+          } else {
+            nameEl.innerHTML = '<option value="">-- 無人員資料 --</option>';
+          }
+          queryBtn.disabled = false;
+        })
+        .catch(function(){
+          nameEl.innerHTML = '<option value="">-- 載入失敗 --</option>';
+        });
+    }
+
+    function executeDailyQuery() {
+      var dateVal  = document.getElementById('dailyDate').value;  // yyyy-mm-dd
+      var nameVal  = document.getElementById('dailyName').value;
+
+      if (!dateVal) { alert('請選擇日期'); return; }
+
+      var parts    = dateVal.split('-');
+      var dateStr  = parts[0] + parts[1] + parts[2]; // YYYYMMDD
+      var yr = parts[0]; var mo = parseInt(parts[1]);
+
+      var card = document.getElementById('dailyResultCard');
+      card.style.display = 'block';
+      document.getElementById('dailyLoading').style.display = 'block';
+      document.getElementById('dailyEmpty').style.display   = 'none';
+      document.getElementById('dailyTable').style.display   = 'none';
+      document.getElementById('dailyStat').style.display    = 'none';
+      dailyResults = [];
+
+      fetch(apiUrl('/api/daily'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          date:    dateStr,
+          name:    nameVal,
+          periods: [yr + '-' + parts[1]]
+        })
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        document.getElementById('dailyLoading').style.display = 'none';
+        if (!data.success || !data.results || !data.results.length) {
+          document.getElementById('dailyEmpty').style.display = 'block';
+          return;
+        }
+        dailyResults = data.results;
+        renderDailyTable(dailyResults);
+      })
+      .catch(function(e){
+        document.getElementById('dailyLoading').style.display = 'none';
+        document.getElementById('dailyEmpty').style.display = 'block';
+        console.error('個人日報查詢失敗:', e);
+      });
+    }
+
+    function renderDailyTable(rows) {
+      var tbody = document.getElementById('dailyBody');
+      tbody.innerHTML = '';
+      rows.forEach(function(r, i){
+        var xse = (!r.x_start && !r.x_end) ? '-' : (r.x_start || '') + (r.x_end ? '/' + r.x_end : '');
+        var yse = (!r.y_start && !r.y_end) ? '-' : (r.y_start || '') + (r.y_end ? '/' + r.y_end : '');
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td>' + (i+1) + '</td>' +
+          '<td class="idc">' + esc(r.id || '-') + '</td>' +
+          '<td class="td-model">' + esc(r.model || '-') + '</td>' +
+          '<td class="td-defect">' + esc(r.defect || '-') + '</td>' +
+          '<td class="td-jnd">'   + esc(r.jnd   || '-') + '</td>' +
+          '<td>' + esc(r.grade       || '-') + '</td>' +
+          '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;">' + esc(r.description || '-') + '</td>' +
+          '<td>' + esc(r.judgment    || '-') + '</td>' +
+          '<td>' + esc(r.tool_id     || '-') + '</td>' +
+          '<td>' + esc(r.pol         || '-') + '</td>' +
+          '<td>' + esc(xse) + '</td>' +
+          '<td>' + esc(yse) + '</td>';
+        tbody.appendChild(tr);
+      });
+      document.getElementById('dailyTable').style.display = 'table';
+      document.getElementById('dailyStat').style.display  = 'block';
+      document.getElementById('dailyCount').textContent   = rows.length;
+    }
+
+    function exportDailyCSV() {
+      if (!dailyResults.length) { alert('沒有資料可匯出'); return; }
+      var headers = ['NO','ID','MODEL','DEFECT','JND','Grade','描述','判定畫面','機台','POL','左右S/E','上下S/E','日期','姓名'];
+      var rows = dailyResults.map(function(r, i){
+        var xse = (!r.x_start && !r.x_end) ? '' : (r.x_start || '') + (r.x_end ? '/' + r.x_end : '');
+        var yse = (!r.y_start && !r.y_end) ? '' : (r.y_start || '') + (r.y_end ? '/' + r.y_end : '');
+        return [
+          i+1, r.id, r.model, r.defect, r.jnd, r.grade,
+          r.description, r.judgment, r.tool_id, r.pol, xse, yse, r.date, r.name
+        ].map(function(v){ return '"' + String(v||'').replace(/"/g,'""') + '"'; }).join(',');
+      });
+      var csv = '\uFEFF' + headers.join(',') + '\n' + rows.join('\n');
+      var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      var url  = URL.createObjectURL(blob);
+      var a    = document.createElement('a');
+      a.href = url;
+      var d = document.getElementById('dailyDate').value.replace(/-/g,'');
+      var n = document.getElementById('dailyName').value || 'ALL';
+      a.download = 'daily_' + d + '_' + n + '.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+  </script>
+</body>
+</html>

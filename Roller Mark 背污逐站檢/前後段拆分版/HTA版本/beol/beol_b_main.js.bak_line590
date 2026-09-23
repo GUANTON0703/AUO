@@ -1,0 +1,1395 @@
+// ═══════════════ BEOL JavaScript ═══════════════
+let _beolInited=false;
+function swSeg(seg){
+  document.querySelectorAll('.seg-btn').forEach((b,i)=>b.classList.toggle('on',['feol','beol'][i]===seg));
+  document.querySelectorAll('.seg-wrap').forEach(w=>w.classList.remove('on'));
+  document.getElementById('seg-'+seg).classList.add('on');
+  if(seg==='beol'){bSw('bsr');if(!_beolInited){_beolInited=true;bDoSrch();}}
+}
+function bSw(n){
+  const seg=document.getElementById('seg-beol');
+  seg.querySelectorAll('.t').forEach((t,i)=>t.classList.toggle('on',['bki','bsr','bim','bsm'][i]===n));
+  seg.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pg-'+n).classList.add('on');
+}
+const BSL={'CGL':['CKCGL100','CKCGL200','CKCGL300','CKCGL400','CKCGL500','CKCGL600','CKCGL700','CKCGL800','CKCGLC00','CKCGLD00','CKCGLE00','CKCGLG00','CKCGLH00','CKCGLL00','CKCGLJ00','CKCGLK00'],'SHL':['CKSHL100','CKSHL200','CKSHL400','CKSHL500'],'PKL':['CKPKL200','CKPKL300','CKPKL400','CKPKL500','CKPKL600','CKPKL700','CKPKL800','CKPKL900','CKPKLA00','CKPKLB00','CKPKLC00','CKPKLD00','CKPKLE00','CKPKLF00','CKPKLG00','CKPKLH00'],'APK':['CKAPK100','CKAPK200','CKAPK300']};
+function bSelSt(el,st){document.querySelectorAll('#b-ss .ch').forEach(c=>c.classList.remove('on'));el.classList.add('on');bRlC(st);}
+function bRlC(st){const c=document.getElementById('b-sl'),ls=BSL[st]||[];if(!ls.length){c.innerHTML='<span class="lp">此站點無 LINE</span>';return;}c.innerHTML=ls.map(l=>`<div class="lc" onclick="bTogL(this)">${l}</div>`).join('');}
+function bTogL(el){document.querySelectorAll('#b-sl .lc').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
+function bGL(){const s=document.querySelector('#b-sl .lc.on');return s?s.textContent.trim():'';}
+function bUpdFL(){const st=document.getElementById('b-fst').value,ls=st?(BSL[st]||[]):[];const sl=document.getElementById('b-fl');sl.innerHTML='<option value="">全部</option>'+ls.map(l=>`<option>${l}</option>`).join('');}
+let bRc=0;const bPs={};
+const B_MORPH=['單點','直條','橫條','吸盤','撇狀'];
+const B_LV=['乾擦','濕擦','乾溼不可擦','不可見'];
+function bTogM(el,grp){el.closest('.mc').querySelectorAll('.mi').forEach(c=>c.classList.remove('on'));el.classList.add('on');const inp=document.getElementById(grp+'-oth');if(inp)inp.classList.remove('show');}
+function bTogMOther(el,grp){el.closest('.mc').querySelectorAll('.mi').forEach(c=>c.classList.remove('on'));el.classList.add('on');const inp=document.getElementById(grp+'-oth');if(inp)inp.classList.add('show');}
+function bGetMC(grp){const el=document.querySelector('.'+grp+'.on');if(!el)return'';if(el.textContent.trim()==='其他'){const inp=document.getElementById(grp+'-oth');return inp?inp.value.trim():'';}return el.textContent.trim();}
+function bMorphBtns(i){return B_MORPH.map(m=>`<div class="mi" onclick="bTogM(this,'bmo${i}')">${m}</div>`).join('')+`<div class="mi" onclick="bTogMOther(this,'bmo${i}')">其他</div><input class="other-input" id="bmo${i}-oth" placeholder="請輸入"/>`;}
+function bLvBtns(i){return B_LV.map(l=>`<div class="mi" onclick="bTogM(this,'blv${i}')">${l}</div>`).join('')+`<div class="mi" onclick="bTogMOther(this,'blv${i}')">其他</div><input class="other-input" id="blv${i}-oth" placeholder="請輸入"/>`;}
+function bAddRow(){bRc++;const i=bRc,tb=document.getElementById('b-eb'),tr=document.createElement('tr');tr.id='br'+i;tr.innerHTML=`<td class="rn">${i}</td><td><input type="text" class="b-mid" placeholder="中片ID" style="width:90px"/></td><td><input type="text" class="b-cid" placeholder="CHIP ID" style="width:90px"/></td><td><div class="mc btc${i}"><div class="mi" onclick="bTogM(this,'btc${i}')">T</div><div class="mi" onclick="bTogM(this,'btc${i}')">C</div></div></td><td><input type="text" class="b-cx" placeholder="X" style="width:72px"/></td><td><input type="text" class="b-cy" placeholder="Y" style="width:72px"/></td><td><div class="mc bmo${i}" style="flex-wrap:wrap;gap:3px;">${bMorphBtns(i)}</div></td><td><div class="mc blv${i}" style="flex-wrap:wrap;gap:3px;">${bLvBtns(i)}</div></td><td><div class="mc bito${i}"><div class="mi" onclick="bTogM(this,'bito${i}')">上</div><div class="mi" onclick="bTogM(this,'bito${i}')">下</div></div></td><td><textarea rows="2" class="b-note" placeholder="Note..." style="min-width:100px;"></textarea></td><td id="bpc${i}"><label class="pub" onclick="bSetPasteFocus(${i},'ph')">📷 照片<input type="file" accept="image/*" multiple onchange="bHdP(this,${i},'ph')" style="display:none"/></label></td><td id="bopc${i}"><label class="pub" onclick="bSetPasteFocus(${i},'om')">🔬 OM<input type="file" accept="image/*" multiple onchange="bHdP(this,${i},'om')" style="display:none"/></label></td><td><button class="bn bd2 bsm" onclick="bDelR(${i})">✕</button></td>`;tb.appendChild(tr);tr.scrollIntoView({behavior:'smooth',block:'nearest'});}
+function bAddRowSameID(){const rows=document.querySelectorAll('#b-eb tr');if(!rows.length){toast('沒有上一筆資料','err');return;}const lastRow=rows[rows.length-1];const lastCid=lastRow.querySelector('.b-cid').value.trim();const lastMid=lastRow.querySelector('.b-mid')?.value.trim()||'';bAddRow();const newRow=document.getElementById('br'+bRc);if(lastCid)newRow.querySelector('.b-cid').value=lastCid;if(lastMid)newRow.querySelector('.b-mid').value=lastMid;}
+function bDelR(i){const tr=document.getElementById('br'+i);if(tr)tr.remove();delete bPs[i+'_ph'];delete bPs[i+'_om'];}
+function bHdP(inp,i,type){if(!inp.files||!inp.files.length)return;const key=i+'_'+type;if(!bPs[key])bPs[key]=[];Array.from(inp.files).forEach(f=>{const rd=new FileReader();rd.onload=e=>{bPs[key].push({name:f.name,dataUrl:e.target.result});bRefreshPhotoCell(i,type);};rd.readAsDataURL(f);});}
+function bRefreshPhotoCell(i,type){
+  var cellId=type==='om'?'bopc'+i:'bpc'+i;
+  var cell=document.getElementById(cellId);if(!cell)return;
+  var photos=bPs[i+'_'+type]||[];
+  var label=type==='om'?'🔬 OM照片':'📷 照片';
+  if(!photos.length){
+    cell.innerHTML='<div class="pz" tabindex="0"'
+      +' onclick="bSetPasteFocus('+i+',\''+type+'\');this.focus()"'
+      +' onpaste="bHdPaste(event,'+i+',\''+type+'\')">'
+      +label+'<label class="pz-sub">或點此選檔'
+      +'<input type="file" accept="image/*" multiple'
+      +' onchange="bHdP(this,'+i+',\''+type+'\')" style="display:none"/>'
+      +'</label></div>';
+  }else{
+    var imgs=photos.map(function(p){
+      return '<img class="pt" src="'+p.dataUrl+'" title="'+p.name
+        +'" onclick="opM(\''+p.dataUrl+'\',\''+p.name.replace(/'/g,"\\'")+'\')" />';
+    }).join('');
+    cell.innerHTML='<div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;">'
+      +imgs+'<span style="font-size:11px;color:var(--p);font-weight:600;">'+photos.length+'張</span>'
+      +'<label class="pub" style="font-size:11px;padding:3px 8px;cursor:pointer;">＋'
+      +'<input type="file" accept="image/*" multiple'
+      +' onchange="bHdP(this,'+i+',\''+type+'\')" style="display:none"/>'
+      +'</label>'
+      +'</div>';
+  }
+}
+
+// ===== BEOL Ctrl+V 貼上照片 =====
+var bPasteFocus = null;
+function bSetPasteFocus(rowIdx, type){ bPasteFocus = {rowIdx:rowIdx, type:type}; }
+document.addEventListener('paste', function(e){
+  if(!bPasteFocus) return;
+  var pg = document.getElementById('pg-bki');
+  if(!pg||!pg.classList.contains('on')) return;
+  var items=(e.clipboardData||(e.originalEvent&&e.originalEvent.clipboardData)||{}).items;
+  if(!items) return;
+  var hasImg=false;
+  for(var ii=0;ii<items.length;ii++){
+    if(items[ii].type.indexOf('image')!==-1){
+      hasImg=true;
+      var blob=items[ii].getAsFile();
+      if(!blob) continue;
+      (function(b,focus){
+        var rd=new FileReader();
+        rd.onload=function(ev){
+          var key=focus.rowIdx+'_'+focus.type;
+          if(!bPs[key]) bPs[key]=[];
+          bPs[key].push({name:'paste_'+Date.now()+'.png',dataUrl:ev.target.result});
+          bRefreshPhotoCell(focus.rowIdx,focus.type);
+        };
+        rd.readAsDataURL(b);
+      })(blob,bPasteFocus);
+    }
+  }
+  if(hasImg) e.preventDefault();
+});
+
+
+async function bSaveAll(){const date=document.getElementById('b-date').value;const model=document.getElementById('b-model').value;const empId=document.getElementById('b-emp').value.trim();const stEl=document.querySelector('#b-ss .ch.on');const station=stEl?stEl.textContent.trim():'';const line=bGL();if(!date){toast('請選擇日期','err');return;}if(!station){toast('請選擇站點','err');return;}const rows=document.querySelectorAll('#b-eb tr');if(!rows.length){toast('請至少新增一筆明細','err');return;}const records=[];for(const tr of rows){const i=parseInt(tr.id.replace('br',''));const midId=tr.querySelector('.b-mid')?.value.trim()||'';const chipId=tr.querySelector('.b-cid').value.trim();const tc=(tr.querySelector('.btc'+i+' .mi.on')||{}).textContent?.trim()||'';const x=tr.querySelector('.b-cx').value.trim();const y=tr.querySelector('.b-cy').value.trim();const morphology=bGetMC('bmo'+i);const level=bGetMC('blv'+i);const ito=(tr.querySelector('.bito'+i+' .mi.on')||{}).textContent?.trim()||'';const note=tr.querySelector('.b-note').value.trim();const photos=bPs[i+'_ph']||[];const omPhotos=bPs[i+'_om']||[];records.push({midId,chipId,tc,x,y,morphology,level,ito,note,photos:photos.map(p=>({name:p.name,dataUrl:p.dataUrl})),omPhotos:omPhotos.map(p=>({name:p.name,dataUrl:p.dataUrl}))});}document.getElementById('b-si').textContent='儲存中...';try{const res=await fetch(API_BASE+'/api/beol/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({date,model,station,line,empId,records})});const d=await res.json();if(d.success){toast('✅ 成功儲存 '+d.count+' 筆');document.getElementById('b-eb').innerHTML='';bRc=0;Object.keys(bPs).forEach(k=>delete bPs[k]);document.getElementById('b-si').textContent='';}else{toast('儲存失敗：'+(d.error||''),'err');document.getElementById('b-si').textContent='';}}catch(e){toast('連線錯誤：'+e.message,'err');document.getElementById('b-si').textContent='';}}
+let bLastSrch=[];
+function bDoSrch(){const params=new URLSearchParams({dateFrom:document.getElementById('b-ff').value||'',dateTo:document.getElementById('b-ft').value||'',model:document.getElementById('b-fm').value||'',station:document.getElementById('b-fst').value||'',line:document.getElementById('b-fl').value||'',tc:document.getElementById('b-ftc').value||'',level:document.getElementById('b-flv').value||'',empId:document.getElementById('b-femp').value||'',chipId:document.getElementById('b-fchip').value||'',midId:document.getElementById('b-fmid')?.value||''});fetch(API_BASE+'/api/beol/search?'+params).then(r=>r.json()).then(data=>{if(!data.success){toast('搜尋失敗','err');return;}bLastSrch=data.records||[];const tb=document.getElementById('b-sb2');document.getElementById('b-rs2').textContent='共 '+bLastSrch.length+' 筆';document.getElementById('b-chkAll').checked=false;document.getElementById('b-delBtn').style.display='none';if(!bLastSrch.length){tb.innerHTML='<tr><td colspan="19" class="nd">查無資料</td></tr>';return;}tb.innerHTML=bLastSrch.map((r,i)=>`<tr id="bsr-${i}"><td style="text-align:center"><input type="checkbox" class="b-delChk" onchange="bUpdDelBtn()" data-idx="${i}" data-created-at="${r.createdAt||''}" data-date="${r.date||''}"></td><td>${i+1}</td><td id="bed-date-${i}">${r.date||''}</td><td id="bed-model-${i}">${r.model||''}</td><td id="bed-station-${i}">${r.station||''}</td><td id="bed-line-${i}">${r.line||'-'}</td><td id="bed-mid-${i}">${r.midId||''}</td><td id="bed-chip-${i}">${r.chipId||''}</td><td id="bed-tc-${i}">${r.tc||''}</td><td id="bed-x-${i}">${r.x!=null?r.x:''}</td><td id="bed-y-${i}">${r.y!=null?r.y:''}</td><td id="bed-mo-${i}">${r.morphology||''}</td><td id="bed-lv-${i}">${r.level||''}</td><td id="bed-ito-${i}">${r.ito||''}</td><td id="bed-note-${i}">${r.note||''}</td><td id="bed-ph-${i}">${bPhCell(r.photoUrls)}</td><td id="bed-om-${i}">${bPhCell(r.omPhotoUrls)}</td><td id="bed-emp-${i}">${r.empId||''}</td><td id="bop-${i}"><button class="bn bp bsm" onclick="bStartEdit(${i})">✏️ 修改</button></td></tr>`).join('');}).catch(e=>toast('連線錯誤：'+e.message,'err'));}
+function bPhCell(urls){if(!urls||!urls.length)return'<span style="color:#ccc;font-size:12px;">—</span>';return'<div class="ph-cell">'+urls.map(u=>{const fname=u.split('\\').pop()||u;const proxy=API_BASE+'/api/photo?path='+encodeURIComponent(u);return`<img class="pt" src="${proxy}" title="${fname}" onclick="opM('${proxy}','${escQ(fname)}')">`;}).join('')+'</div>';}
+function bClrF(){['b-ff','b-ft'].forEach(id=>document.getElementById(id).value='');['b-fm','b-fst','b-ftc','b-flv'].forEach(id=>document.getElementById(id).value='');document.getElementById('b-fl').innerHTML='<option value="">全部</option>';document.getElementById('b-femp').value='';document.getElementById('b-fchip').value='';document.getElementById('b-fmid').value='';document.getElementById('b-sb2').innerHTML='<tr><td colspan="19" class="nd">請先設定篩選條件後按「搜尋」</td></tr>';document.getElementById('b-rs2').textContent='';}
+function bExpXLSX(){const params=new URLSearchParams({dateFrom:document.getElementById('b-ff').value||'',dateTo:document.getElementById('b-ft').value||'',model:document.getElementById('b-fm').value||'',station:document.getElementById('b-fst').value||'',line:document.getElementById('b-fl').value||'',tc:document.getElementById('b-ftc').value||'',level:document.getElementById('b-flv').value||'',empId:document.getElementById('b-femp').value||''});window.location.href=API_BASE+'/api/beol/export?'+params;}
+function bUpdDelBtn(){const chks=document.querySelectorAll('.b-delChk:checked');const btn=document.getElementById('b-delBtn');if(btn)btn.style.display=chks.length>0?'':'none';}
+function bTogChkAll(){const all=document.getElementById('b-chkAll').checked;document.querySelectorAll('.b-delChk').forEach(c=>c.checked=all);bUpdDelBtn();}
+async function bDelChecked(){const chks=document.querySelectorAll('.b-delChk:checked');if(!chks.length)return;if(!confirm('確定刪除勾選的 '+chks.length+' 筆資料？'))return;const deletions=Array.from(chks).map(c=>({createdAt:c.dataset.createdAt,date:c.dataset.date}));try{const res=await fetch(API_BASE+'/api/beol/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({deletions})});const d=await res.json();if(d.success){toast('✅ 刪除 '+d.deleted+' 筆');bDoSrch();}else{toast('刪除失敗：'+(d.error||''),'err');}}catch(e){toast('連線錯誤：'+e.message,'err');}}
+let bEditingIdx=null;const bEditPs={};
+function bStartEdit(i){if(bEditingIdx!==null&&bEditingIdx!==i){if(!confirm('目前有未儲存的修改，確定放棄？'))return;bCancelEdit(bEditingIdx);}bEditingIdx=i;const r=bLastSrch[i];if(!r)return;bEditPs[i]={deleted:[],newFiles:[],newOmFiles:[]};document.getElementById('bop-'+i).innerHTML='<button class="bn bs bsm" onclick="bSaveEditRow('+i+')">✅ 儲存</button> <button class="bn bo bsm" onclick="bCancelEdit('+i+')">❌ 取消</button>';document.getElementById('bed-date-'+i).innerHTML=`<input type="date" id="bei-date-${i}" value="${r.date||''}">`;const mOpts=document.getElementById('b-model').innerHTML;document.getElementById('bed-model-'+i).innerHTML=`<select id="bei-model-${i}">${mOpts}</select>`;const mSel=document.getElementById('bei-model-'+i);if(mSel)mSel.value=r.model||'';const stBtns=['CGL','SHL','PKL','APK'].map(st=>`<div class="ch${st===r.station?' on':''}" onclick="bEditSelSt(this,${i},'${st}')">${st}</div>`).join('');document.getElementById('bed-station-'+i).innerHTML=`<div class="cg" id="bei-st-${i}">${stBtns}</div>`;bEditUpdLine(i,r.station||'',r.line||'');document.getElementById('bed-mid-'+i).innerHTML=`<input type="text" id="bei-mid-${i}" value="${r.midId||''}" style="width:90px">`;document.getElementById('bed-chip-'+i).innerHTML=`<input type="text" id="bei-chip-${i}" value="${r.chipId||''}" style="width:90px">`;const tcBtns=['T','C'].map(tc=>`<div class="mi${tc===r.tc?' on':''}" onclick="editTogSingle(this)">${tc}</div>`).join('');document.getElementById('bed-tc-'+i).innerHTML=`<div class="mc" id="bei-tc-${i}">${tcBtns}</div>`;document.getElementById('bed-x-'+i).innerHTML=`<input type="number" id="bei-x-${i}" value="${r.x||''}" step="0.1" style="width:68px">`;document.getElementById('bed-y-'+i).innerHTML=`<input type="number" id="bei-y-${i}" value="${r.y||''}" step="0.1" style="width:68px">`;const moOpts=B_MORPH.concat(['其他']);document.getElementById('bed-mo-'+i).innerHTML=`<select id="bei-mo-${i}">${moOpts.map(o=>`<option${o===r.morphology?' selected':''}>${o}</option>`).join('')}</select>`;const lvOpts=B_LV.concat(['其他']);document.getElementById('bed-lv-'+i).innerHTML=`<select id="bei-lv-${i}">${lvOpts.map(o=>`<option${o===r.level?' selected':''}>${o}</option>`).join('')}</select>`;const itoBtns=['上','下'].map(v=>`<div class="mi${v===r.ito?' on':''}" onclick="editTogSingle(this)">${v}</div>`).join('');document.getElementById('bed-ito-'+i).innerHTML=`<div class="mc" id="bei-ito-${i}">${itoBtns}</div>`;document.getElementById('bed-note-'+i).innerHTML=`<textarea id="bei-note-${i}" rows="2" style="min-width:100px">${r.note||''}</textarea>`;document.getElementById('bed-ph-'+i).innerHTML=bPhCell(r.photoUrls);document.getElementById('bed-om-'+i).innerHTML=bPhCell(r.omPhotoUrls);document.getElementById('bed-emp-'+i).innerHTML=`<input type="text" id="bei-emp-${i}" value="${r.empId||''}" style="width:80px">`;}
+function bEditSelSt(el,i,st){el.closest('.cg').querySelectorAll('.ch').forEach(c=>c.classList.remove('on'));el.classList.add('on');bEditUpdLine(i,st,'');}
+function bEditUpdLine(i,st,sel){const lines=BSL[st]||[];const html=lines.map(l=>`<div class="lc${l===sel?' on':''}" onclick="editTogLine(this)">${l}</div>`).join('');document.getElementById('bed-line-'+i).innerHTML=`<div class="lg" id="bei-ln-${i}">${html||'<span class="lp">無 LINE</span>'}</div>`;}
+async function bSaveEditRow(i){const r=bLastSrch[i];if(!r)return;const state=bEditPs[i]||{};const date=(document.getElementById('bei-date-'+i)||{}).value||r.date;const model=(document.getElementById('bei-model-'+i)||{}).value||r.model;const stEl=document.querySelector('#bei-st-'+i+' .ch.on');const station=stEl?stEl.textContent.trim():r.station;const lnEl=document.querySelector('#bei-ln-'+i+' .lc.on');const line=lnEl?lnEl.textContent.trim():r.line;const midId=(document.getElementById('bei-mid-'+i)||{}).value||r.midId||'';const chipId=(document.getElementById('bei-chip-'+i)||{}).value||r.chipId;const tcEl=document.querySelector('#bei-tc-'+i+' .mi.on');const tc=tcEl?tcEl.textContent.trim():r.tc;const x=(document.getElementById('bei-x-'+i)||{}).value||r.x;const y=(document.getElementById('bei-y-'+i)||{}).value||r.y;const morphology=(document.getElementById('bei-mo-'+i)||{}).value||r.morphology;const level=(document.getElementById('bei-lv-'+i)||{}).value||r.level;const itoEl=document.querySelector('#bei-ito-'+i+' .mi.on');const ito=itoEl?itoEl.textContent.trim():r.ito;const note=(document.getElementById('bei-note-'+i)||{}).value||r.note;const empId=(document.getElementById('bei-emp-'+i)||{}).value||r.empId;const existPh=(r.photoUrls||[]).filter(u=>!(state.deleted||[]).includes(u));const existOm=(r.omPhotoUrls||[]).filter(u=>!(state.deletedOm||[]).includes(u));const newRecord={date,model,station,line,midId,chipId,tc,x,y,morphology,level,ito,note,empId,photoUrls:existPh,omPhotoUrls:existOm,createdAt:r.createdAt};try{const res=await fetch(API_BASE+'/api/beol/update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({createdAt:r.createdAt,originalDate:r.date,record:newRecord,newPhotos:state.newFiles||[],newOmPhotos:state.newOmFiles||[]})});const d=await res.json();if(d.success){toast('✅ 已更新');bLastSrch[i]=d.record||newRecord;bCancelEdit(i);}else{toast('更新失敗：'+(d.error||''),'err');}}catch(e){toast('連線錯誤：'+e.message,'err');}}
+function bCancelEdit(i){bEditingIdx=null;delete bEditPs[i];const r=bLastSrch[i];if(!r)return;document.getElementById('bop-'+i).innerHTML=`<button class="bn bp bsm" onclick="bStartEdit(${i})">✏️ 修改</button>`;['date','model','station','line','mid','chip','tc','x','y','mo','lv','ito','note','emp'].forEach(f=>{ const el=document.getElementById('bed-'+f+'-'+i); if(el) el.textContent=r[{date:'date',model:'model',station:'station',line:'line',mid:'midId',chip:'chipId',tc:'tc',x:'x',y:'y',mo:'morphology',lv:'level',ito:'ito',note:'note',emp:'empId'}[f]]||'';});document.getElementById('bed-ph-'+i).innerHTML=bPhCell(r.photoUrls);document.getElementById('bed-om-'+i).innerHTML=bPhCell(r.omPhotoUrls);}
+let bIb=[],bPicFile=null,bPicPreviewId=null;
+function bHdImp(inp){if(!inp.files||!inp.files.length)return;const file=inp.files[0];bPicFile=file;bPicPreviewId=null;const ext=file.name.split('.').pop().toLowerCase();const statusEl=document.getElementById('b-impStatus');if(statusEl)statusEl.textContent='⏳ 讀取中...';if(ext==='csv'){const rd=new FileReader();rd.onload=e=>{const txt=e.target.result.replace(/^\uFEFF+/,'');const lines=txt.split('\n').filter(l=>l.trim());if(lines.length<2){toast('CSV 無資料','err');return;}const hds=lines[0].split(',').map(h=>h.replace(/^"|"$/g,'').trim());bIb=lines.slice(1).map(line=>{const vs=line.split(',').map(v=>v.replace(/^"|"$/g,'').trim());const o={};hds.forEach((h,i)=>o[h]=vs[i]||'');return o;}).filter(r=>Object.values(r).some(v=>v));bShowPreview(hds,bIb,{},bIb.length);if(statusEl)statusEl.textContent='';};rd.readAsText(file,'UTF-8');}else{const rd=new FileReader();rd.onload=async e=>{try{const bytes=new Uint8Array(e.target.result);let binary='';const CHUNK=8192;for(let i=0;i<bytes.length;i+=CHUNK)binary+=String.fromCharCode(...bytes.subarray(i,Math.min(i+CHUNK,bytes.length)));const b64=btoa(binary);if(statusEl)statusEl.textContent='⏳ 讀取 Excel 並提取圖片...';const res=await fetch(API_BASE+'/api/beol/preview_excel_with_pics',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({excel_base64:b64})});const d=await res.json();if(d.success){bPicPreviewId=d.preview_id;bIb=d.rows;bShowPreview(d.headers,d.rows,d.row_images||{},d.total);if(statusEl)statusEl.textContent='共 '+d.total+' 筆，'+Object.keys(d.row_images||{}).length+' 列有圖片';}else{if(statusEl)statusEl.textContent='❌ '+(d.error||'預覽失敗');toast('預覽失敗：'+(d.error||''),'err');}}catch(err){if(statusEl)statusEl.textContent='❌ '+err.message;}};rd.readAsArrayBuffer(file);}}
+function bShowPreview(hds,rows,rowImages,total){const is2=document.getElementById('b-is2'),ip2=document.getElementById('b-ip2');if(!is2||!ip2)return;const hasImgs=Object.keys(rowImages).length>0;is2.innerHTML='<div class="skd"><div class="num">'+hds.length+'</div><div class="lbl">欄位</div></div><div class="skd"><div class="num">'+total+'</div><div class="lbl">筆資料</div></div>'+(hasImgs?'<div class="skd"><div class="num">'+Object.keys(rowImages).length+'</div><div class="lbl">列有圖片</div></div>':'');document.getElementById('b-ih2').innerHTML='<th>#</th>'+hds.map(h=>'<th>'+h+'</th>').join('')+(hasImgs?'<th>圖片預覽</th>':'');document.getElementById('b-ib2').innerHTML=rows.slice(0,20).map((row,i)=>{const key=String(i+1),imgs=rowImages[key]||[];const imgTd=hasImgs?(imgs.length>0?'<td>'+imgs.map(u=>'<img src="'+u+'" style="height:60px;width:auto;border:1px solid #ddd;border-radius:4px;margin:2px;">').join('')+'</td>':'<td style="color:#ccc;font-size:12px;">—</td>'):'';return'<tr><td>'+(i+1)+'</td>'+hds.map(h=>'<td>'+(row[h]!=null?row[h]:'')+'</td>').join('')+imgTd+'</tr>';}).join('')+(total>20?'<tr><td colspan="'+(hds.length+(hasImgs?2:1))+'" style="text-align:center;color:var(--gr)">...共'+total+'筆，顯示前20筆</td></tr>':'');ip2.style.display='block';}
+async function bCfImp(){if(!bPicFile)return;const statusEl=document.getElementById('b-impStatus');const ext=bPicFile.name.split('.').pop().toLowerCase();if(statusEl)statusEl.textContent='⏳ 匯入中...';if(ext==='csv'){const g=(row,keys)=>{for(const k of keys){if(row[k]!==undefined&&row[k]!==null&&row[k]!=='')return String(row[k]);}return'';};const records=bIb.map(row=>({date:formatDate(g(row,['日期','date','Date'])),model:g(row,['Model','model','MODEL']),station:g(row,['站點','station']),line:g(row,['LINE','Line','line']),midId:g(row,['中片ID','midId']),midId:g(row,['中片ID','midId']),midId:g(row,['中片ID','midId']),chipId:g(row,['CHIP ID','chipId','chip_id']),tc:g(row,['T/C','T/C側','TC','tc']),x:g(row,['X(mm)','X (mm)','x','X']),y:g(row,['Y(mm)','Y (mm)','y','Y']),morphology:g(row,['成像敘述','morphology']),level:g(row,['程度','level']),ito:g(row,['ITO','ito']),note:g(row,['Note','note','NOTE','備註']),photoUrls:[],omPhotoUrls:[]})).filter(r=>r.date||r.chipId);if(!records.length){toast('沒有可匯入的有效資料','err');return;}try{const res=await fetch(API_BASE+'/api/beol/import',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({records})});const d=await res.json();if(d.success){if(statusEl)statusEl.textContent='✅ 匯入完成 '+d.count+' 筆';toast('✅ 成功匯入 '+d.count+' 筆');bCnImp();}else{if(statusEl)statusEl.textContent='❌ '+(d.error||'');toast('匯入失敗','err');}}catch(e){if(statusEl)statusEl.textContent='❌ '+e.message;}}else{if(!bPicPreviewId){toast('請先完成預覽','err');return;}try{const res=await fetch(API_BASE+'/api/beol/import_excel_with_pics',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({preview_id:bPicPreviewId})});const d=await res.json();if(d.success){if(statusEl)statusEl.textContent='✅ 匯入完成 '+d.count+' 筆（圖片 '+d.photos+' 張）';toast('✅ 成功匯入 '+d.count+' 筆');bCnImp();}else{if(statusEl)statusEl.textContent='❌ '+(d.error||'');toast('匯入失敗','err');}}catch(e){if(statusEl)statusEl.textContent='❌ '+e.message;}}}
+function bCnImp(){bIb=[];bPicFile=null;bPicPreviewId=null;const el=document.getElementById('b-if2');if(el)el.value='';document.getElementById('b-ip2').style.display='none';document.getElementById('b-is2').innerHTML='';}
+
+
+// ===== BEOL SUMMARY 新版 JS =====
+const _bsmCharts = {};
+let _bsmAllRecs = [];
+const BSM_NG_LV = ['乾擦','濕擦','乾溼不可擦'];
+
+function bsmInitDates(){
+  var today = new Date();
+  var from14 = new Date(today); from14.setDate(today.getDate()-14);
+  var toStr = today.toISOString().slice(0,10);
+  var fromStr = from14.toISOString().slice(0,10);
+  var gf=document.getElementById('bsm-g-from'), gt=document.getElementById('bsm-g-to');
+  if(gf&&!gf.value) gf.value=fromStr;
+  if(gt&&!gt.value) gt.value=toStr;
+}
+
+async function bsmApply(){
+  var from  = (document.getElementById('bsm-g-from')||{}).value||'';
+  var to    = (document.getElementById('bsm-g-to')||{}).value||'';
+  var model = (document.getElementById('bsm-g-model')||{}).value||'';
+  var st    = (document.getElementById('bsm-g-st')||{}).value||'';
+  var lv    = (document.getElementById('bsm-g-lv')||{}).value||'';
+  var params = new URLSearchParams({dateFrom:from,dateTo:to,model:model,station:st,level:lv});
+  try{
+    var res = await fetch(API_BASE+'/api/beol/search?'+params).then(r=>r.json());
+    if(!res.success){console.error('BEOL SUMMARY 查詢失敗');return;}
+    _bsmAllRecs = res.records||[];
+    var models = [...new Set(_bsmAllRecs.map(r=>r.model||'').filter(Boolean))].sort();
+    ['bsm-g-model','bsm-T-cf-model','bsm-C-cf-model','bsm-T-mf-model','bsm-C-mf-model'].forEach(function(id){
+      var el=document.getElementById(id); if(!el) return;
+      var cur=el.value;
+      el.innerHTML='<option value="">全部</option>'+models.map(m=>'<option'+(m===cur?' selected':'')+'>'+m+'</option>').join('');
+    });
+    bsmRedrawAll();
+  }catch(e){console.error('BEOL SUMMARY 失敗：',e);}
+}
+
+function bsmRedrawAll(){
+  ['T','C'].forEach(function(s){
+    bsmDrawChipTotal(s);
+    bsmDrawChipFilter(s);
+    bsmDrawMidTotal(s);
+    bsmDrawMidFilter(s);
+  });
+}
+
+// 去重：同一天同一TC，idField 相同只算一筆；無 id 的記錄不計
+function bsmDedup(recs, idField){
+  var seen=new Set();
+  return recs.filter(function(r){
+    var v=r[idField]||''; if(!v) return false;
+    var key=(r.date||'')+'|'+(r.tc||'')+'|'+v;
+    if(seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+}
+
+// 去重後計算每日母數
+function bsmCountByDate(recs, idField){
+  var byDate={};
+  bsmDedup(recs,idField).forEach(function(r){var d=r.date||'';byDate[d]=(byDate[d]||0)+1;});
+  return byDate;
+}
+
+// 去重後計算指定程度的每日 NG 數（lvArr 為空 → 計算全部 BSM_NG_LV）
+function bsmNgByDate(recs, idField, lvArr){
+  var useArr = lvArr&&lvArr.length ? lvArr : BSM_NG_LV;
+  var filtered = recs.filter(function(r){return useArr.indexOf(r.level||'')!==-1;});
+  var byDate={};
+  bsmDedup(filtered,idField).forEach(function(r){var d=r.date||'';byDate[d]=(byDate[d]||0)+1;});
+  return byDate;
+}
+
+function bsmDates(recs){
+  return [...new Set(recs.map(r=>r.date||'').filter(Boolean))].sort();
+}
+
+function bsmDrawChipTotal(side){
+  var recs=_bsmAllRecs.filter(r=>r.tc===side);
+  var dates=bsmDates(recs);
+  var tot=bsmCountByDate(recs,'chipId');
+  var ng =bsmNgByDate(recs,'chipId',[]);
+  var lv0=bsmNgByDate(recs,'chipId',['乾擦']);
+  var lv1=bsmNgByDate(recs,'chipId',['濕擦']);
+  var lv2=bsmNgByDate(recs,'chipId',['乾溼不可擦']);
+  var col=(document.getElementById('color-'+side+'-chip-total')||{value:'#3498db'}).value;
+  _bsmDraw('bsm-'+side+'-chip-total',dates,tot,ng,col,recs,'chipId',{lv0:lv0,lv1:lv1,lv2:lv2},'total','');
+}
+
+function bsmDrawChipFilter(side){
+  var flv =(document.getElementById('bsm-'+side+'-cf-lv')||{}).value||'';
+  var fst =(document.getElementById('bsm-'+side+'-cf-st')||{}).value||'';
+  var fito=(document.getElementById('bsm-'+side+'-cf-ito')||{}).value||'';
+  var fmod=(document.getElementById('bsm-'+side+'-cf-model')||{}).value||'';
+  var recs=_bsmAllRecs.filter(function(r){
+    return r.tc===side&&(fst?r.station===fst:true)&&(fito?r.ito===fito:true)&&(fmod?r.model===fmod:true);
+  });
+  var dates=bsmDates(recs);
+  var tot=bsmCountByDate(recs,'chipId');
+  var ng =bsmNgByDate(recs,'chipId',flv?[flv]:[]);
+  var col=(document.getElementById('color-'+side+'-chip-filter')||{value:'#2ecc71'}).value;
+  _bsmDraw('bsm-'+side+'-chip-filter',dates,tot,ng,col,recs,'chipId',null,'filter',flv||'全部NG');
+}
+
+function bsmDrawMidTotal(side){
+  var recs=_bsmAllRecs.filter(r=>r.tc===side&&r.midId);
+  var sec=document.getElementById('bsm-'+side+'-mid-section');
+  if(sec) sec.style.display=recs.length?'':'none';
+  if(!recs.length) return;
+  var dates=bsmDates(recs);
+  var tot=bsmCountByDate(recs,'midId');
+  var ng =bsmNgByDate(recs,'midId',[]);
+  var lv0=bsmNgByDate(recs,'midId',['乾擦']);
+  var lv1=bsmNgByDate(recs,'midId',['濕擦']);
+  var lv2=bsmNgByDate(recs,'midId',['乾溼不可擦']);
+  var col=(document.getElementById('color-'+side+'-mid-total')||{value:'#9b59b6'}).value;
+  _bsmDraw('bsm-'+side+'-mid-total',dates,tot,ng,col,recs,'midId',{lv0:lv0,lv1:lv1,lv2:lv2},'total','');
+}
+
+function bsmDrawMidFilter(side){
+  var recs=_bsmAllRecs.filter(r=>r.tc===side&&r.midId);
+  if(!recs.length) return;
+  var flv =(document.getElementById('bsm-'+side+'-mf-lv')||{}).value||'';
+  var fst =(document.getElementById('bsm-'+side+'-mf-st')||{}).value||'';
+  var fito=(document.getElementById('bsm-'+side+'-mf-ito')||{}).value||'';
+  var fmod=(document.getElementById('bsm-'+side+'-mf-model')||{}).value||'';
+  var fr=recs.filter(function(r){
+    return (fst?r.station===fst:true)&&(fito?r.ito===fito:true)&&(fmod?r.model===fmod:true);
+  });
+  var dates=bsmDates(fr);
+  var tot=bsmCountByDate(fr,'midId');
+  var ng =bsmNgByDate(fr,'midId',flv?[flv]:[]);
+  var col=(document.getElementById('color-'+side+'-mid-filter')||{value:'#e67e22'}).value;
+  _bsmDraw('bsm-'+side+'-mid-filter',dates,tot,ng,col,fr,'midId',null,'filter',flv||'全部NG');
+}
+
+function _bsmDraw(cid,dates,totByDate,ngByDate,barColor,recs,idField,lvDet,mode,selLvLabel){
+  var canvas=document.getElementById(cid); if(!canvas) return;
+  if(_bsmCharts[cid]) _bsmCharts[cid].destroy();
+  var tots  =dates.map(d=>totByDate[d]||0);
+  var ngs   =dates.map(d=>ngByDate[d]||0);
+  var ratios=dates.map(function(d,i){return tots[i]>0?parseFloat(((ngs[i]/tots[i])*100).toFixed(2)):null;});
+  _bsmCharts[cid]=new Chart(canvas,{
+    type:'bar',
+    data:{labels:dates,datasets:[
+      {label:'總覆判數量',data:tots,backgroundColor:barColor,borderColor:barColor,borderWidth:1,yAxisID:'yLeft',order:2},
+      {label:'NG Ratio(%)',data:ratios,type:'line',borderColor:'#e74c3c',
+       backgroundColor:'rgba(231,76,60,0.1)',pointBackgroundColor:'#e74c3c',
+       borderWidth:2,pointRadius:4,fill:false,tension:0.3,yAxisID:'yRight',order:1}
+    ]},
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}},tooltip:{enabled:false}},
+      scales:{
+        yLeft:{type:'linear',position:'left',beginAtZero:true,
+               title:{display:true,text:'總覆判數量',font:{size:10}},ticks:{stepSize:1,font:{size:9}}},
+        yRight:{type:'linear',position:'right',beginAtZero:true,max:100,
+                title:{display:true,text:'NG Ratio (%)',font:{size:10}},
+                ticks:{font:{size:9},callback:function(v){return v+'%';}},
+                grid:{drawOnChartArea:false}}
+      },
+      onHover:function(evt,els){
+        if(els&&els.length>0){
+          _bsmShowTooltip(evt,dates[els[0].index],recs,idField,totByDate,ngByDate,lvDet,mode,selLvLabel);
+        } else { _bsmHideTooltip(); }
+      }
+    }
+  });
+  canvas.onmouseleave=_bsmHideTooltip;
+}
+
+function _bsmShowTooltip(evt,date,recs,idField,totByDate,ngByDate,lvDet,mode,selLvLabel){
+  var tt=document.getElementById('bsm-tooltip'); if(!tt) return;
+  var dayRecs=recs.filter(r=>r.date===date);
+  var models=[...new Set(dayRecs.map(r=>r.model||'').filter(Boolean))].sort();
+  if(!models.length) models=[''];
+  var html='<div style="font-weight:700;color:#1a6bb5;margin-bottom:6px;font-size:12px;">&#128197; '+date+'</div>';
+  models.forEach(function(mod){
+    var mRecs=mod?dayRecs.filter(r=>r.model===mod):dayRecs;
+    html+='<div class="bsm-tt-model-hdr">MODEL: '+(mod||'—')+'</div>';
+    var stations=[...new Set(mRecs.map(r=>r.station||'').filter(Boolean))].sort();
+    if(!stations.length) stations=[''];
+    if(mode==='total'){
+      html+='<table><tr><th>站點</th><th>總覆判數量</th><th>乾擦</th><th>ratio</th><th>濕擦</th><th>ratio</th><th>乾溼不可擦</th><th>ratio</th><th>Total NG ratio</th></tr>';
+      stations.forEach(function(st){
+        var sr=st?mRecs.filter(r=>r.station===st):mRecs;
+        var tot=bsmCountByDate(sr,idField)[date]||0;
+        var c0=lvDet?(bsmNgByDate(sr,idField,['乾擦'])[date]||0):0;
+        var c1=lvDet?(bsmNgByDate(sr,idField,['濕擦'])[date]||0):0;
+        var c2=lvDet?(bsmNgByDate(sr,idField,['乾溼不可擦'])[date]||0):0;
+        var cng=bsmNgByDate(sr,idField,[])[date]||0;
+        var pct=function(n){return tot>0?((n/tot)*100).toFixed(1)+'%':'—';};
+        html+='<tr><td>'+(st||'全部')+'</td><td>'+tot+'</td>'
+          +'<td>'+c0+'</td><td>'+pct(c0)+'</td>'
+          +'<td>'+c1+'</td><td>'+pct(c1)+'</td>'
+          +'<td>'+c2+'</td><td>'+pct(c2)+'</td>'
+          +'<td style="font-weight:700;color:#c0392b;">'+pct(cng)+'</td></tr>';
+      });
+      html+='</table>';
+    } else {
+      html+='<table><tr><th>站點</th><th>總覆判數量</th><th>'+(selLvLabel||'NG')+'</th><th>ratio</th></tr>';
+      stations.forEach(function(st){
+        var sr=st?mRecs.filter(r=>r.station===st):mRecs;
+        var tot=bsmCountByDate(sr,idField)[date]||0;
+        var ng=bsmNgByDate(sr,idField,selLvLabel&&selLvLabel!=='全部NG'?[selLvLabel]:[])[date]||0;
+        var rat=tot>0?((ng/tot)*100).toFixed(1)+'%':'—';
+        html+='<tr><td>'+(st||'全部')+'</td><td>'+tot+'</td><td>'+ng+'</td>'
+          +'<td style="font-weight:700;color:#c0392b;">'+rat+'</td></tr>';
+      });
+      html+='</table>';
+    }
+  });
+  tt.innerHTML=html; tt.style.display='block';
+  var x=evt.native?evt.native.clientX:(evt.clientX||0);
+  var y=evt.native?evt.native.clientY:(evt.clientY||0);
+  tt.style.left=(x+16)+'px'; tt.style.top=(y-10)+'px';
+  setTimeout(function(){
+    var tw=tt.offsetWidth;
+    if(x+16+tw>window.innerWidth) tt.style.left=(x-tw-10)+'px';
+  },0);
+}
+
+function _bsmHideTooltip(){var tt=document.getElementById('bsm-tooltip');if(tt)tt.style.display='none';}
+
+function bsmInit(){
+  bsmInitDates();
+  bsmApply();
+}
+
+/* patch_v5 */
+
+// Fix 1: Modal/Toast 移至 body 根層
+document.addEventListener('DOMContentLoaded', function(){
+    ['pmo','toast'].forEach(function(id){
+        var el=document.getElementById(id);
+        if(el && el.parentElement!==document.body) document.body.appendChild(el);
+    });
+});
+
+// Fix 2: opM 覆寫
+window.opM=function(src,name){
+    var modal=document.getElementById('pmo');
+    if(modal && modal.parentElement!==document.body) document.body.appendChild(modal);
+    var img=document.getElementById('pmi');
+    var cap=document.getElementById('pmt');
+    if(img) img.src=src;
+    if(cap) cap.textContent=name||'';
+    if(modal) modal.classList.add('on');
+    document.body.style.overflow='hidden';
+};
+
+// Fix 3: 切換「其他」輸入框（橘色邊框，選後自動 focus）
+function bEditTogOther(sel,inputId){
+    var inp=document.getElementById(inputId);
+    if(!inp) return;
+    if(sel.value==='其他'){
+        inp.style.display='inline-block';
+        inp.focus();
+    }else{
+        inp.style.display='none';
+        inp.value='';
+    }
+}
+window.bEditTogOther=bEditTogOther;
+
+// Fix 4: bGetMC 覆寫（修正 Key In 成像/程度存空值）
+window.bGetMC=function(grp){
+    var el=document.querySelector('.'+grp+' .mi.on');
+    if(!el) return '';
+    if(el.textContent.trim()==='其他'){
+        var inp=document.getElementById(grp+'-oth');
+        return inp?inp.value.trim():'';
+    }
+    return el.textContent.trim();
+};
+
+// Fix 5: BEOL 預設日期（立即執行）
+(function(){
+    var today=new Date();
+    var ago14=new Date(today);
+    ago14.setDate(today.getDate()-14);
+    var toStr=today.toISOString().slice(0,10);
+    var fromStr=ago14.toISOString().slice(0,10);
+    var bd=document.getElementById('b-date');
+    if(bd&&!bd.value) bd.value=toStr;
+    var bf=document.getElementById('b-ff');
+    if(bf&&!bf.value) bf.value=fromStr;
+    var bt=document.getElementById('b-ft');
+    if(bt&&!bt.value) bt.value=toStr;
+})();
+
+// Fix 6: bStartEdit 覆寫
+// 注意：字串中 </ 全部改為 <\/ 避免 HTML 解析器誤判結束 script
+window.bStartEdit=function(i){
+    try{
+        if(bEditingIdx!==null&&bEditingIdx!==i){
+            if(!confirm('目前有未儲存的修改，確定放棄？'))return;
+            bCancelEdit(bEditingIdx);
+        }
+        bEditingIdx=i;
+        var r=bLastSrch[i];
+        if(!r){alert('找不到資料 index:'+i);return;}
+        bEditPs[i]={deleted:[],newFiles:[],newOmFiles:[]};
+
+        document.getElementById('bop-'+i).innerHTML=
+            '<button class="bn bs bsm" onclick="bSaveEditRow('+i+')">&#9989; 儲存<\/button> '
+            +'<button class="bn bo bsm" onclick="bCancelEdit('+i+')">&#10060; 取消<\/button>';
+
+        document.getElementById('bed-date-'+i).innerHTML=
+            '<input type="date" id="bei-date-'+i+'" value="'+(r.date||'')+'">';
+
+        var mOpts=document.getElementById('b-model')?document.getElementById('b-model').innerHTML:'';
+        document.getElementById('bed-model-'+i).innerHTML='<select id="bei-model-'+i+'">'+mOpts+'<\/select>';
+        var mSel=document.getElementById('bei-model-'+i);
+        if(mSel) mSel.value=r.model||'';
+
+        var stBtns=['CGL','SHL','PKL','APK'].map(function(st){
+            return '<div class="ch'+(st===r.station?' on':'')+'" onclick="bEditSelSt(this,'+i+',\''+st+'\')">'+st+'<\/div>';
+        }).join('');
+        document.getElementById('bed-station-'+i).innerHTML='<div class="cg" id="bei-st-'+i+'">'+stBtns+'<\/div>';
+        bEditUpdLine(i,r.station||'',r.line||'');
+
+        document.getElementById('bed-chip-'+i).innerHTML=
+            '<input type="text" id="bei-chip-'+i+'" value="'+(r.chipId||'')+'" style="width:90px">';
+
+        var tcBtns=['T','C'].map(function(tc){
+            return '<div class="mi'+(tc===r.tc?' on':'')+'" onclick="editTogSingle(this)">'+tc+'<\/div>';
+        }).join('');
+        document.getElementById('bed-tc-'+i).innerHTML='<div class="mc" id="bei-tc-'+i+'">'+tcBtns+'<\/div>';
+
+        document.getElementById('bed-x-'+i).innerHTML=
+            '<input type="number" id="bei-x-'+i+'" value="'+(r.x||'')+'" step="0.1" style="width:68px">';
+        document.getElementById('bed-y-'+i).innerHTML=
+            '<input type="number" id="bei-y-'+i+'" value="'+(r.y||'')+'" step="0.1" style="width:68px">';
+
+        var moFixed=['單點','直條','橫條','吸盤','撇狀'];
+        var moIsOther=!!r.morphology&&moFixed.indexOf(r.morphology)===-1;
+        var moSV=moIsOther?'其他':(r.morphology||'');
+        var moOV=moIsOther?r.morphology:'';
+        document.getElementById('bed-mo-'+i).innerHTML=
+            '<select id="bei-mo-'+i+'" onchange="bEditTogOther(this,\'bei-mo-oth-'+i+'\')">'
+            +moFixed.concat(['其他']).map(function(o){return'<option'+(o===moSV?' selected':'')+'>'+o+'<\/option>';}).join('')
+            +'<\/select>'
+            +'<input type="text" id="bei-mo-oth-'+i+'" placeholder="輸入其他成像" value="'+moOV+'"'
+            +' style="display:'+(moIsOther?'inline-block':'none')+';width:80px;margin-left:4px;border:1.5px solid #e67e22;">';
+
+        var lvFixed=['乾擦','濕擦','乾溼不可擦'];
+        var lvIsOther=!!r.level&&lvFixed.indexOf(r.level)===-1;
+        var lvSV=lvIsOther?'其他':(r.level||'');
+        var lvOV=lvIsOther?r.level:'';
+        document.getElementById('bed-lv-'+i).innerHTML=
+            '<select id="bei-lv-'+i+'" onchange="bEditTogOther(this,\'bei-lv-oth-'+i+'\')">'
+            +lvFixed.concat(['其他']).map(function(o){return'<option'+(o===lvSV?' selected':'')+'>'+o+'<\/option>';}).join('')
+            +'<\/select>'
+            +'<input type="text" id="bei-lv-oth-'+i+'" placeholder="輸入其他程度" value="'+lvOV+'"'
+            +' style="display:'+(lvIsOther?'inline-block':'none')+';width:80px;margin-left:4px;border:1.5px solid #e67e22;">';
+
+        var itoBtns=['上','下'].map(function(v){
+            return '<div class="mi'+(v===r.ito?' on':'')+'" onclick="editTogSingle(this)">'+v+'<\/div>';
+        }).join('');
+        document.getElementById('bed-ito-'+i).innerHTML='<div class="mc" id="bei-ito-'+i+'">'+itoBtns+'<\/div>';
+
+        document.getElementById('bed-note-'+i).innerHTML=
+            '<textarea id="bei-note-'+i+'" rows="2" style="min-width:100px">'+(r.note||'')+'<\/textarea>';
+
+        document.getElementById('bed-ph-'+i).innerHTML=bPhCell(r.photoUrls);
+        document.getElementById('bed-om-'+i).innerHTML=bPhCell(r.omPhotoUrls);
+
+        document.getElementById('bed-emp-'+i).innerHTML=
+            '<input type="text" id="bei-emp-'+i+'" value="'+(r.empId||'')+'" style="width:80px">';
+
+    }catch(e){
+        console.error('bStartEdit error:',e);
+        alert('修改功能錯誤：'+e.message);
+    }
+};
+
+// Fix 7: bSaveEditRow 覆寫（正確讀取「其他」值）
+window.bSaveEditRow=function(i){
+    var r=bLastSrch[i];
+    if(!r)return;
+    var state=bEditPs[i]||{};
+    var date    =(document.getElementById('bei-date-'+i)||{}).value||r.date;
+    var model   =(document.getElementById('bei-model-'+i)||{}).value||r.model;
+    var stEl    =document.querySelector('#bei-st-'+i+' .ch.on');
+    var station =stEl?stEl.textContent.trim():r.station;
+    var lnEl    =document.querySelector('#bei-ln-'+i+' .lc.on');
+    var line    =lnEl?lnEl.textContent.trim():r.line;
+    var chipId  =(document.getElementById('bei-chip-'+i)||{}).value||r.chipId;
+    var tcEl    =document.querySelector('#bei-tc-'+i+' .mi.on');
+    var tc      =tcEl?tcEl.textContent.trim():r.tc;
+    var x       =(document.getElementById('bei-x-'+i)||{}).value||r.x;
+    var y       =(document.getElementById('bei-y-'+i)||{}).value||r.y;
+    var moSel   =document.getElementById('bei-mo-'+i);
+    var moOth   =document.getElementById('bei-mo-oth-'+i);
+    var morphology=moSel&&moSel.value==='其他'?(moOth?moOth.value.trim():r.morphology):(moSel?moSel.value:r.morphology)||r.morphology;
+    var lvSel   =document.getElementById('bei-lv-'+i);
+    var lvOth   =document.getElementById('bei-lv-oth-'+i);
+    var level   =lvSel&&lvSel.value==='其他'?(lvOth?lvOth.value.trim():r.level):(lvSel?lvSel.value:r.level)||r.level;
+    var itoEl   =document.querySelector('#bei-ito-'+i+' .mi.on');
+    var ito     =itoEl?itoEl.textContent.trim():r.ito;
+    var note    =(document.getElementById('bei-note-'+i)||{}).value||r.note;
+    var empId   =(document.getElementById('bei-emp-'+i)||{}).value||r.empId;
+    var existPh =(r.photoUrls||[]).filter(function(u){return!(state.deleted||[]).includes(u);});
+    var existOm =(r.omPhotoUrls||[]).filter(function(u){return!(state.deletedOm||[]).includes(u);});
+    var newRecord={date:date,model:model,station:station,line:line,chipId:chipId,tc:tc,
+        x:x,y:y,morphology:morphology,level:level,ito:ito,note:note,empId:empId,
+        photoUrls:existPh,omPhotoUrls:existOm,createdAt:r.createdAt};
+    fetch(API_BASE+'/api/beol/update',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({createdAt:r.createdAt,originalDate:r.date,
+            record:newRecord,newPhotos:state.newFiles||[],newOmPhotos:state.newOmFiles||[]})
+    }).then(function(res){return res.json();}).then(function(d){
+        if(d.success){
+            toast('✅ 已更新');
+            bLastSrch[i]=d.record||newRecord;
+            bCancelEdit(i);
+        }else{
+            toast('更新失敗：'+(d.error||''),'err');
+        }
+    }).catch(function(e){toast('連線錯誤：'+e.message,'err');});
+};
+
+// Fix 8: bDoSrch 覆寫（補 td id）
+// 注意：<\/ 在 JS 中等同 </，但不會被 HTML 解析器誤判
+window.bDoSrch=function(){
+    var params=new URLSearchParams({
+        dateFrom:document.getElementById('b-ff').value||'',
+        dateTo:document.getElementById('b-ft').value||'',
+        model:document.getElementById('b-fm').value||'',
+        station:document.getElementById('b-fst').value||'',
+        line:document.getElementById('b-fl').value||'',
+        tc:document.getElementById('b-ftc').value||'',
+        level:document.getElementById('b-flv').value||'',
+        empId:document.getElementById('b-femp').value||'',
+        chipId:document.getElementById('b-fchip').value||''
+    });
+    fetch(API_BASE+'/api/beol/search?'+params)
+    .then(function(res){return res.json();})
+    .then(function(data){
+        if(!data.success){toast('搜尋失敗','err');return;}
+        bLastSrch=data.records||[];
+        var tb=document.getElementById('b-sb2');
+        document.getElementById('b-rs2').textContent='共 '+bLastSrch.length+' 筆';
+        document.getElementById('b-chkAll').checked=false;
+        document.getElementById('b-delBtn').style.display='none';
+        if(!bLastSrch.length){
+            tb.innerHTML='<tr><td colspan="18" class="nd">查無資料<\/td><\/tr>';
+            return;
+        }
+        tb.innerHTML=bLastSrch.map(function(r,i){
+            return '<tr id="bsr-'+i+'">'
+                +'<td style="text-align:center"><input type="checkbox" class="b-delChk" onchange="bUpdDelBtn()" data-idx="'+i+'" data-created-at="'+(r.createdAt||'')+'" data-date="'+(r.date||'')+'"><\/td>'
+                +'<td>'+(i+1)+'<\/td>'
+                +'<td id="bed-date-'+i+'">'+(r.date||'')+'<\/td>'
+                +'<td id="bed-model-'+i+'">'+(r.model||'')+'<\/td>'
+                +'<td id="bed-station-'+i+'">'+(r.station||'')+'<\/td>'
+                +'<td id="bed-line-'+i+'">'+(r.line||'-')+'<\/td>'
+                +'<td id="bed-chip-'+i+'">'+(r.chipId||'')+'<\/td>'
+                +'<td id="bed-tc-'+i+'">'+(r.tc||'')+'<\/td>'
+                +'<td id="bed-x-'+i+'">'+(r.x!=null?r.x:'')+'<\/td>'
+                +'<td id="bed-y-'+i+'">'+(r.y!=null?r.y:'')+'<\/td>'
+                +'<td id="bed-mo-'+i+'">'+(r.morphology||'')+'<\/td>'
+                +'<td id="bed-lv-'+i+'">'+(r.level||'')+'<\/td>'
+                +'<td id="bed-ito-'+i+'">'+(r.ito||'')+'<\/td>'
+                +'<td id="bed-note-'+i+'">'+(r.note||'')+'<\/td>'
+                +'<td id="bed-ph-'+i+'">'+bPhCell(r.photoUrls)+'<\/td>'
+                +'<td id="bed-om-'+i+'">'+bPhCell(r.omPhotoUrls)+'<\/td>'
+                +'<td id="bed-emp-'+i+'">'+(r.empId||'')+'<\/td>'
+                +'<td id="bop-'+i+'"><button class="bn bp bsm" onclick="bStartEdit('+i+')">&#9999;&#65039; 修改<\/button><\/td>'
+                +'<\/tr>';
+        }).join('');
+    })
+    .catch(function(e){toast('連線錯誤：'+e.message,'err');});
+};
+
+<script>
+function bShowPreview(hds,rows,rowImages,total){
+  var is2=document.getElementById('b-is2'),ip2=document.getElementById('b-ip2');
+  if(!is2||!ip2)return;
+  var hasImgs=Object.keys(rowImages).length>0;
+  var visibleHds=hds.filter(function(h){return h.indexOf('col_')!==0;});
+  is2.innerHTML='<div class="skd"><div class="num">'+visibleHds.length+'</div><div class="lbl">欄位</div></div>'
+    +'<div class="skd"><div class="num">'+total+'</div><div class="lbl">筆資料</div></div>'
+    +(hasImgs?'<div class="skd"><div class="num">'+Object.keys(rowImages).length+'</div><div class="lbl">列有圖片</div></div>':'');
+  document.getElementById('b-ih2').innerHTML='<th>#</th>'+visibleHds.map(function(h){return'<th>'+h+'</th>';}).join('');
+  document.getElementById('b-ib2').innerHTML=rows.slice(0,20).map(function(row,i){
+    var key=String(i+1);
+    var imgInfo=rowImages[key]||{};
+    var photos=Array.isArray(imgInfo)?imgInfo:(imgInfo.photo||[]);
+    var oms=Array.isArray(imgInfo)?[]:(imgInfo.om||[]);
+    var cells=visibleHds.map(function(h){
+      if(h==='\u7167\u7247'||h==='\u7167\u7247(H\u6b04)'){
+        return photos.length>0
+          ?'<td>'+photos.map(function(u){return'<img src="'+u+'" style="height:60px;width:auto;border:1px solid #ddd;border-radius:4px;margin:2px;">';}).join('')+'</td>'
+          :'<td style="color:#ccc;font-size:12px;">\u2014</td>';
+      }
+      if(h==='OM \u7167\u7247'||h==='OM\u7167\u7247'||h==='OM\u7167\u7247(J\u6b04)'){
+        return oms.length>0
+          ?'<td>'+oms.map(function(u){return'<img src="'+u+'" style="height:60px;width:auto;border:1px solid #ddd;border-radius:4px;margin:2px;">';}).join('')+'</td>'
+          :'<td style="color:#ccc;font-size:12px;">\u2014</td>';
+      }
+      return'<td>'+(row[h]!=null?row[h]:'')+'</td>';
+    }).join('');
+    return'<tr><td>'+(i+1)+'</td>'+cells+'</tr>';
+  }).join('')+(total>20?'<tr><td colspan="'+(visibleHds.length+1)+'" style="text-align:center;color:var(--gr)">...\u524520\u7b46\uff0c\u5171'+total+'\u7b46</td></tr>':'');
+  ip2.style.display='block';
+}
+
+// ===== BEOL SUMMARY 新版 JS =====
+const _bsmCharts = {};
+let _bsmAllRecs = [];
+const BSM_NG_LV = ['乾擦','濕擦','乾溼不可擦'];
+
+function bsmInitDates(){
+  var today=new Date(), f14=new Date(today);
+  f14.setDate(today.getDate()-14);
+  var ts=today.toISOString().slice(0,10), fs=f14.toISOString().slice(0,10);
+  var gf=document.getElementById('bsm-g-from'), gt=document.getElementById('bsm-g-to');
+  if(gf&&!gf.value) gf.value=fs;
+  if(gt&&!gt.value) gt.value=ts;
+}
+
+async function bsmApply(){
+  var from =(document.getElementById('bsm-g-from')||{}).value||'';
+  var to   =(document.getElementById('bsm-g-to')||{}).value||'';
+  var model=(document.getElementById('bsm-g-model')||{}).value||'';
+  var st   =(document.getElementById('bsm-g-st')||{}).value||'';
+  var lv   =(document.getElementById('bsm-g-lv')||{}).value||'';
+  var p=new URLSearchParams({dateFrom:from,dateTo:to,model:model,station:st,level:lv});
+  try{
+    var res=await fetch(API_BASE+'/api/beol/search?'+p).then(r=>r.json());
+    if(!res.success){console.error('BEOL SUMMARY 查詢失敗');return;}
+    _bsmAllRecs=res.records||[];
+    var ms=[...new Set(_bsmAllRecs.map(r=>r.model||'').filter(Boolean))].sort();
+    ['bsm-g-model','bsm-T-cf-model','bsm-C-cf-model','bsm-T-mf-model','bsm-C-mf-model'].forEach(function(id){
+      var el=document.getElementById(id); if(!el) return;
+      var cur=el.value;
+      el.innerHTML='<option value="">全部</option>'+ms.map(m=>'<option'+(m===cur?' selected':'')+'>'+m+'</option>').join('');
+    });
+    bsmRedrawAll();
+  }catch(e){console.error('BEOL SUMMARY 失敗：',e);}
+}
+
+function bsmRedrawAll(){
+  ['T','C'].forEach(function(s){
+    bsmDrawChipTotal(s); bsmDrawChipFilter(s);
+    bsmDrawMidTotal(s);  bsmDrawMidFilter(s);
+  });
+}
+
+function bsmDedup(recs,idField){
+  var seen=new Set();
+  return recs.filter(function(r){
+    var v=r[idField]||''; if(!v) return false;
+    var k=(r.date||'')+'|'+(r.tc||'')+'|'+v;
+    if(seen.has(k)) return false; seen.add(k); return true;
+  });
+}
+
+function bsmCountByDate(recs,idField){
+  var d={};
+  bsmDedup(recs,idField).forEach(function(r){var dt=r.date||'';d[dt]=(d[dt]||0)+1;});
+  return d;
+}
+
+function bsmNgByDate(recs,idField,lvArr){
+  var use=lvArr&&lvArr.length?lvArr:BSM_NG_LV;
+  var fr=recs.filter(function(r){return use.indexOf(r.level||'')!==-1;});
+  var d={};
+  bsmDedup(fr,idField).forEach(function(r){var dt=r.date||'';d[dt]=(d[dt]||0)+1;});
+  return d;
+}
+
+function bsmDates(recs){
+  return [...new Set(recs.map(r=>r.date||'').filter(Boolean))].sort();
+}
+
+function bsmDrawChipTotal(side){
+  var recs=_bsmAllRecs.filter(r=>r.tc===side);
+  var dates=bsmDates(recs);
+  var tot=bsmCountByDate(recs,'chipId'), ng=bsmNgByDate(recs,'chipId',[]);
+  var lv0=bsmNgByDate(recs,'chipId',['乾擦']),lv1=bsmNgByDate(recs,'chipId',['濕擦']),lv2=bsmNgByDate(recs,'chipId',['乾溼不可擦']);
+  var col=(document.getElementById('color-'+side+'-chip-total')||{value:'#3498db'}).value;
+  _bsmDraw('bsm-'+side+'-chip-total',dates,tot,ng,col,recs,'chipId',{lv0:lv0,lv1:lv1,lv2:lv2},'total','');
+}
+
+function bsmDrawChipFilter(side){
+  var flv=(document.getElementById('bsm-'+side+'-cf-lv')||{}).value||'';
+  var fst=(document.getElementById('bsm-'+side+'-cf-st')||{}).value||'';
+  var fit=(document.getElementById('bsm-'+side+'-cf-ito')||{}).value||'';
+  var fmo=(document.getElementById('bsm-'+side+'-cf-model')||{}).value||'';
+  var recs=_bsmAllRecs.filter(function(r){
+    return r.tc===side&&(fst?r.station===fst:true)&&(fit?r.ito===fit:true)&&(fmo?r.model===fmo:true);
+  });
+  var dates=bsmDates(recs);
+  var tot=bsmCountByDate(recs,'chipId'), ng=bsmNgByDate(recs,'chipId',flv?[flv]:[]);
+  var col=(document.getElementById('color-'+side+'-chip-filter')||{value:'#2ecc71'}).value;
+  _bsmDraw('bsm-'+side+'-chip-filter',dates,tot,ng,col,recs,'chipId',null,'filter',flv||'全部NG');
+}
+
+function bsmDrawMidTotal(side){
+  var recs=_bsmAllRecs.filter(r=>r.tc===side&&r.midId);
+  var sec=document.getElementById('bsm-'+side+'-mid-section');
+  if(sec) sec.style.display=recs.length?'':'none';
+  if(!recs.length) return;
+  var dates=bsmDates(recs);
+  var tot=bsmCountByDate(recs,'midId'), ng=bsmNgByDate(recs,'midId',[]);
+  var lv0=bsmNgByDate(recs,'midId',['乾擦']),lv1=bsmNgByDate(recs,'midId',['濕擦']),lv2=bsmNgByDate(recs,'midId',['乾溼不可擦']);
+  var col=(document.getElementById('color-'+side+'-mid-total')||{value:'#9b59b6'}).value;
+  _bsmDraw('bsm-'+side+'-mid-total',dates,tot,ng,col,recs,'midId',{lv0:lv0,lv1:lv1,lv2:lv2},'total','');
+}
+
+function bsmDrawMidFilter(side){
+  var recs=_bsmAllRecs.filter(r=>r.tc===side&&r.midId);
+  if(!recs.length) return;
+  var flv=(document.getElementById('bsm-'+side+'-mf-lv')||{}).value||'';
+  var fst=(document.getElementById('bsm-'+side+'-mf-st')||{}).value||'';
+  var fit=(document.getElementById('bsm-'+side+'-mf-ito')||{}).value||'';
+  var fmo=(document.getElementById('bsm-'+side+'-mf-model')||{}).value||'';
+  var fr=recs.filter(function(r){
+    return (fst?r.station===fst:true)&&(fit?r.ito===fit:true)&&(fmo?r.model===fmo:true);
+  });
+  var dates=bsmDates(fr);
+  var tot=bsmCountByDate(fr,'midId'), ng=bsmNgByDate(fr,'midId',flv?[flv]:[]);
+  var col=(document.getElementById('color-'+side+'-mid-filter')||{value:'#e67e22'}).value;
+  _bsmDraw('bsm-'+side+'-mid-filter',dates,tot,ng,col,fr,'midId',null,'filter',flv||'全部NG');
+}
+
+function _bsmDraw(cid,dates,totByDate,ngByDate,barColor,recs,idField,lvDet,mode,selLv){
+  var canvas=document.getElementById(cid); if(!canvas) return;
+  if(_bsmCharts[cid]) _bsmCharts[cid].destroy();
+  var tots=dates.map(d=>totByDate[d]||0);
+  var ngs =dates.map(d=>ngByDate[d]||0);
+  var rat =dates.map(function(d,i){return tots[i]>0?parseFloat(((ngs[i]/tots[i])*100).toFixed(2)):null;});
+  _bsmCharts[cid]=new Chart(canvas,{
+    type:'bar',
+    data:{labels:dates,datasets:[
+      {label:'總覆判數量',data:tots,backgroundColor:barColor,borderColor:barColor,borderWidth:1,yAxisID:'yL',order:2},
+      {label:'NG Ratio(%)',data:rat,type:'line',borderColor:'#e74c3c',
+       backgroundColor:'rgba(231,76,60,.1)',pointBackgroundColor:'#e74c3c',
+       borderWidth:2,pointRadius:4,fill:false,tension:0.3,yAxisID:'yR',order:1}
+    ]},
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}},tooltip:{enabled:false}},
+      scales:{
+        yL:{type:'linear',position:'left',beginAtZero:true,
+            title:{display:true,text:'總覆判數量',font:{size:10}},ticks:{stepSize:1,font:{size:9}}},
+        yR:{type:'linear',position:'right',beginAtZero:true,max:100,
+            title:{display:true,text:'NG Ratio (%)',font:{size:10}},
+            ticks:{font:{size:9},callback:function(v){return v+'%';}},
+            grid:{drawOnChartArea:false}}
+      },
+      onHover:function(evt,els){
+        if(els&&els.length>0){
+          _bsmShowTT(evt,dates[els[0].index],recs,idField,lvDet,mode,selLv);
+        }else{ _bsmHideTT(); }
+      }
+    }
+  });
+  canvas.onmouseleave=_bsmHideTT;
+}
+
+function _bsmShowTT(evt,date,recs,idField,lvDet,mode,selLv){
+  var tt=document.getElementById('bsm-tooltip'); if(!tt) return;
+  var dr=recs.filter(r=>r.date===date);
+  var ms=[...new Set(dr.map(r=>r.model||'').filter(Boolean))].sort();
+  if(!ms.length) ms=[''];
+  var html='<div style="font-weight:700;color:#1a6bb5;margin-bottom:6px;">&#128197; '+date+'</div>';
+  ms.forEach(function(mod){
+    var mr=mod?dr.filter(r=>r.model===mod):dr;
+    html+='<span class="bsm-tt-model-hdr">MODEL: '+(mod||'—')+'</span>';
+    var sts=[...new Set(mr.map(r=>r.station||'').filter(Boolean))].sort();
+    if(!sts.length) sts=[''];
+    if(mode==='total'){
+      html+='<table><tr><th>站點</th><th>總覆判數量</th><th>乾擦</th><th>ratio</th><th>濕擦</th><th>ratio</th><th>乾溼不可擦</th><th>ratio</th><th>Total NG ratio</th></tr>';
+      sts.forEach(function(st){
+        var sr=st?mr.filter(r=>r.station===st):mr;
+        var tot=bsmCountByDate(sr,idField)[date]||0;
+        var c0=lvDet?(bsmNgByDate(sr,idField,['乾擦'])[date]||0):0;
+        var c1=lvDet?(bsmNgByDate(sr,idField,['濕擦'])[date]||0):0;
+        var c2=lvDet?(bsmNgByDate(sr,idField,['乾溼不可擦'])[date]||0):0;
+        var cn=bsmNgByDate(sr,idField,[])[date]||0;
+        var p=function(n){return tot>0?((n/tot)*100).toFixed(1)+'%':'—';};
+        html+='<tr><td>'+(st||'全部')+'</td><td>'+tot+'</td>'
+          +'<td>'+c0+'</td><td>'+p(c0)+'</td>'
+          +'<td>'+c1+'</td><td>'+p(c1)+'</td>'
+          +'<td>'+c2+'</td><td>'+p(c2)+'</td>'
+          +'<td style="font-weight:700;color:#c0392b;">'+p(cn)+'</td></tr>';
+      });
+      html+='</table>';
+    }else{
+      html+='<table><tr><th>站點</th><th>總覆判數量</th><th>'+(selLv||'NG')+'</th><th>ratio</th></tr>';
+      sts.forEach(function(st){
+        var sr=st?mr.filter(r=>r.station===st):mr;
+        var tot=bsmCountByDate(sr,idField)[date]||0;
+        var ng=bsmNgByDate(sr,idField,selLv&&selLv!=='全部NG'?[selLv]:[])[date]||0;
+        var rat=tot>0?((ng/tot)*100).toFixed(1)+'%':'—';
+        html+='<tr><td>'+(st||'全部')+'</td><td>'+tot+'</td><td>'+ng+'</td>'
+          +'<td style="font-weight:700;color:#c0392b;">'+rat+'</td></tr>';
+      });
+      html+='</table>';
+    }
+  });
+  tt.innerHTML=html; tt.style.display='block';
+  var x=evt.native?evt.native.clientX:0, y=evt.native?evt.native.clientY:0;
+  tt.style.left=(x+16)+'px'; tt.style.top=(y-10)+'px';
+  requestAnimationFrame(function(){
+    if(x+16+tt.offsetWidth>window.innerWidth) tt.style.left=(x-tt.offsetWidth-10)+'px';
+  });
+}
+function _bsmHideTT(){var tt=document.getElementById('bsm-tooltip');if(tt)tt.style.display='none';}
+
+function bsmInit(){bsmInitDates();bsmApply();}
+
+/* ===== BSM2 FULL REWRITE 202608211100 ===== */
+/* Q1 X/Y paste: 繼承中片ID/CHIP ID/TC */
+function bXYPaste(e,rowIdx,axis){
+  var text=(e.clipboardData||window.clipboardData).getData('text');
+  if(!text)return;
+  var lines=text.split(/[\r\n]+/).map(function(l){return l.trim();}).filter(function(l){return l!=='';});
+  if(!lines.length)return;e.preventDefault();
+  var curRow=e.target.closest('tr');
+  var allRows=Array.from(document.querySelectorAll('#b-eb tr'));
+  var curIdx=allRows.indexOf(curRow);if(curIdx===-1)curIdx=allRows.length-1;
+  var srcMid=curRow?(curRow.querySelector('.b-mid')||{value:''}).value||'':'';
+  var srcCid=curRow?(curRow.querySelector('.b-cid')||{value:''}).value||'':'';
+  var srcTcEl=curRow?curRow.querySelector('[class*="btc"] .mi.on'):null;
+  var srcTc=srcTcEl?srcTcEl.textContent.trim():'';
+  lines.forEach(function(line,li){
+    var vals=line.split('\t');
+    var xVal=vals[0]?vals[0].trim():'';var yVal=vals[1]?vals[1].trim():'';
+    var targetIdx=curIdx+li;
+    while(targetIdx>=document.querySelectorAll('#b-eb tr').length){
+      bAddRow();
+      var nr=document.querySelector('#b-eb tr:last-child');
+      if(nr){
+        var mi=nr.querySelector('.b-mid');if(mi&&srcMid)mi.value=srcMid;
+        var ci=nr.querySelector('.b-cid');if(ci&&srcCid)ci.value=srcCid;
+        if(srcTc){var mc=nr.querySelector('[class*="btc"]');if(mc){var cl=Array.from(mc.classList).find(function(c){return c.startsWith('btc');});if(cl)mc.querySelectorAll('.mi').forEach(function(b){if(b.textContent.trim()===srcTc)bTogM(b,cl);});}}
+      }
+    }
+    var tr=document.querySelectorAll('#b-eb tr')[targetIdx];if(!tr)return;
+    if(axis==='x'){var cx=tr.querySelector('.b-cx');if(cx)cx.value=xVal;if(yVal){var cy=tr.querySelector('.b-cy');if(cy)cy.value=yVal;}}
+    else{var cy2=tr.querySelector('.b-cy');if(cy2)cy2.value=xVal;}
+  });
+}
+
+/* Q2 pz paste */
+function bHdPaste(e,i,type){
+  var items=(e.clipboardData||window.clipboardData||{}).items;
+  if(!items)return;
+  for(var ii=0;ii<items.length;ii++){
+    if(items[ii].type.indexOf('image')!==-1){
+      var blob=items[ii].getAsFile();
+      if(!blob)continue;
+      (function(b,_i,_t){
+        var rd=new FileReader();
+        rd.onload=function(ev){
+          var key=_i+'_'+_t;
+          if(!bPs[key])bPs[key]=[];
+          bPs[key].push({name:'paste_'+Date.now()+'.png',dataUrl:ev.target.result});
+          bRefreshPhotoCell(_i,_t);
+          bSetPasteFocus(_i,_t);
+        };
+        rd.readAsDataURL(b);
+      })(blob,i,type);
+      e.preventDefault();
+      break; /* 只取第一個 image item */
+    }
+  }
+}
+
+/* ===== BEOL SUMMARY 全新版 ===== */
+var _bsm2Charts={},_bsm2AllRecs=[],_bsm2Theme='earth',_bsm2Inited=false,_bsm2ZoomChart=null,_bsm2ChartData={};
+var BSM2_THEMES={earth:{T:'#8d6e63',C:'#a1887f',line:'#e67e22'},blue:{T:'#1e88e5',C:'#42a5f5',line:'#f39c12'},green:{T:'#43a047',C:'#66bb6a',line:'#e74c3c'},warm:{T:'#fb8c00',C:'#ffa726',line:'#8e44ad'},purple:{T:'#8e24aa',C:'#ab47bc',line:'#27ae60'},cool:{T:'#00acc1',C:'#26c6da',line:'#e74c3c'},neutral:{T:'#546e7a',C:'#78909c',line:'#f39c12'},morandi:{T:'#9e8f82',C:'#b5a99a',line:'#c0392b'}};
+var BSM2_NG=['乾擦','濕擦','乾溼不可擦'];
+
+function bsm2ApplyTheme(){_bsm2Theme=(document.getElementById('bsm2-g-theme')||{value:'earth'}).value||'earth';}
+
+function bsm2InitDates(){
+  var today=new Date(),past=new Date(today);past.setDate(past.getDate()-90);
+  var ts=today.toISOString().slice(0,10),fs=past.toISOString().slice(0,10);
+  var gf=document.getElementById('bsm2-g-from'),gt=document.getElementById('bsm2-g-to');
+  if(gf&&!gf.value)gf.value=fs;if(gt&&!gt.value)gt.value=ts;
+}
+
+function bsm2PreloadModels(){
+  var src=document.getElementById('b-model'),dst=document.getElementById('bsm2-g-model');
+  if(!src||!dst)return;
+  var opts=Array.from(src.options).filter(function(o){return o.value&&o.value.trim()&&o.value!=='';});
+  if(opts.length>0)dst.innerHTML='<option value="">全部</option>'+opts.map(function(o){return'<option>'+o.textContent.trim()+'</option>';}).join('');
+}
+
+async function bsm2Apply(){
+  var from=(document.getElementById('bsm2-g-from')||{}).value||'';
+  var to=(document.getElementById('bsm2-g-to')||{}).value||'';
+  var model=(document.getElementById('bsm2-g-model')||{}).value||'';
+  var station=(document.getElementById('bsm2-g-station')||{}).value||'';
+  bsm2ApplyTheme();
+  var p={dateFrom:from,dateTo:to};if(model)p.model=model;if(station)p.station=station;
+  var allRecs=[];
+  try{var data=await fetch(API_BASE+'/api/beol/search?'+new URLSearchParams(p)).then(function(r){return r.json();});if(!data.success)return;allRecs=data.records||[];}
+  catch(e){console.error('bsm2',e);return;}
+  _bsm2AllRecs=allRecs;
+  var models=[...new Set(allRecs.map(function(r){return r.model||'';}).filter(Boolean))].sort();
+  var mSel=document.getElementById('bsm2-g-model');
+  if(mSel&&models.length>0){var cur=mSel.value;mSel.innerHTML='<option value="">全部</option>'+models.map(function(m){return'<option'+(m===cur?' selected':'')+'>'+m+'</option>';}).join('');}
+  ['T','C'].forEach(function(side){
+    var recs=allRecs.filter(function(r){return r.tc===side;});
+    bsm2DrawChart('bsm2-'+side+'-chip',recs,'chipId',side+' T CHIP ID',allRecs,side);
+    bsm2DrawChart('bsm2-'+side+'-mid', recs,'midId', side+' T 中片ID', allRecs,side);
+  });
+}
+
+function bsm2CountDist(recs,idField){
+  var bd={};recs.forEach(function(r){var d=r.date||'',id=r[idField]||'';if(!id)return;if(!bd[d])bd[d]=new Set();bd[d].add(id);});
+  var res={};Object.keys(bd).forEach(function(d){res[d]=bd[d].size;});return res;
+}
+
+function bsm2CountNg(recs,idField,ngLv){
+  var fr=ngLv==='ALL'||!ngLv?recs.filter(function(r){return BSM2_NG.indexOf(r.level||'')!==-1;}):recs.filter(function(r){return r.level===ngLv;});
+  return bsm2CountDist(fr,idField);
+}
+
+function bsm2TooltipHtml(date,recs,idField,ngLv){
+  var dr=recs.filter(function(r){return r.date===date;});
+  var g={};
+  dr.forEach(function(r){var k=(r.model||'-')+'\t'+(r.station||'-');if(!g[k])g[k]={m:r.model||'-',s:r.station||'-',ids:new Set(),ng:new Set()};if(r[idField])g[k].ids.add(r[idField]);var isNG=ngLv==='ALL'||!ngLv?BSM2_NG.indexOf(r.level||'')!==-1:r.level===ngLv;if(isNG&&r[idField])g[k].ng.add(r[idField]);});
+  var rows=Object.values(g).sort(function(a,b){return a.m<b.m?-1:a.m>b.m?1:0;});
+  var h='<div style="font-weight:700;color:#1a6bb5;margin-bottom:6px;">&#128197; '+date+'</div>';
+  h+='<table><tr><th>MODEL</th><th>站點</th><th>數量</th><th>NG Ratio</th></tr>';
+  rows.forEach(function(x){var cnt=x.ids.size,ng=x.ng.size,r=cnt>0?(ng/cnt*100).toFixed(1)+'%':'—';
+    h+='<tr><td>'+x.m+'</td><td>'+x.s+'</td><td style="text-align:center">'+cnt+'</td><td style="text-align:center;'+(ng>0?'color:#c0392b;font-weight:700':'')+'">'+r+'</td></tr>';});
+  h+='</table>';return h;
+}
+
+function bsm2TTExternal(ctx,recs,idField,ngLv){
+  var tt=document.getElementById('bsm2-tooltip');if(!tt)return;
+  var tm=ctx.tooltip;if(!tm||tm.opacity===0){tt.style.display='none';return;}
+  var date=tm.title&&tm.title[0]?tm.title[0]:'';if(!date)return;
+  tt.innerHTML=bsm2TooltipHtml(date,recs,idField,ngLv);tt.style.display='block';
+  var rect=ctx.chart.canvas.getBoundingClientRect();
+  var x=rect.left+tm.caretX+14,y=rect.top+tm.caretY+window.scrollY;
+  tt.style.left=x+'px';tt.style.top=y+'px';
+  requestAnimationFrame(function(){if(x+tt.offsetWidth>window.innerWidth)tt.style.left=(rect.left+tm.caretX-tt.offsetWidth-14)+'px';});
+}
+
+function bsm2DrawChart(cid,recs,idField,label,allRecs,side){
+  var canvas=document.getElementById(cid);if(!canvas)return;
+  if(_bsm2Charts[cid])_bsm2Charts[cid].destroy();
+  var cnt=bsm2CountDist(recs,idField);
+  var dates=Object.keys(cnt).sort();if(!dates.length)return;
+  var theme=BSM2_THEMES[_bsm2Theme]||BSM2_THEMES.earth;
+  var barColor=side==='T'?theme.T:theme.C;
+  var allSide=allRecs.filter(function(r){return r.tc===side;});
+  var totCnt=bsm2CountDist(allSide,idField);
+  var ngLv=(document.getElementById('bsm2-g-lv')||{}).value||'ALL';
+  var ngCnt=bsm2CountNg(recs,idField,ngLv);
+  var vals=dates.map(function(d){return cnt[d]||0;});
+  var tots=dates.map(function(d){return totCnt[d]||0;});
+  var ratios=dates.map(function(d){
+    var t=totCnt[d]||0,n=ngCnt[d]||0;
+    return t>0?parseFloat((n/t*100).toFixed(1)):null;
+  });
+  canvas.style.height=Math.max(120,Math.floor((window.innerHeight-400)/2))+'px';
+  _bsm2ChartData[cid]={dates:dates,vals:vals,tots:tots,ratios:ratios,
+    recs:recs,idField:idField,label:label,allRecs:allRecs,
+    side:side,ngLv:ngLv,barColor:barColor,theme:theme};
+  _bsm2Charts[cid]=new Chart(canvas.getContext('2d'),{
+    type:'bar',
+    data:{labels:dates,datasets:[
+      /* 折線在前（legend排第一），order:1 讓它畫在最上層 */
+      {label:'NG Ratio(%)',data:ratios,type:'line',order:1,
+       borderColor:theme.line,backgroundColor:'rgba(0,0,0,0)',
+       borderWidth:2,pointRadius:4,pointBackgroundColor:theme.line,
+       fill:false,tension:0.3,yAxisID:'yR'},
+      /* 柱狀在後（legend排第二），order:2 畫在折線下面 */
+      {label:'檢出數量',data:vals,type:'bar',order:2,
+       backgroundColor:barColor,borderWidth:1,
+       borderColor:'rgba(255,255,255,.4)',yAxisID:'yL'}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        datalabels:{display:false},
+        legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}},
+        tooltip:{enabled:false,
+          external:function(ctx){bsm2TTExternal(ctx,recs,idField,ngLv);}}
+      },
+      scales:{
+        x:{ticks:{font:{size:9},maxRotation:45}},
+        yL:{type:'linear',position:'left',beginAtZero:true,
+            ticks:{stepSize:1,font:{size:9}},
+            title:{display:true,text:'檢出數量',font:{size:9}}},
+        yR:{type:'linear',position:'right',beginAtZero:true,max:100,
+            ticks:{font:{size:9},callback:function(v){return v+'%';}},
+            title:{display:true,text:'NG%',font:{size:9}},
+            grid:{drawOnChartArea:false}}
+      },
+      onClick:function(_,els){if(els&&els.length>0)bsm2ShowZoom(cid);}
+    }
+  });
+}
+
+function bsm2ShowZoom(cid){
+  var d=_bsm2ChartData[cid];if(!d)return;
+  var modal=document.getElementById('bsm2-zoom-modal');
+  var zc=document.getElementById('bsm2-zoom-canvas');
+  var zt=document.getElementById('bsm2-zoom-title');
+  if(!modal||!zc)return;
+  if(_bsm2ZoomChart){_bsm2ZoomChart.destroy();_bsm2ZoomChart=null;}
+  // 關閉浮動 tooltip
+  var tt=document.getElementById('bsm2-tooltip');
+  if(tt)tt.style.display='none';
+  if(zt)zt.textContent=d.label;
+  // 隱藏底部說明文字區
+  var zd=document.getElementById('bsm2-zoom-detail');
+  if(zd)zd.style.display='none';
+  modal.style.display='flex';
+  _bsm2ZoomChart=new Chart(zc.getContext('2d'),{
+    type:'bar',
+    data:{labels:d.dates,datasets:[
+      {label:'NG Ratio(%)',data:d.ratios,type:'line',order:1,
+       borderColor:d.theme.line,backgroundColor:'rgba(0,0,0,0)',
+       borderWidth:2,pointRadius:5,pointBackgroundColor:d.theme.line,
+       fill:false,tension:0.3,yAxisID:'yR'},
+      {label:'檢出數量',data:d.vals,type:'bar',order:2,
+       backgroundColor:d.barColor,borderWidth:1,
+       borderColor:'rgba(255,255,255,.4)',yAxisID:'yL'}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        datalabels:{display:false},
+        legend:{position:'bottom',labels:{font:{size:12},boxWidth:12}},
+        tooltip:{enabled:false,
+          /* 放大圖也用浮動 tooltip，游標移開就消失 */
+          external:function(ctx){bsm2TTExternal(ctx,d.recs,d.idField,d.ngLv);}}
+      },
+      scales:{
+        x:{ticks:{font:{size:11},maxRotation:45}},
+        yL:{type:'linear',position:'left',beginAtZero:true,
+            ticks:{stepSize:1,font:{size:11}},
+            title:{display:true,text:'檢出數量',font:{size:11}}},
+        yR:{type:'linear',position:'right',beginAtZero:true,max:100,
+            ticks:{font:{size:11},callback:function(v){return v+'%';}},
+            title:{display:true,text:'NG%',font:{size:11}},
+            grid:{drawOnChartArea:false}}
+      }
+    }
+  });
+}
+
+function bsm2CloseZoom(){
+  var modal=document.getElementById('bsm2-zoom-modal');if(modal)modal.style.display='none';
+  if(_bsm2ZoomChart){_bsm2ZoomChart.destroy();_bsm2ZoomChart=null;}
+  var tt=document.getElementById('bsm2-tooltip');if(tt)tt.style.display='none';
+}
+
+function bsm2Init(){
+  bsm2InitDates();bsm2PreloadModels();
+  if(!_bsm2Inited){_bsm2Inited=true;bsm2Apply();}
+}
+
+/* ===== BEOL OVERRIDE 202608211125 ===== */
+
+/* 覆蓋 bSw：切到 SUMMARY tab 時觸發 bsm2Init */
+function bSw(n){
+  var seg=document.getElementById('seg-beol');
+  if(!seg)return;
+  seg.querySelectorAll('.t').forEach(function(t,i){t.classList.toggle('on',['bki','bsr','bim','bsm'][i]===n);});
+  seg.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  document.getElementById('pg-'+n).classList.add('on');
+  if(n==='bsm') bsm2Init();
+}
+
+/* 覆蓋 bAddRow：加 onpaste(X/Y) + pz 照片欄 */
+function bAddRow(){
+  bRc++;var i=bRc,tb=document.getElementById('b-eb'),tr=document.createElement('tr');
+  tr.id='br'+i;
+  tr.innerHTML=
+    '<td class="rn">'+i+'</td>'
+    +'<td><input type="text" class="b-mid" placeholder="\u4e2d\u7247ID" style="width:90px"/></td>'
+    +'<td><input type="text" class="b-cid" placeholder="CHIP ID" style="width:90px"/></td>'
+    +'<td><div class="mc btc'+i+'">'
+      +'<div class="mi" onclick="bTogM(this,\'btc'+i+'\')">T</div>'
+      +'<div class="mi" onclick="bTogM(this,\'btc'+i+'\')">C</div>'
+    +'</div></td>'
+    +'<td><input type="text" class="b-cx" placeholder="X" style="width:72px"'
+      +' onpaste="bXYPaste(event,'+i+',\'x\')"/></td>'
+    +'<td><input type="text" class="b-cy" placeholder="Y" style="width:72px"'
+      +' onpaste="bXYPaste(event,'+i+',\'y\')"/></td>'
+    +'<td><div class="mc bmo'+i+'" style="flex-wrap:wrap;gap:3px;">'+bMorphBtns(i)+'</div></td>'
+    +'<td><div class="mc blv'+i+'" style="flex-wrap:wrap;gap:3px;">'+bLvBtns(i)+'</div></td>'
+    +'<td><div class="mc bito'+i+'">'
+      +'<div class="mi" onclick="bTogM(this,\'bito'+i+'\')">\u4e0a</div>'
+      +'<div class="mi" onclick="bTogM(this,\'bito'+i+'\')">\u4e0b</div>'
+    +'</div></td>'
+    +'<td><textarea rows="2" class="b-note" placeholder="Note..." style="min-width:100px;"></textarea></td>'
+    +'<td id="bpc'+i+'">'
+      +'<div class="pz" tabindex="0"'
+        +' onclick="bSetPasteFocus('+i+',\'ph\');this.focus()"'
+        +' onpaste="bHdPaste(event,'+i+',\'ph\')">\ud83d\udcf7 \u7167\u7247'
+        +'<label class="pz-sub">\u6216\u9ede\u6b64\u9078\u6a94'
+          +'<input type="file" accept="image/*" multiple'
+            +' onchange="bHdP(this,'+i+',\'ph\')" style="display:none"/>'
+        +'</label></div>'
+    +'</td>'
+    +'<td id="bopc'+i+'">'
+      +'<div class="pz" tabindex="0"'
+        +' onclick="bSetPasteFocus('+i+',\'om\');this.focus()"'
+        +' onpaste="bHdPaste(event,'+i+',\'om\')">\ud83d\udd2c OM\u7167\u7247'
+        +'<label class="pz-sub">\u6216\u9ede\u6b64\u9078\u6a94'
+          +'<input type="file" accept="image/*" multiple'
+            +' onchange="bHdP(this,'+i+',\'om\')" style="display:none"/>'
+        +'</label></div>'
+    +'</td>'
+    +'<td><button class="bn bd2 bsm" onclick="bDelR('+i+')">\u2715</button></td>';
+  tb.appendChild(tr);
+  tr.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* 覆蓋 bAddRowSameID */
+function bAddRowSameID(){
+  var rows=document.querySelectorAll('#b-eb tr');
+  if(!rows.length){toast('\u6c92\u6709\u4e0a\u4e00\u7b46\u8cc7\u6599','err');return;}
+  var lastRow=rows[rows.length-1];
+  var lastCid=lastRow.querySelector('.b-cid').value.trim();
+  var lastMid=(lastRow.querySelector('.b-mid')||{}).value||'';
+  bAddRow();
+  var newRow=document.getElementById('br'+bRc);
+  if(lastCid)newRow.querySelector('.b-cid').value=lastCid;
+  if(lastMid)newRow.querySelector('.b-mid').value=lastMid;
+}
+
+/* X/Y 貼上：繼承來源列的中片ID/CHIP ID/TC */
+function bXYPaste(e,rowIdx,axis){
+  var text=(e.clipboardData||window.clipboardData).getData('text');
+  if(!text)return;
+  var lines=text.split(/[\r\n]+/).map(function(l){return l.trim();}).filter(function(l){return l!=='';});
+  if(!lines.length)return;e.preventDefault();
+  var curRow=e.target.closest('tr');
+  var allRows=Array.from(document.querySelectorAll('#b-eb tr'));
+  var curIdx=allRows.indexOf(curRow);if(curIdx===-1)curIdx=allRows.length-1;
+  var srcMid=curRow?(curRow.querySelector('.b-mid')||{value:''}).value||'':'';
+  var srcCid=curRow?(curRow.querySelector('.b-cid')||{value:''}).value||'':'';
+  var srcTcEl=curRow?curRow.querySelector('[class*="btc"] .mi.on'):null;
+  var srcTc=srcTcEl?srcTcEl.textContent.trim():'';
+  lines.forEach(function(line,li){
+    var vals=line.split('\t');var xVal=vals[0]?vals[0].trim():'';var yVal=vals[1]?vals[1].trim():'';
+    var targetIdx=curIdx+li;
+    while(targetIdx>=document.querySelectorAll('#b-eb tr').length){
+      bAddRow();
+      var nr=document.querySelector('#b-eb tr:last-child');
+      if(nr){
+        var mi=nr.querySelector('.b-mid');if(mi&&srcMid)mi.value=srcMid;
+        var ci=nr.querySelector('.b-cid');if(ci&&srcCid)ci.value=srcCid;
+        if(srcTc){var mc=nr.querySelector('[class*="btc"]');if(mc){var cl=Array.from(mc.classList).find(function(c){return c.startsWith('btc');});if(cl)mc.querySelectorAll('.mi').forEach(function(b){if(b.textContent.trim()===srcTc)bTogM(b,cl);});}}
+      }
+    }
+    var tr=document.querySelectorAll('#b-eb tr')[targetIdx];if(!tr)return;
+    if(axis==='x'){var cx=tr.querySelector('.b-cx');if(cx)cx.value=xVal;if(yVal){var cy=tr.querySelector('.b-cy');if(cy)cy.value=yVal;}}
+    else{var cy2=tr.querySelector('.b-cy');if(cy2)cy2.value=xVal;}
+  });
+}
+
+/* pz 方框照片貼上 */
+function bHdPaste(e,i,type){
+  /* 防止同一 Ctrl+V 因冒泡或多格式重複觸發 */
+  if(window._bPasteGuard){e.preventDefault();e.stopPropagation();return;}
+  window._bPasteGuard=true;
+  setTimeout(function(){window._bPasteGuard=false;},120);
+  e.stopPropagation();
+  var items=(e.clipboardData||window.clipboardData||{}).items;
+  if(!items)return;
+  for(var ii=0;ii<items.length;ii++){
+    if(items[ii].type.indexOf('image')!==-1){
+      var blob=items[ii].getAsFile();
+      if(!blob)continue;
+      (function(b,_i,_t){
+        var rd=new FileReader();
+        rd.onload=function(ev){
+          var key=_i+'_'+_t;
+          if(!bPs[key])bPs[key]=[];
+          bPs[key].push({name:'paste_'+Date.now()+'.png',dataUrl:ev.target.result});
+          bRefreshPhotoCell(_i,_t);
+          bSetPasteFocus(_i,_t);
+        };
+        rd.readAsDataURL(b);
+      })(blob,i,type);
+      e.preventDefault();
+      break; /* 只取第一個 image item */
+    }
+  }
+}
+
+/* ===== BEOL SUMMARY 新版 ===== */
+var _bsm2Charts={},_bsm2AllRecs=[],_bsm2Theme='earth',_bsm2Inited=false,_bsm2ZoomChart=null,_bsm2ChartData={};
+var BSM2_THEMES={earth:{T:'#8d6e63',C:'#a1887f',line:'#e67e22'},blue:{T:'#1e88e5',C:'#42a5f5',line:'#f39c12'},green:{T:'#43a047',C:'#66bb6a',line:'#e74c3c'},warm:{T:'#fb8c00',C:'#ffa726',line:'#8e44ad'},purple:{T:'#8e24aa',C:'#ab47bc',line:'#27ae60'},cool:{T:'#00acc1',C:'#26c6da',line:'#e74c3c'},neutral:{T:'#546e7a',C:'#78909c',line:'#f39c12'},morandi:{T:'#9e8f82',C:'#b5a99a',line:'#c0392b'}};
+var BSM2_NG=['\u4e7e\u64e6','\u6fd5\u64e6','\u4e7e\u6fd5\u4e0d\u53ef\u64e6'];
+
+function bsm2ApplyTheme(){_bsm2Theme=(document.getElementById('bsm2-g-theme')||{value:'earth'}).value||'earth';}
+
+function bsm2InitDates(){
+  var today=new Date(),past=new Date(today);past.setDate(past.getDate()-90);
+  var ts=today.toISOString().slice(0,10),fs=past.toISOString().slice(0,10);
+  var gf=document.getElementById('bsm2-g-from'),gt=document.getElementById('bsm2-g-to');
+  if(gf&&!gf.value)gf.value=fs;if(gt&&!gt.value)gt.value=ts;
+}
+
+function bsm2PreloadModels(){
+  var s=document.getElementById('b-model'),d=document.getElementById('bsm2-g-model');
+  if(!s||!d)return;
+  var opts=Array.from(s.options).filter(function(o){return o.value&&o.value.trim()&&o.value!=='';});
+  if(opts.length>0)d.innerHTML='<option value="">\u5168\u90e8</option>'+opts.map(function(o){return'<option>'+o.textContent.trim()+'</option>';}).join('');
+}
+
+async function bsm2Apply(){
+  var from=(document.getElementById('bsm2-g-from')||{}).value||'';
+  var to=(document.getElementById('bsm2-g-to')||{}).value||'';
+  var model=(document.getElementById('bsm2-g-model')||{}).value||'';
+  var station=(document.getElementById('bsm2-g-station')||{}).value||'';
+  bsm2ApplyTheme();
+  var p={dateFrom:from,dateTo:to};if(model)p.model=model;if(station)p.station=station;
+  var allRecs=[];
+  try{var data=await fetch(API_BASE+'/api/beol/search?'+new URLSearchParams(p)).then(function(r){return r.json();});if(!data.success)return;allRecs=data.records||[];}
+  catch(e){console.error('bsm2',e);return;}
+  _bsm2AllRecs=allRecs;
+  var models=[...new Set(allRecs.map(function(r){return r.model||'';}).filter(Boolean))].sort();
+  var mSel=document.getElementById('bsm2-g-model');
+  if(mSel&&models.length>0){var cur=mSel.value;mSel.innerHTML='<option value="">\u5168\u90e8</option>'+models.map(function(m){return'<option'+(m===cur?' selected':'')+'>'+m+'</option>';}).join('');}
+  ['T','C'].forEach(function(side){
+    var recs=allRecs.filter(function(r){return r.tc===side;});
+    bsm2DrawChart('bsm2-'+side+'-chip',recs,'chipId',side+' \u5074 CHIP ID',allRecs,side);
+    bsm2DrawChart('bsm2-'+side+'-mid', recs,'midId', side+' \u5074\u4e2d\u7247 ID',allRecs,side);
+  });
+}
+
+function bsm2CountDist(recs,idField){
+  var bd={};recs.forEach(function(r){var d=r.date||'',id=r[idField]||'';if(!id)return;if(!bd[d])bd[d]=new Set();bd[d].add(id);});
+  var res={};Object.keys(bd).forEach(function(d){res[d]=bd[d].size;});return res;
+}
+function bsm2CountNg(recs,idField,ngLv){
+  var fr=ngLv==='ALL'||!ngLv?recs.filter(function(r){return BSM2_NG.indexOf(r.level||'')!==-1;}):recs.filter(function(r){return r.level===ngLv;});
+  return bsm2CountDist(fr,idField);
+}
+function bsm2TooltipHtml(date,recs,idField,ngLv){
+  var dr=recs.filter(function(r){return r.date===date;});var g={};
+  dr.forEach(function(r){var k=(r.model||'-')+'\t'+(r.station||'-');if(!g[k])g[k]={m:r.model||'-',s:r.station||'-',ids:new Set(),ng:new Set()};if(r[idField])g[k].ids.add(r[idField]);var isNG=ngLv==='ALL'||!ngLv?BSM2_NG.indexOf(r.level||'')!==-1:r.level===ngLv;if(isNG&&r[idField])g[k].ng.add(r[idField]);});
+  var rows=Object.values(g).sort(function(a,b){return a.m<b.m?-1:a.m>b.m?1:0;});
+  var h='<div style="font-weight:700;color:#1a6bb5;margin-bottom:6px;">&#128197; '+date+'</div>';
+  h+='<table><tr><th>MODEL</th><th>\u7ad9\u9ede</th><th>\u6578\u91cf</th><th>NG Ratio</th></tr>';
+  rows.forEach(function(x){var cnt=x.ids.size,ng=x.ng.size,r=cnt>0?(ng/cnt*100).toFixed(1)+'%':'\u2014';
+    h+='<tr><td>'+x.m+'</td><td>'+x.s+'</td><td style="text-align:center">'+cnt+'</td><td style="text-align:center;'+(ng>0?'color:#c0392b;font-weight:700':'')+'">' +r+'</td></tr>';});
+  h+='</table>';return h;
+}
+function bsm2TTExternal(ctx,recs,idField,ngLv){
+  var tt=document.getElementById('bsm2-tooltip');if(!tt)return;
+  var tm=ctx.tooltip;if(!tm||tm.opacity===0){tt.style.display='none';return;}
+  var date=tm.title&&tm.title[0]?tm.title[0]:'';if(!date)return;
+  tt.innerHTML=bsm2TooltipHtml(date,recs,idField,ngLv);tt.style.display='block';
+  var rect=ctx.chart.canvas.getBoundingClientRect();
+  var x=rect.left+tm.caretX+14,y=rect.top+tm.caretY+window.scrollY;
+  tt.style.left=x+'px';tt.style.top=y+'px';
+  requestAnimationFrame(function(){if(x+tt.offsetWidth>window.innerWidth)tt.style.left=(rect.left+tm.caretX-tt.offsetWidth-14)+'px';});
+}
+function bsm2DrawChart(cid,recs,idField,label,allRecs,side){
+  var canvas=document.getElementById(cid);if(!canvas)return;
+  if(_bsm2Charts[cid])_bsm2Charts[cid].destroy();
+  var cnt=bsm2CountDist(recs,idField);
+  var dates=Object.keys(cnt).sort();if(!dates.length)return;
+  var theme=BSM2_THEMES[_bsm2Theme]||BSM2_THEMES.earth;
+  var barColor=side==='T'?theme.T:theme.C;
+  var allSide=allRecs.filter(function(r){return r.tc===side;});
+  var totCnt=bsm2CountDist(allSide,idField);
+  var ngLv=(document.getElementById('bsm2-g-lv')||{}).value||'ALL';
+  var ngCnt=bsm2CountNg(recs,idField,ngLv);
+  var vals=dates.map(function(d){return cnt[d]||0;});
+  var tots=dates.map(function(d){return totCnt[d]||0;});
+  var ratios=dates.map(function(d){
+    var t=totCnt[d]||0,n=ngCnt[d]||0;
+    return t>0?parseFloat((n/t*100).toFixed(1)):null;
+  });
+  canvas.style.height=Math.max(120,Math.floor((window.innerHeight-400)/2))+'px';
+  _bsm2ChartData[cid]={dates:dates,vals:vals,tots:tots,ratios:ratios,
+    recs:recs,idField:idField,label:label,allRecs:allRecs,
+    side:side,ngLv:ngLv,barColor:barColor,theme:theme};
+  _bsm2Charts[cid]=new Chart(canvas.getContext('2d'),{
+    type:'bar',
+    data:{labels:dates,datasets:[
+      /* 折線排第一（legend顯示在前），order:1 繪製在最上層 */
+      {label:'NG Ratio(%)',data:ratios,type:'line',order:1,
+       borderColor:theme.line,backgroundColor:'rgba(0,0,0,0)',
+       borderWidth:2,pointRadius:4,pointBackgroundColor:theme.line,
+       fill:false,tension:0.3,yAxisID:'yR'},
+      /* 柱狀排第二，order:2 畫在折線下面 */
+      {label:'檢出數量',data:vals,type:'bar',order:2,
+       backgroundColor:barColor,borderWidth:1,
+       borderColor:'rgba(255,255,255,.4)',yAxisID:'yL'}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        datalabels:{display:false},
+        legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}},
+        tooltip:{enabled:false,
+          external:function(ctx){bsm2TTExternal(ctx,recs,idField,ngLv);}}
+      },
+      scales:{
+        x:{ticks:{font:{size:9},maxRotation:45}},
+        yL:{type:'linear',position:'left',beginAtZero:true,
+            ticks:{stepSize:1,font:{size:9}},
+            title:{display:true,text:'檢出數量',font:{size:9}}},
+        yR:{type:'linear',position:'right',beginAtZero:true,max:100,
+            ticks:{font:{size:9},callback:function(v){return v+'%';}},
+            title:{display:true,text:'NG%',font:{size:9}},
+            grid:{drawOnChartArea:false}}
+      },
+      onClick:function(_,els){if(els&&els.length>0)bsm2ShowZoom(cid);}
+    }
+  });
+}
+function bsm2ShowZoom(cid){
+  var d=_bsm2ChartData[cid];if(!d)return;
+  var modal=document.getElementById('bsm2-zoom-modal');
+  var zc=document.getElementById('bsm2-zoom-canvas');
+  var zt=document.getElementById('bsm2-zoom-title');
+  if(!modal||!zc)return;
+  if(_bsm2ZoomChart){_bsm2ZoomChart.destroy();_bsm2ZoomChart=null;}
+  var tt=document.getElementById('bsm2-tooltip');
+  if(tt)tt.style.display='none';
+  if(zt)zt.textContent=d.label;
+  var zd=document.getElementById('bsm2-zoom-detail');
+  if(zd)zd.style.display='none'; /* 隱藏底部固定表格 */
+  modal.style.display='flex';
+  _bsm2ZoomChart=new Chart(zc.getContext('2d'),{
+    type:'bar',
+    data:{labels:d.dates,datasets:[
+      {label:'NG Ratio(%)',data:d.ratios,type:'line',order:1,
+       borderColor:d.theme.line,backgroundColor:'rgba(0,0,0,0)',
+       borderWidth:2,pointRadius:5,pointBackgroundColor:d.theme.line,
+       fill:false,tension:0.3,yAxisID:'yR'},
+      {label:'檢出數量',data:d.vals,type:'bar',order:2,
+       backgroundColor:d.barColor,borderWidth:1,
+       borderColor:'rgba(255,255,255,.4)',yAxisID:'yL'}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        datalabels:{display:false},
+        legend:{position:'bottom',labels:{font:{size:12},boxWidth:12}},
+        tooltip:{enabled:false,
+          external:function(ctx){bsm2TTExternal(ctx,d.recs,d.idField,d.ngLv);}}
+      },
+      scales:{
+        x:{ticks:{font:{size:11},maxRotation:45}},
+        yL:{type:'linear',position:'left',beginAtZero:true,
+            ticks:{stepSize:1,font:{size:11}},
+            title:{display:true,text:'檢出數量',font:{size:11}}},
+        yR:{type:'linear',position:'right',beginAtZero:true,max:100,
+            ticks:{font:{size:11},callback:function(v){return v+'%';}},
+            title:{display:true,text:'NG%',font:{size:11}},
+            grid:{drawOnChartArea:false}}
+      }
+    }
+  });
+}
+function bsm2CloseZoom(){
+  var modal=document.getElementById('bsm2-zoom-modal');if(modal)modal.style.display='none';
+  if(_bsm2ZoomChart){_bsm2ZoomChart.destroy();_bsm2ZoomChart=null;}
+  var tt=document.getElementById('bsm2-tooltip');if(tt)tt.style.display='none';
+}
+function bsm2Init(){
+  bsm2InitDates();bsm2PreloadModels();
+  if(!_bsm2Inited){_bsm2Inited=true;bsm2Apply();}
+}

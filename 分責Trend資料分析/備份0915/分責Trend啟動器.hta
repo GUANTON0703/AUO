@@ -1,0 +1,32 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>L8B Launcher</title>
+<HTA:APPLICATION
+  ID="L8BLauncher"
+  APPLICATIONNAME="L8B Launcher"
+  BORDER="none"
+  CAPTION="no"
+  SHOWINTASKBAR="no"
+  SINGLEINSTANCE="yes"
+  WINDOWSTATE="minimize"
+/>
+</head>
+<body>
+<script language="VBScript">
+' ── 路徑寫死，移動資料夾時只需改這一行 ───────────────────
+Const VBS_PATH = "\\tw100049089\00_MyAgent\分責Trend資料分析\啟動L8B.vbs"
+' ─────────────────────────────────────────────────────────
+
+Sub Window_OnLoad
+  Dim oShell
+  Set oShell = CreateObject("WScript.Shell")
+
+  ' 執行 VBS（wscript 不受 UNC 路徑限制）
+  oShell.Run "wscript.exe """ & VBS_PATH & """", 1, False
+
+  window.close
+End Sub
+</script>
+</body>
+</html>

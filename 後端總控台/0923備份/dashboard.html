@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>HTA Work Platform</title>
+<style>
+/* ── CSS 主題變數 ─────────────────────────────────── */
+:root {
+  --bg:#f6f8fa; --surface:#ffffff; --surface2:#f6f8fa;
+  --border:#d0d7de; --text:#24292f; --text-hi:#1f2328;
+  --text-dim:#57606a; --text-mute:#8c959f;
+  --accent:#0969da; --accent-hv:#0550ae; --accent-sf:#ddf4ff;
+  --green:#1a7f37; --green-dk:#116329;
+  --red:#d1242f; --red-dk:#a40e26;
+  --yellow:#9a6700; --yellow-dk:#7d4e00;
+  --hover:#eaeef2; --err-bg:#fff0ef; --slow-bg:#fff8c5; --warn-bg:#fffbe6;
+  --hdr-bg:#24292f; --hdr-text:#e6edf3; --noise-op:0.35;
+}
+body.dark {
+  --bg:#0d1117; --surface:#161b22; --surface2:#21262d;
+  --border:#30363d; --text:#c9d1d9; --text-hi:#e6edf3;
+  --text-dim:#8b949e; --text-mute:#484f58;
+  --accent:#58a6ff; --accent-hv:#1f6feb; --accent-sf:#1f2d3d;
+  --green:#2ea043; --green-dk:#238636;
+  --red:#f85149; --red-dk:#da3633;
+  --yellow:#d29922; --yellow-dk:#9a6700;
+  --hover:#1c2128; --err-bg:#2a1419; --slow-bg:#2a2310; --warn-bg:#1f2937;
+  --hdr-bg:#161b22; --hdr-text:#e6edf3; --noise-op:0.28;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Segoe UI',Arial,sans-serif; font-size:14px; background:var(--bg); color:var(--text); height:100vh; display:flex; flex-direction:column; overflow:hidden; transition:background .25s,color .25s; }
+
+/* Header */
+.header { background:var(--hdr-bg); border-bottom:1px solid rgba(255,255,255,.1); padding:9px 16px; display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.header-title { font-size:16px; font-weight:700; color:var(--accent); flex:1; }
+.py-badge { font-size:11px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:4px; padding:3px 8px; color:var(--hdr-text); opacity:.75; }
+.py-badge.public { border-color:#d29922; color:#d29922; opacity:1; }
+.btn-theme { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); color:var(--hdr-text); border-radius:6px; padding:4px 9px; cursor:pointer; font-size:15px; line-height:1; }
+.btn-theme:hover { background:rgba(255,255,255,.22); }
+.btn-shutdown { background:var(--red-dk); color:#fff; border:none; border-radius:6px; padding:5px 12px; cursor:pointer; font-size:13px; font-weight:600; }
+.btn-shutdown:hover { background:var(--red); }
+
+/* Version alert */
+.version-alert { background:var(--warn-bg); border:1px solid var(--yellow); border-left:4px solid var(--yellow); padding:8px 20px; font-size:13px; color:var(--yellow); display:none; flex-shrink:0; }
+.version-alert.show { display:block; }
+
+/* 主頁籤 */
+.main-tabs { display:flex; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; padding:0 14px; gap:2px; }
+.main-tab { padding:8px 15px; font-size:13px; font-weight:600; color:var(--text-dim); cursor:pointer; border-bottom:2px solid transparent; transition:color .15s,border-color .15s; user-select:none; }
+.main-tab:hover { color:var(--text); }
+.main-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+.tab-panel { display:none; flex:1; overflow:hidden; flex-direction:column; }
+.tab-panel.active { display:flex; }
+
+/* 服務管理 */
+.services-wrap { flex:1; overflow-y:auto; padding:16px; }
+.services-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
+.empty-msg { text-align:center; color:var(--text-mute); margin-top:80px; font-size:14px; }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px; transition:border-color .2s; }
+.card.running { border-color:var(--green-dk); }
+.card-header { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.status-dot { width:10px; height:10px; border-radius:50%; background:var(--text-mute); flex-shrink:0; }
+.status-dot.on { background:var(--green); box-shadow:0 0 6px var(--green); }
+.card-name { font-weight:600; font-size:14px; flex:1; color:var(--text-hi); }
+.badge-port { font-size:11px; background:var(--surface2); border:1px solid var(--border); border-radius:3px; padding:2px 6px; color:var(--text-dim); }
+.stats { display:flex; gap:10px; margin-bottom:12px; font-size:12px; color:var(--text-dim); }
+.stat-item { display:flex; flex-direction:column; gap:2px; }
+.stat-label { font-size:10px; color:var(--text-mute); text-transform:uppercase; }
+.stat-val { color:var(--text); font-weight:600; }
+.stat-val.active { color:var(--accent); }
+.actions { display:flex; gap:6px; flex-wrap:wrap; }
+.btn { border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:5px; padding:4px 10px; cursor:pointer; font-size:12px; transition:background .15s; }
+.btn:hover { background:var(--hover); }
+.btn-start  { border-color:var(--green-dk); color:var(--green); }
+.btn-start:hover  { background:var(--green-dk); color:#fff; }
+.btn-stop   { border-color:var(--red-dk); color:var(--red); }
+.btn-stop:hover   { background:var(--red-dk); color:#fff; }
+.btn-open   { border-color:var(--accent-hv); color:var(--accent); }
+.btn-open:hover   { background:var(--accent-hv); color:#fff; }
+.btn-restart { border-color:var(--yellow-dk); color:var(--yellow); }
+.btn-restart:hover { background:var(--yellow-dk); color:#fff; }
+
+/* Modal */
+.modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:100; align-items:center; justify-content:center; }
+.modal-bg.show { display:flex; }
+.modal { background:var(--surface); border:1px solid var(--border); border-radius:10px; width:680px; max-width:95vw; max-height:80vh; display:flex; flex-direction:column; }
+.modal-header { display:flex; align-items:center; padding:12px 16px; border-bottom:1px solid var(--border); gap:10px; }
+.modal-title { flex:1; font-weight:600; font-size:14px; color:var(--text-hi); }
+.modal-refresh { font-size:11px; color:var(--text-dim); background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:3px 8px; cursor:pointer; }
+.modal-close { background:none; border:none; color:var(--text-dim); font-size:18px; cursor:pointer; line-height:1; }
+.modal-close:hover { color:var(--red); }
+.modal-body { flex:1; overflow-y:auto; padding:12px 16px; }
+.log-pre { font-family:'Consolas',monospace; font-size:12px; color:var(--text-dim); white-space:pre-wrap; word-break:break-all; line-height:1.6; }
+
+/* Footer */
+.footer { background:var(--surface); border-top:1px solid var(--border); padding:5px 16px; font-size:11px; color:var(--text-mute); display:flex; gap:16px; flex-shrink:0; }
+
+/* Log 監控 */
+.log-panel { display:flex; flex-direction:column; flex:1; overflow:hidden; padding:12px; gap:10px; }
+.log-stats-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; flex-shrink:0; }
+.log-stat-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:10px 12px; }
+.log-stat-card.has-error { border-color:var(--red-dk); }
+.log-stat-svc { font-size:11px; color:var(--text-dim); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.log-stat-num { font-size:20px; font-weight:700; color:var(--text-hi); }
+.log-stat-sub { font-size:10px; color:var(--text-mute); margin-top:2px; }
+.log-stat-err { font-size:11px; color:var(--red); margin-top:2px; font-weight:600; cursor:pointer; text-decoration:underline; }
+.log-toolbar { display:flex; align-items:center; gap:8px; flex-shrink:0; flex-wrap:wrap; }
+.log-sub-tabs { display:flex; gap:3px; flex:1; flex-wrap:wrap; }
+.log-sub-tab { padding:4px 10px; font-size:12px; font-weight:600; color:var(--text-dim); cursor:pointer; border:1px solid var(--border); border-radius:4px; background:var(--surface2); transition:all .15s; }
+.log-sub-tab:hover  { color:var(--text); border-color:var(--accent); }
+.log-sub-tab.active { color:var(--accent); border-color:var(--accent); background:var(--accent-sf); }
+.log-chk-label { font-size:12px; color:var(--text-dim); display:flex; align-items:center; gap:5px; cursor:pointer; user-select:none; white-space:nowrap; }
+.log-chk-label input { cursor:pointer; }
+.log-auto-label { font-size:12px; color:var(--text-dim); display:flex; align-items:center; gap:5px; cursor:pointer; user-select:none; }
+.btn-log-refresh { background:var(--surface2); border:1px solid var(--border); color:var(--text); border-radius:5px; padding:4px 10px; cursor:pointer; font-size:12px; }
+.btn-log-refresh:hover { background:var(--hover); }
+.btn-log-clear { background:var(--err-bg); border:1px solid var(--red-dk); color:var(--red); border-radius:5px; padding:4px 10px; cursor:pointer; font-size:12px; font-weight:600; }
+.btn-log-clear:hover { background:var(--red-dk); color:#fff; }
+.filter-hint { font-size:11px; color:var(--text-mute); font-style:italic; }
+.log-table-wrap { flex:1; overflow-y:auto; border:1px solid var(--border); border-radius:8px; }
+table.log-tbl { width:100%; border-collapse:collapse; font-size:14px; }
+table.log-tbl th { background:var(--surface); color:var(--text-dim); font-weight:600; text-transform:uppercase; font-size:10px; padding:8px 10px; text-align:left; position:sticky; top:0; z-index:1; border-bottom:1px solid var(--border); }
+table.log-tbl td { padding:8px 10px; border-bottom:1px solid var(--surface2); color:var(--text); vertical-align:top; word-break:break-all; max-width:200px; }
+table.log-tbl tr:hover td  { background:var(--hover); }
+table.log-tbl tr.row-error td { background:var(--err-bg); }
+table.log-tbl tr.row-slow  td { background:var(--slow-bg); }
+table.log-tbl tr.row-noise td { opacity:var(--noise-op); font-style:italic; }
+.td-sql  { font-family:'Consolas',monospace; font-size:12px; color:var(--text-dim); white-space:pre-wrap; max-width:280px; }
+.td-err  { color:var(--red); font-size:12px; max-width:300px; white-space:pre-wrap; word-break:break-all; }
+.badge-noise { font-size:10px; background:var(--surface2); border:1px solid var(--border); border-radius:3px; padding:1px 4px; color:var(--text-mute); margin-left:3px; }
+.badge-slow  { font-size:10px; background:var(--slow-bg); border:1px solid var(--yellow); border-radius:3px; padding:1px 4px; color:var(--yellow); margin-left:3px; }
+.badge-err   { font-size:10px; background:var(--err-bg);  border:1px solid var(--red);    border-radius:3px; padding:1px 4px; color:var(--red);    margin-left:3px; }
+.log-empty { text-align:center; color:var(--text-mute); padding:40px; }
+
+/* 連線摘要 */
+.conn-panel { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:10px; }
+.conn-topbar { display:flex; align-items:center; gap:8px; flex-shrink:0; flex-wrap:wrap; }
+.conn-topbar-hint { flex:1; font-size:12px; color:var(--text-dim); }
+.btn-conn-reload  { background:var(--surface2); border:1px solid var(--border); color:var(--text); border-radius:5px; padding:4px 10px; cursor:pointer; font-size:12px; }
+.btn-conn-reload:hover  { background:var(--hover); }
+.btn-conn-refresh { background:var(--surface2); border:1px solid var(--border); color:var(--text); border-radius:5px; padding:4px 10px; cursor:pointer; font-size:12px; }
+.btn-conn-refresh:hover { background:var(--hover); }
+#conn-list { display:flex; flex-direction:column; gap:8px; }
+.conn-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:12px 14px; }
+.conn-active   { border-left:3px solid var(--green); }
+.conn-inactive { border-left:3px solid var(--border); opacity:.75; }
+.conn-name  { font-weight:700; font-size:14px; color:var(--text-hi); line-height:1.4; }
+.conn-sub   { font-size:12px; color:var(--text-dim); margin-top:3px; line-height:1.5; }
+.conn-state { font-size:12px; font-weight:600; margin-top:5px; }
+.conn-state.on  { color:var(--green); }
+.conn-state.off { color:var(--red); }
+.conn-reltime { font-size:11px; color:var(--text-mute); white-space:nowrap; flex-shrink:0; padding-top:2px; }
+.conn-empty { text-align:center; color:var(--text-mute); padding:60px 20px; font-size:14px; line-height:2; }
+.conn-person-header { font-size:12px; font-weight:700; color:var(--text-dim); margin-top:6px; margin-bottom:3px; padding:2px 8px; background:var(--surface2); border-radius:4px; border-left:3px solid var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-title">🖥 HTA Work Platform</div>
+  <div id="py-badge" class="py-badge">Python: loading...</div>
+  <button id="btn-theme" class="btn-theme" onclick="toggleTheme()" title="切換日/夜模式">🌙</button>
+  <button class="btn-shutdown" onclick="doShutdown()">Shutdown All</button>
+</div>
+
+<div id="version-alert" class="version-alert"></div>
+
+<div class="main-tabs">
+  <div class="main-tab active" onclick="switchMainTab('services',this)">🖥 服務管理</div>
+  <div class="main-tab"        onclick="switchMainTab('logmon',  this)">📊 Log 監控</div>
+  <div class="main-tab"        onclick="switchMainTab('connsum', this)">🔗 連線摘要</div>
+</div>
+
+<!-- 服務管理 -->
+<div id="panel-services" class="tab-panel active">
+  <div class="services-wrap">
+    <div id="grid" class="services-grid"><div class="empty-msg">Loading services...</div></div>
+  </div>
+</div>
+
+<!-- Log 監控 -->
+<div id="panel-logmon" class="tab-panel">
+  <div class="log-panel">
+    <div id="log-stats-row" class="log-stats-row">
+      <div class="log-stat-card"><div class="log-stat-svc">載入中...</div></div>
+    </div>
+    <div class="log-toolbar">
+      <div class="log-sub-tabs" id="log-sub-tabs">
+        <div class="log-sub-tab active" data-svc="" onclick="switchLogTab(this)">全部</div>
+        <div class="log-sub-tab" data-svc="wish_pool"        onclick="switchLogTab(this)">許願池</div>
+        <div class="log-sub-tab" data-svc="roller_mark"      onclick="switchLogTab(this)">Roller Mark</div>
+        <div class="log-sub-tab" data-svc="lv3"              onclick="switchLogTab(this)">LV3 查詢</div>
+        <div class="log-sub-tab" data-svc="lv3keyin"         onclick="switchLogTab(this)">LV3 KeyIn</div>
+        <div class="log-sub-tab" data-svc="yield_query"      onclick="switchLogTab(this)">良率查詢</div>
+        <div class="log-sub-tab" data-svc="id_convert"       onclick="switchLogTab(this)">ID 轉換</div>
+        <!-- ✅ 新增：Proxy 服務獨立 Tab -->
+        <div class="log-sub-tab" data-svc="pi_insp"          onclick="switchLogTab(this)">PI 查驗</div>
+        <div class="log-sub-tab" data-svc="rotxt"            onclick="switchLogTab(this)">RO TXT</div>
+        <div class="log-sub-tab" data-svc="boss_site"        onclick="switchLogTab(this)">Boss SITE</div>
+        <div class="log-sub-tab" data-svc="fma_trend"        onclick="switchLogTab(this)">FMA Trend</div>
+        <div class="log-sub-tab" data-svc="yield_dashboard"  onclick="switchLogTab(this)">良率儀表板</div>
+      </div>
+      <label class="log-chk-label"><input type="checkbox" id="chk-errors-only" onchange="fetchLogData()"> 僅顯示錯誤</label>
+      <label class="log-chk-label"><input type="checkbox" id="chk-hide-noise" checked onchange="fetchLogData()"> 隱藏健康檢查</label>
+      <label class="log-chk-label"><input type="checkbox" id="chk-hide-fast"  checked onchange="fetchLogData()"> 隱藏 &lt;20ms</label>
+      <span id="filter-hint" class="filter-hint"></span>
+      <label class="log-auto-label"><input type="checkbox" id="chk-auto-refresh" checked onchange="toggleAutoRefresh()"> 自動刷新</label>
+      <button class="btn-log-refresh" onclick="fetchLogData()">⟳ 刷新</button>
+      <button class="btn-log-clear" onclick="clearLog()" title="清空全部 access_log，每日 07:00 也會自動清空">🗑 清除 Log</button>
+    </div>
+    <div class="log-table-wrap">
+      <table class="log-tbl">
+        <thead><tr>
+          <th style="width:126px">時間</th>
+          <th style="width:68px">後台</th>
+          <th style="width:100px">IP</th>
+          <th style="width:68px">路徑</th>
+          <th style="width:62px">耗時</th>
+          <th>SQL</th>
+          <th style="width:62px">SQL ms</th>
+          <th style="width:48px">列數</th>
+          <th style="width:220px">錯誤內容</th>
+        </tr></thead>
+        <tbody id="log-tbody">
+          <tr><td colspan="9" class="log-empty">切換到此頁後載入...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 連線摘要 -->
+<div id="panel-connsum" class="tab-panel">
+  <div class="conn-panel">
+    <div class="conn-topbar">
+      <span id="conn-topbar-hint" class="conn-topbar-hint">尚未載入</span>
+      <button id="btn-reload-name" class="btn-conn-reload"
+              onclick="reloadNameMap(this)" title="重新讀取 name_map.json 並清除 IP 快取">
+        👤 重新載入名稱
+      </button>
+      <button class="btn-conn-refresh" onclick="fetchConnSummary()">⟳ 刷新</button>
+    </div>
+    <div id="conn-list">
+      <div class="conn-empty">點選「🔗 連線摘要」分頁後載入...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Log Viewer -->
+<div id="modal-log" class="modal-bg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-log-title">Log</div>
+      <button class="modal-refresh" onclick="refreshModalLog()">⟳ 刷新</button>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <pre class="log-pre" id="modal-log-content">Loading...</pre>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span id="footer-time">--</span>
+  <span id="footer-running">服務: --</span>
+  <span id="footer-log-count"></span>
+</div>
+
+<script>
+/* ── 主題（預設淺色，記住偏好）─────────────────────── */
+(function(){
+  var t = localStorage.getItem('hta_theme') || 'light';
+  if(t==='dark') document.body.classList.add('dark');
+  var btn = document.getElementById('btn-theme');
+  if(btn) btn.textContent = (t==='dark') ? '☀️' : '🌙';
+})();
+function toggleTheme(){
+  var d = document.body.classList.toggle('dark');
+  localStorage.setItem('hta_theme', d?'dark':'light');
+  document.getElementById('btn-theme').textContent = d?'☀️':'🌙';
+}
+
+/* ── Window sizing ───────────────────────────────────── */
+(function(){ if(window.outerWidth < 100) window.resizeTo(380,620); })();
+
+/* ── 主頁籤 ─────────────────────────────────────────── */
+var _logLoaded = false;
+function switchMainTab(name, el){
+  document.querySelectorAll('.main-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+  el.classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');
+  if(name==='logmon'){ if(!_logLoaded){ _logLoaded=true; fetchLogStats(); fetchLogData(); } startLogAutoRefresh(); }
+  else stopLogAutoRefresh();
+  if(name==='connsum') fetchConnSummary();
+}
+
+/* ── Heartbeat + clock ───────────────────────────────── */
+setInterval(function(){
+  fetch('/api/heartbeat',{method:'POST'}).catch(function(){});
+  var n=new Date(), p=function(v){ return String(v).padStart(2,'0'); };
+  document.getElementById('footer-time').textContent =
+    n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate())+' '+p(n.getHours())+':'+p(n.getMinutes())+':'+p(n.getSeconds());
+},5000);
+
+/* ── Services ───────────────────────────────────────── */
+function loadServices(){
+  fetch('/api/services').then(function(r){return r.json();}).then(renderServices).catch(function(){});
+}
+function renderServices(svcs){
+  var grid=document.getElementById('grid');
+  if(!svcs.length){ grid.innerHTML='<div class="empty-msg">No services configured.<br>Add entries to services.json</div>'; return; }
+  document.getElementById('footer-running').textContent='服務: '+svcs.filter(function(s){return s.running;}).length+'/'+svcs.length;
+  grid.innerHTML=svcs.map(function(s){
+    var btns='';
+    if(s.running){
+      btns+='<button class="btn btn-stop"    onclick="svcStop(\''+s.id+'\')">⏹ 停止</button>';
+      btns+='<button class="btn btn-restart" onclick="svcRestart(\''+s.id+'\')">↺ 重啟</button>';
+    } else {
+      btns+='<button class="btn btn-start"   onclick="svcStart(\''+s.id+'\')">▶ 啟動</button>';
+    }
+    if(s.url) btns+='<button class="btn btn-open" onclick="openSvc(\''+s.url+'\')">🔗 開啟</button>';
+    btns+='<button class="btn" onclick="showLog(\''+s.id+'\',\''+(s.name||s.id)+'\')">📋 Log</button>';
+    return '<div class="card'+(s.running?' running':'')+'">'+
+      '<div class="card-header"><div class="status-dot'+(s.running?' on':'')+'"></div>'+
+      '<div class="card-name">'+(s.name||s.id)+'</div>'+(s.port?'<div class="badge-port">:'+s.port+'</div>':'')+
+      '</div><div class="stats">'+
+      '<div class="stat-item"><div class="stat-label">CPU</div><div class="stat-val'+(s.running?' active':'')+'">'+( s.running?s.cpu+'%':'—')+'</div></div>'+
+      '<div class="stat-item"><div class="stat-label">MEM</div><div class="stat-val'+(s.running?' active':'')+'">'+( s.running?s.mem+'M':'—')+'</div></div>'+
+      '<div class="stat-item"><div class="stat-label">連線</div><div class="stat-val'+(s.running?' active':'')+'">'+( s.running?s.conns:'—')+'</div></div>'+
+      '</div><div class="actions">'+btns+'</div></div>';
+  }).join('');
+}
+function svcStart(id)  { apiFetch('/api/start/'  +id,'POST'); }
+function svcStop(id)   { apiFetch('/api/stop/'   +id,'POST'); }
+function svcRestart(id){ apiFetch('/api/restart/'+id,'POST'); }
+function openSvc(url)  { fetch('/api/open_when_ready',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:url})}).catch(function(){}); }
+function apiFetch(url,m){ fetch(url,{method:m||'GET'}).then(function(){ loadServices(); }).catch(function(){}); }
+function doShutdown()  { if(!confirm('確定要關閉所有服務並退出？'))return; fetch('/api/shutdown',{method:'POST'}).catch(function(){}); }
+
+/* Modal Log */
+var _modalSid='';
+function showLog(sid,name){
+  _modalSid=sid;
+  document.getElementById('modal-log-title').textContent='📋 '+name+' Log';
+  document.getElementById('modal-log-content').textContent='Loading...';
+  document.getElementById('modal-log').classList.add('show');
+  refreshModalLog();
+}
+function refreshModalLog(){
+  if(!_modalSid)return;
+  fetch('/api/log/'+_modalSid).then(function(r){return r.json();}).then(function(d){
+    var el=document.getElementById('modal-log-content');
+    el.textContent=d.log||'(empty)';
+    el.scrollTop=el.scrollHeight;
+  }).catch(function(){});
+}
+function closeModal(){ document.getElementById('modal-log').classList.remove('show'); _modalSid=''; }
+
+/* ── Log 監控 ───────────────────────────────────────── */
+var _curLogSvc='';
+var _logAutoTimer=null;
+
+function switchLogTab(el){
+  document.querySelectorAll('.log-sub-tab').forEach(function(t){ t.classList.remove('active'); });
+  el.classList.add('active');
+  _curLogSvc=el.getAttribute('data-svc')||'';
+  fetchLogData();
+}
+function startLogAutoRefresh(){
+  stopLogAutoRefresh();
+  _logAutoTimer=setInterval(function(){
+    if(document.getElementById('chk-auto-refresh').checked){ fetchLogStats(); fetchLogData(); }
+  },5000);
+}
+function stopLogAutoRefresh(){ if(_logAutoTimer){clearInterval(_logAutoTimer);_logAutoTimer=null;} }
+function toggleAutoRefresh(){
+  if(document.getElementById('chk-auto-refresh').checked) startLogAutoRefresh();
+  else stopLogAutoRefresh();
+}
+
+function fetchLogStats(){
+  fetch('/api/log/stats').then(function(r){return r.json();}).then(renderLogStats).catch(function(){});
+}
+function renderLogStats(rows){
+  var w=document.getElementById('log-stats-row');
+  if(!rows||!rows.length){ w.innerHTML='<div class="log-stat-card"><div class="log-stat-svc">尚無資料</div><div class="log-stat-num">—</div></div>'; return; }
+  w.innerHTML=rows.map(function(r){
+    return '<div class="log-stat-card'+(r.error_count>0?' has-error':'')+'">'+
+      '<div class="log-stat-svc">'+(r.service_name||r.service_id)+'</div>'+
+      '<div class="log-stat-num">'+r.total_requests+'</div>'+
+      '<div class="log-stat-sub">IP: '+r.unique_ips+'　avg SQL: '+(r.avg_query_ms?r.avg_query_ms+' ms':'—')+'　max: '+(r.max_query_ms?r.max_query_ms+' ms':'—')+'</div>'+
+      (r.error_count>0?'<div class="log-stat-err" onclick="jumpToErrors(\''+r.service_id+'\')">⚠ 錯誤 '+r.error_count+' 次（點擊查看）</div>':'')+
+    '</div>';
+  }).join('');
+}
+
+function jumpToErrors(svcId){
+  document.getElementById('chk-errors-only').checked = true;
+  document.getElementById('chk-hide-noise').checked  = false;
+  document.getElementById('chk-hide-fast').checked   = false;
+  _curLogSvc = svcId;
+  document.querySelectorAll('.log-sub-tab').forEach(function(t){ t.classList.remove('active'); });
+  var tab = document.querySelector('.log-sub-tab[data-svc="'+svcId+'"]');
+  if(tab) tab.classList.add('active');
+  fetchLogData();
+}
+
+function fetchLogData(){
+  var e=document.getElementById('chk-errors-only').checked?'1':'0';
+  var url='/api/access_logs?limit=300&errors_only='+e+(_curLogSvc?'&service='+_curLogSvc:'');
+  fetch(url).then(function(r){return r.json();}).then(renderLogTable).catch(function(){});
+}
+function isNoiseRow(r){
+  var p=(r.request_path||'').split('?')[0], sc=Number(r.status_code||0);
+  if((sc===501||sc===405)&&(p==='/'||p===''))return true;
+  if(sc===404&&(p==='/favicon.ico'||p==='/favicon'))return true;
+  return false;
+}
+function isFastRow(r){
+  var req=(r.request_ms!=null)?Number(r.request_ms):null;
+  var qry=(r.query_ms!=null)?Number(r.query_ms):null;
+  if(isNoiseRow(r))return false;
+  return (req!==null&&req<20)&&(qry===null||qry<20);
+}
+function fmtMs(v){ if(v==null||v==='')return'—'; var n=Number(v); return n>=1000?(n/1000).toFixed(1)+'s':Math.round(n)+'ms'; }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderLogTable(rows){
+  var tbody=document.getElementById('log-tbody');
+  var hideNoise=document.getElementById('chk-hide-noise').checked;
+  var hideFast =document.getElementById('chk-hide-fast').checked;
+  var hintEl   =document.getElementById('filter-hint');
+  if(!rows||!rows.length){ tbody.innerHTML='<tr><td colspan="9" class="log-empty">目前沒有 Log 資料</td></tr>'; hintEl.textContent=''; document.getElementById('footer-log-count').textContent=''; return; }
+  var rendered=0, skNoise=0, skFast=0, html='';
+  /* ✅ 修正：新增 proxy 服務名稱對照 */
+  var svcS={
+    wish_pool:'許願池', roller_mark:'Roller', lv3:'LV3', lv3keyin:'KeyIn',
+    yield_query:'良率', id_convert:'ID轉換',
+    pi_insp:'PI查驗', rotxt:'RO TXT', boss_site:'Boss SITE',
+    fma_trend:'FMA Trend', yield_dashboard:'良率儀表板'
+  };
+  rows.forEach(function(r){
+    var noise=isNoiseRow(r), fast=isFastRow(r);
+    if(hideNoise&&noise){skNoise++;return;}
+    if(hideFast&&fast&&!noise){skFast++;return;}
+    rendered++;
+    var hasErr=r.error&&r.error!=='';
+    var isSlow=Number(r.request_ms||0)>=1000||Number(r.query_ms||0)>=500;
+    var rowCls=noise?'row-noise':(hasErr?'row-error':(isSlow?'row-slow':''));
+    var badges='';
+    if(noise)  badges+=' <span class="badge-noise">HEALTH</span>';
+    if(isSlow) badges+=' <span class="badge-slow">SLOW</span>';
+    if(hasErr) badges+=' <span class="badge-err">ERR</span>';
+    var ts=(r.timestamp||'').replace('T',' ').substring(0,19);
+    html+='<tr class="'+rowCls+'">'+
+      '<td style="white-space:nowrap;font-size:12px">'+ts+'</td>'+
+      '<td style="white-space:nowrap">'+(svcS[r.service_id]||r.service_id)+badges+'</td>'+
+      '<td style="font-size:12px">'+(r.client_ip||'')+'</td>'+
+      '<td style="font-size:12px;word-break:break-all">'+(r.request_path||'')+'</td>'+
+      '<td style="text-align:right;white-space:nowrap">'+fmtMs(r.request_ms)+'</td>'+
+      '<td class="td-sql">'+esc(r.sql_text||'')+'</td>'+
+      '<td style="text-align:right;white-space:nowrap">'+fmtMs(r.query_ms)+'</td>'+
+      '<td style="text-align:right">'+(r.rows_affected!=null?r.rows_affected:'—')+'</td>'+
+      '<td class="td-err">'+esc(r.error||'')+'</td>'+
+    '</tr>';
+  });
+  tbody.innerHTML=html||'<tr><td colspan="9" class="log-empty">篩選後無符合資料</td></tr>';
+  var hints=[];
+  if(skNoise) hints.push('隱藏健康檢查 '+skNoise+' 筆');
+  if(skFast)  hints.push('隱藏 <20ms '+skFast+' 筆');
+  hintEl.textContent=hints.length?'('+hints.join('、')+')':'';
+  document.getElementById('footer-log-count').textContent='顯示 '+rendered+'/'+rows.length+' 筆';
+}
+
+function clearLog(){
+  if(!confirm('確定要清空所有 access log 記錄嗎？\n（每日 07:00 也會自動清空）'))return;
+  fetch('/api/log/clear',{method:'POST'})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.ok){
+        alert('✅ 已清空 '+d.deleted+' 筆記錄');
+        fetchLogStats();
+        fetchLogData();
+      } else {
+        alert('❌ 清空失敗：'+(d.msg||'未知錯誤'));
+      }
+    }).catch(function(){ alert('❌ 連線失敗'); });
+}
+
+/* ── 連線摘要 ───────────────────────────────────────── */
+function isActiveConn(ts){ if(!ts)return false; return (Date.now()-new Date(ts.replace(' ','T')).getTime())<2*60*1000; }
+function fmtFirstSeen(ts){ if(!ts)return''; var d=new Date(ts.replace(' ','T')); return (d.getMonth()+1)+'/'+d.getDate()+' '+(d.getHours()<12?'上午':'下午'); }
+function fmtRelTime(ts){
+  if(!ts)return'';
+  var diff=Math.floor((Date.now()-new Date(ts.replace(' ','T')).getTime())/1000);
+  if(diff<10)return'剛剛'; if(diff<60)return diff+' 秒前';
+  if(diff<3600)return Math.floor(diff/60)+' 分鐘前';
+  if(diff<86400)return Math.floor(diff/3600)+' 小時前';
+  return Math.floor(diff/86400)+' 天前';
+}
+
+function reloadNameMap(btn){
+  btn.disabled=true; btn.textContent='載入中...';
+  fetch('/api/log/reload_name_map',{method:'POST'})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      btn.disabled=false; btn.textContent='👤 重新載入名稱';
+      var hint=document.getElementById('conn-topbar-hint');
+      if(d.ok){
+        hint.textContent='名稱對應表：'+d.count+' 筆（已更新，IP 快取已清除）';
+        fetchConnSummary();
+      } else {
+        hint.textContent='⚠ 載入失敗：'+(d.msg||'未知錯誤');
+      }
+    })
+    .catch(function(){
+      btn.disabled=false; btn.textContent='👤 重新載入名稱';
+      document.getElementById('conn-topbar-hint').textContent='⚠ 連線失敗';
+    });
+}
+
+function fetchConnSummary(){
+  document.getElementById('conn-topbar-hint').textContent='讀取中...';
+  fetch('/api/log/ip_summary')
+    .then(function(r){return r.json();})
+    .then(renderConnSummary)
+    .catch(function(){
+      document.getElementById('conn-list').innerHTML='<div class="conn-empty">❌ 讀取失敗<br>請確認 DB 是否存在</div>';
+      document.getElementById('conn-topbar-hint').textContent='讀取失敗';
+    });
+}
+
+function renderConnSummary(rows){
+  var list=document.getElementById('conn-list');
+  var hint=document.getElementById('conn-topbar-hint');
+  if(!rows||!rows.length){
+    list.innerHTML='<div class="conn-empty">📭 尚無連線記錄<br><small>7 天內沒有非本機 IP 的存取</small></div>';
+    hint.textContent='目前沒有資料'; return;
+  }
+  var ipMap={};
+  rows.forEach(function(r){
+    var ip=r.client_ip;
+    if(!ipMap[ip]){
+      ipMap[ip]={ display_name:r.display_name||ip, client_ip:ip, last_seen:r.last_seen, first_seen:r.first_seen, svcs:[] };
+    }
+    if((r.last_seen||'')>(ipMap[ip].last_seen||'')) ipMap[ip].last_seen=r.last_seen;
+    if((r.first_seen||'')<(ipMap[ip].first_seen||'')) ipMap[ip].first_seen=r.first_seen;
+    ipMap[ip].svcs.push({ service_name:r.service_name||r.service_id, service_id:r.service_id, total_requests:r.total_requests, last_seen:r.last_seen, error_count:r.error_count });
+  });
+  var persons=Object.values(ipMap);
+  persons.sort(function(a,b){
+    var aA=isActiveConn(a.last_seen)?1:0, bA=isActiveConn(b.last_seen)?1:0;
+    if(aA!==bA)return bA-aA;
+    return (b.last_seen||'').localeCompare(a.last_seen||'');
+  });
+  var activeCount=persons.filter(function(p){return isActiveConn(p.last_seen);}).length;
+  hint.textContent='共 '+persons.length+' 人　🟢 活躍 '+activeCount+'　🔴 離線 '+(persons.length-activeCount);
+  list.innerHTML=persons.map(function(p){
+    var active=isActiveConn(p.last_seen);
+    p.svcs.sort(function(a,b){return (b.last_seen||'').localeCompare(a.last_seen||'');});
+    var svcsHtml=p.svcs.map(function(s){
+      var svcActive=isActiveConn(s.last_seen);
+      var errBadge=s.error_count>0?'　<span style="color:var(--red);font-size:11px">⚠'+s.error_count+'錯</span>':'';
+      return '<div class="conn-sub" style="display:flex;align-items:center;gap:6px;margin-top:4px">'
+        +'<span style="width:8px;height:8px;border-radius:50%;background:'+(svcActive?'var(--green)':'var(--text-mute)')+';display:inline-block;flex-shrink:0"></span>'
+        +'<span style="font-weight:600">'+esc(s.service_name)+'</span>'
+        +'　共 '+s.total_requests+' 次'+errBadge
+        +'　<span style="color:var(--text-mute);font-size:11px">'+fmtRelTime(s.last_seen)+'</span>'
+        +'</div>';
+    }).join('');
+    return '<div class="conn-card '+(active?'conn-active':'conn-inactive')+'">'
+      +'<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">'
+      +'<div>'
+      +'<div class="conn-name">'+esc(p.display_name)+'</div>'
+      +'<div class="conn-state '+(active?'on':'off')+'">'+(active?'🟢 活躍中':'🔴 已離線')+'</div>'
+      +svcsHtml
+      +'</div>'
+      +'<div class="conn-reltime">'+fmtRelTime(p.last_seen)+'</div>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+/* ── 版本檢查 ───────────────────────────────────────── */
+function checkVersion(){
+  fetch('/api/version').then(function(r){return r.json();}).then(function(d){
+    var el=document.getElementById('version-alert');
+    if(d.updated&&d.updated.length){
+      el.textContent='⚠ 以下服務的程式碼已更新，建議重啟：'+d.updated.join('、');
+      el.classList.add('show');
+    } else {
+      el.classList.remove('show');
+    }
+  }).catch(function(){});
+}
+
+/* ── Python info ────────────────────────────────────── */
+function loadPyInfo(){
+  fetch('/api/info').then(function(r){return r.json();}).then(function(d){
+    var el=document.getElementById('py-badge');
+    el.textContent='Python '+d.version+(d.is_public?' [公用]':'');
+    if(d.is_public) el.classList.add('public');
+  }).catch(function(){});
+}
+
+/* ── 初始化 ─────────────────────────────────────────── */
+loadPyInfo();
+loadServices();
+checkVersion();
+setInterval(loadServices, 5000);
+setInterval(checkVersion, 30000);
+</script>
+</body>
+</html>
