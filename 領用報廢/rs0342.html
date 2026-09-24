@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>領用報廢 Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a2332;font-size:13px}
+header{background:linear-gradient(90deg,#005087,#00789e);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:16px}
+header h1{font-size:17px;font-weight:700}
+header .sub{font-size:11px;opacity:.8;margin-top:2px}
+.ctrl{background:#fff;border-bottom:2px solid #e0eaf2;padding:8px 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+.ctrl-group{display:flex;flex-direction:column;gap:3px}
+.ctrl-group label{font-size:11px;color:#556;font-weight:600;text-transform:uppercase}
+.ctrl-group input{border:1px solid #b0c4d8;border-radius:4px;padding:4px 7px;font-size:13px;color:#1a2332;background:#f7fbff;height:30px}
+.ctrl-group input:focus{outline:none;border-color:#005087}
+.ctrl-group input[type=number]{width:80px}
+.btn-query{background:#005087;color:#fff;border:none;border-radius:4px;padding:6px 18px;cursor:pointer;font-size:13px;height:30px;align-self:flex-end}
+.btn-query:hover{background:#00789e}
+.type-check{display:flex;gap:8px;align-items:center;height:30px}
+.type-check label{display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px}
+.type-check input[type=checkbox]{accent-color:#005087;width:14px;height:14px}
+.divider{width:1px;background:#d0dce8;margin:0 4px;align-self:stretch}
+.period-bar{background:#e8f0f7;padding:6px 16px;display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.period-bar span{font-size:11px;color:#445;font-weight:600;margin-right:4px}
+.period-btn{border:1px solid #aac;border-radius:3px;padding:2px 9px;background:#fff;cursor:pointer;font-size:12px;transition:all .15s}
+.period-btn:hover{background:#c8dff0;border-color:#005087}
+.period-btn.active{background:#005087;color:#fff;border-color:#005087}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 16px}
+.chart-card{background:#fff;border-radius:8px;box-shadow:0 1px 6px rgba(0,80,135,.10);overflow:visible}
+.card-title{background:#e8f0f7;padding:6px 12px;font-size:12px;font-weight:700;color:#005087;
+  border-bottom:1px solid #d0e4f0;display:flex;align-items:center;justify-content:space-between;
+  border-radius:8px 8px 0 0}
+.card-title .hint{font-size:10px;font-weight:400;color:#889;margin-left:6px}
+.chart-box{width:100%;height:320px}
+.chart-box-tall{width:100%;height:340px}
+.pie-row{display:flex;width:100%}
+.pie-cell{flex:1;position:relative;cursor:pointer;min-width:0}
+.pie-cell.selected{outline:2px solid #005087;border-radius:6px;background:#eef6ff}
+.pie-cell.selected::after{content:'✔';position:absolute;top:4px;right:6px;font-size:13px;color:#005087;pointer-events:none;z-index:1}
+#status{padding:4px 16px;font-size:11px;color:#668;min-height:20px}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>📋 領用報廢 Dashboard (RS0342)</h1>
+    <div class="sub">GMIS.H_SCRAP_EXCEL_RS0342 × BCS_DETAIL</div>
+  </div>
+</header>
+<div class="ctrl">
+  <div class="ctrl-group"><label>OOC 線</label><input type="number" id="ooc" value="0.035" step="0.001" min="0" max="1"/></div>
+  <div class="ctrl-group"><label>OOS 線</label><input type="number" id="oos" value="0.050" step="0.001" min="0" max="1"/></div>
+  <div class="divider"></div>
+  <div class="ctrl-group"><label>起始月 (YYMM)</label><input type="text" id="pStart" maxlength="4" placeholder="2508" style="width:72px"/></div>
+  <div class="ctrl-group"><label>結束月 (YYMM)</label><input type="text" id="pEnd" maxlength="4" placeholder="2608" style="width:72px"/></div>
+  <div class="divider"></div>
+  <div class="ctrl-group">
+    <label>TYPE</label>
+    <div class="type-check">
+      <label><input type="checkbox" class="type-cb" value="Glass" checked> Glass</label>
+      <label><input type="checkbox" class="type-cb" value="Cell_Sub" checked> Cell Sub</label>
+      <label><input type="checkbox" class="type-cb" value="FG" checked> FG</label>
+    </div>
+  </div>
+  <button class="btn-query" onclick="loadData()">🔍 查詢</button>
+</div>
+<div class="period-bar"><span>月份：</span><div id="periodBtns"></div></div>
+<div id="status">初始化中...</div>
+
+<div class="charts-grid">
+  <div class="chart-card">
+    <div class="card-title">
+      📈 各月 Ratio(%) 趨勢 + QTY 直條
+      <span class="hint">點擊折線/直條顯示 Label（可複選），再點同系列釋放</span>
+    </div>
+    <div id="chartTrend" class="chart-box-tall"></div>
+  </div>
+  <div class="chart-card">
+    <div class="card-title">
+      🔵 選定月份各 TYPE 三廠 QTY 比例（中央 = Ratio）
+      <span class="hint">點選圓餅 → 右下篩選</span>
+    </div>
+    <div class="pie-row">
+      <div class="pie-cell" id="pieCell0" onclick="togglePie(0)"><div id="chartPie0" style="width:100%;height:330px"></div></div>
+      <div class="pie-cell" id="pieCell1" onclick="togglePie(1)"><div id="chartPie1" style="width:100%;height:330px"></div></div>
+      <div class="pie-cell" id="pieCell2" onclick="togglePie(2)"><div id="chartPie2" style="width:100%;height:330px"></div></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="card-title">
+      💰 各月金額趨勢（三廠）— 萬元
+      <span class="hint">點擊折線顯示 Label，再點釋放</span>
+    </div>
+    <div id="chartAmt" class="chart-box"></div>
+  </div>
+  <div class="chart-card">
+    <div class="card-title">🏭 <span id="deptTitle">金額 TOP10 部門：QTY 堆疊 + 金額折線</span></div>
+    <div id="chartDept" class="chart-box"></div>
+  </div>
+</div>
+
+<script>
+const API='http://localhost:5202';
+
+const STAGE_MAP={'C8B_CF':'CF','L8B_ARRAY':'ARRAY','L8B_CELL':'CELL','L8B_MODULE':'CELL'};
+const STAGES=['ARRAY','CF','CELL'];
+
+const DEPT_STAGE_TABLE={
+  'L8BE0':'ARRAY','L8BE1':'ARRAY','L8BE2':'ARRAY',
+  'L8BI1':'ARRAY','L8BI2':'ARRAY',
+  'L8BM1':'ARRAY',
+  'L8BP1':'ARRAY','L8BP2':'ARRAY',
+  'L8BT1':'ARRAY','L8BT2':'ARRAY',
+  'L8BB1':'CF','L8BB2':'CF',
+  'L8BK1':'CF','L8BK2':'CF','L8BK3':'CF',
+  'L8BC1':'CELL','L8BC2':'CELL',
+  'L8BH1':'CELL','L8BH2':'CELL',
+  'L8BL1':'CELL','L8BL2':'CELL',
+  'L8BN1':'CELL','L8BN2':'CELL'
+};
+function deptToStage(deptCode,stageLabelOfRow){
+  if(DEPT_STAGE_TABLE[deptCode]) return DEPT_STAGE_TABLE[deptCode];
+  if(['ARRAY','CF'].includes(stageLabelOfRow)) return stageLabelOfRow;
+  if(stageLabelOfRow==='CELL') return 'CELL';
+  return 'ARRAY';
+}
+
+const STAGE_LABEL_COLOR={ARRAY:'#005087',CF:'#008c5a',CELL:'#b07800'};
+const TYPE_DB=['Glass','Cell_Sub','FG'];
+const TYPE_LABEL={'Glass':'Glass','Cell_Sub':'Cell Sub','FG':'FG'};
+const TYPE_COLORS={'Glass':'#2878c8','Cell_Sub':'#e67e00','FG':'#d32f2f'};
+const STAGE_COLORS={'ARRAY':'#005087','CF':'#00a878','CELL':'#f5a623'};
+const AMT_LINE_COLOR='#6c20a0';
+
+// ── 圓餅中心 Y ──────────────────────────────────────────────────
+const PIE_H=330, PIE_FS=22;
+function pieCenter(hasSizeLine){
+  const titleH=hasSizeLine?57:42;
+  return Math.round((PIE_H-titleH-22)/2+titleH);
+}
+function graphicTop(centerY){return centerY-Math.round(PIE_FS/2);}
+
+// ── SIZE 換行：每 3 個尺寸插 \n ─────────────────────────────────
+function formatSizeLines(entries){
+  // entries: [[sz, qty], ...]，每3個一行
+  const chunks=[];
+  for(let i=0;i<entries.length;i+=3){
+    chunks.push(entries.slice(i,i+3).map(([sz,q])=>`${sz}": ${Math.round(q)}`).join(' / '));
+  }
+  return 'SIZE: '+chunks.join('\n      ');
+}
+
+const MONTH_ABBR=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+function mcodeToLabel(m){const yy=m.slice(0,2),mm=parseInt(m.slice(2));return `${MONTH_ABBR[mm-1]}'${yy}`;}
+
+const ecTrend=echarts.init(document.getElementById('chartTrend'));
+const ecPies =TYPE_DB.map((_,i)=>echarts.init(document.getElementById(`chartPie${i}`)));
+const ecAmt  =echarts.init(document.getElementById('chartAmt'));
+const ecDept =echarts.init(document.getElementById('chartDept'));
+window.addEventListener('resize',()=>{ecTrend.resize();ecAmt.resize();ecDept.resize();ecPies.forEach(e=>e.resize());});
+
+let gScrap=[],gYield=[],gPeriods=[],gActivePeriod='';
+let gTrendSel=new Set();
+let gAmtSel=null;
+let gSelectedPies=new Set();
+
+async function init(){
+  try{
+    const r=await fetch(`${API}/api/rs0342/default_period`);
+    const d=await r.json();
+    document.getElementById('pStart').value=d.start;
+    document.getElementById('pEnd').value=d.end;
+    setStatus(`預設期間：${mcodeToLabel(d.start)} ~ ${mcodeToLabel(d.end)}，點擊查詢載入資料`);
+  }catch(e){setStatus('⚠ 無法連線後端 (port 5202)');}
+}
+
+async function loadData(){
+  const ps=document.getElementById('pStart').value.trim();
+  const pe=document.getElementById('pEnd').value.trim();
+  if(!ps||!pe||ps.length!==4||pe.length!==4)return setStatus('⚠ 請輸入正確期間 (YYMM)');
+  const checkedTypes=[...document.querySelectorAll('.type-cb:checked')].map(x=>x.value);
+  if(!checkedTypes.length)return setStatus('⚠ 請至少選一個 TYPE');
+  setStatus('⏳ 查詢中...');
+  try{
+    const resp=await fetch(`${API}/api/rs0342/combo`,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({period_start:ps,period_end:pe,types:checkedTypes})
+    });
+    const d=await resp.json();
+    if(d.error)return setStatus('❌ '+d.error);
+    gScrap=(d.scrap||[]).map(r=>{
+      const stLabel=STAGE_MAP[r.STAGE]||r.STAGE;
+      const cc=(r.COST_CENTER||r.DEPT||'').toString().trim();
+      const deptCode=cc.length>=5?cc.slice(-5):cc;
+      const deptSt=deptToStage(deptCode,stLabel);
+      return {...r,STAGE_LABEL:stLabel,DEPT:deptCode,DEPT_STAGE:deptSt};
+    });
+    gYield  =d.yield||[];
+    gPeriods=d.periods||[];
+    gActivePeriod=gPeriods[gPeriods.length-1]||'';
+    gTrendSel=new Set();gAmtSel=null;gSelectedPies.clear();syncPieCellUI();
+    buildPeriodBtns();
+    renderTrend();renderPies(gActivePeriod);renderAmt();renderDept(gActivePeriod);
+    setStatus(`✅ 共 ${d.scrap_count} 筆 | OOC=${document.getElementById('ooc').value}  OOS=${document.getElementById('oos').value}`);
+  }catch(e){setStatus('❌ '+e.message);}
+}
+
+function buildPeriodBtns(){
+  const c=document.getElementById('periodBtns');c.innerHTML='';
+  gPeriods.forEach(p=>{
+    const btn=document.createElement('button');
+    btn.className='period-btn'+(p===gActivePeriod?' active':'');
+    btn.textContent=mcodeToLabel(p);btn.dataset.p=p;
+    btn.onclick=()=>selectPeriod(p);c.appendChild(btn);
+  });
+}
+function selectPeriod(p){
+  gActivePeriod=p;
+  document.querySelectorAll('.period-btn').forEach(b=>b.classList.toggle('active',b.dataset.p===p));
+  renderPies(p);renderDept(p);updateDeptTitle();
+}
+function getDenom(mcode,type){
+  const row=gYield.find(r=>r.MCODE===mcode)||{};
+  if(type==='Glass')    return parseFloat(row.ARRAY_OUTPUT)||0;
+  if(type==='Cell_Sub') return parseFloat(row.CELL_OUTPUT)||0;
+  if(type==='FG')       return parseFloat(row.MDL_OUTPUT)||0;
+  return 0;
+}
+
+// ══════════════════════════════════════════════════════════════
+// 左上：Ratio 折線 + QTY 直條（Label 複選）
+// ══════════════════════════════════════════════════════════════
+function buildTrendSeries(){
+  const ooc=parseFloat(document.getElementById('ooc').value)||0.035;
+  const oos=parseFloat(document.getElementById('oos').value)||0.050;
+  const checkedTypes=[...document.querySelectorAll('.type-cb:checked')].map(x=>x.value);
+  const series=[];
+  const anySelected=gTrendSel.size>0;
+  checkedTypes.forEach(t=>{
+    const qty=[],ratio=[];
+    gPeriods.forEach(p=>{
+      const rows=gScrap.filter(r=>r.MCODE===p&&r.TYPE===t);
+      const q=rows.reduce((a,r)=>a+(parseFloat(r.QTY)||0),0);
+      const den=getDenom(p,t);
+      qty.push(q);
+      ratio.push(den>0?parseFloat((q/den*100).toFixed(2)):0);
+    });
+    const barName=`${TYPE_LABEL[t]} QTY`,lineName=`${TYPE_LABEL[t]} Ratio%`;
+    const isBarSel=gTrendSel.has(barName),isLineSel=gTrendSel.has(lineName);
+    const barDim=anySelected&&!isBarSel,lineDim=anySelected&&!isLineSel;
+    series.push({
+      name:barName,type:'bar',yAxisIndex:1,data:qty,
+      itemStyle:{color:TYPE_COLORS[t],opacity:barDim?0.13:0.4},barMaxWidth:18,
+      label:{show:isBarSel,position:'top',formatter:p=>(p.value||0).toLocaleString(),
+        fontSize:10,color:TYPE_COLORS[t],fontWeight:'bold'}
+    });
+    series.push({
+      name:lineName,type:'line',yAxisIndex:0,data:ratio,
+      lineStyle:{color:TYPE_COLORS[t],width:isLineSel?3:2,opacity:lineDim?0.18:1},
+      itemStyle:{color:TYPE_COLORS[t],opacity:lineDim?0.18:1},
+      symbol:'circle',symbolSize:isLineSel?8:5,
+      label:{show:isLineSel,position:'top',formatter:p=>p.value+'%',
+        fontSize:10,color:TYPE_COLORS[t],fontWeight:'bold',
+        backgroundColor:'rgba(255,255,255,0.8)',borderRadius:3,padding:[1,4]}
+    });
+  });
+  const firstLine=series.find(s=>s.type==='line');
+  if(firstLine){
+    firstLine.markLine={silent:true,symbol:'none',data:[
+      {yAxis:parseFloat((ooc*100).toFixed(2)),lineStyle:{color:'#f5a200',type:'dashed',width:1.5},label:{formatter:`OOC ${(ooc*100).toFixed(1)}%`,fontSize:10}},
+      {yAxis:parseFloat((oos*100).toFixed(2)),lineStyle:{color:'#d32f2f',type:'dashed',width:1.5},label:{formatter:`OOS ${(oos*100).toFixed(1)}%`,fontSize:10}}
+    ]};
+  }
+  return series;
+}
+function renderTrend(){
+  const xData=gPeriods.map(mcodeToLabel);
+  ecTrend.setOption({
+    tooltip:{trigger:'axis',axisPointer:{type:'cross'},formatter:params=>{
+      let s=`<b>${params[0].axisValue}</b><br/>`;
+      params.forEach(p=>{s+=`${p.marker}${p.seriesName}: <b>${p.seriesType==='line'?p.value+'%':p.value.toLocaleString()}</b><br/>`;});
+      return s;
+    }},
+    legend:{top:4,textStyle:{fontSize:11}},
+    grid:{left:55,right:62,top:50,bottom:42},
+    xAxis:{type:'category',data:xData,axisLabel:{fontSize:11,rotate:30}},
+    yAxis:[
+      {type:'value',name:'Ratio%',nameTextStyle:{fontSize:10},axisLabel:{formatter:v=>v+'%',fontSize:10},min:0},
+      {type:'value',name:'QTY',nameTextStyle:{fontSize:10},axisLabel:{fontSize:10},splitLine:{show:false}}
+    ],
+    series:buildTrendSeries()
+  },true);
+  ecTrend.off('click');
+  ecTrend.on('click',params=>{
+    const name=params.seriesName;
+    if(gTrendSel.has(name))gTrendSel.delete(name);else gTrendSel.add(name);
+    renderTrend();
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+// 右上：三個圓餅
+//   SIZE 行每 3 個換一行（formatSizeLines）
+// ══════════════════════════════════════════════════════════════
+function renderPies(p){
+  const checkedTypes=[...document.querySelectorAll('.type-cb:checked')].map(x=>x.value);
+  const ooc=parseFloat(document.getElementById('ooc').value)||0.035;
+  const oos=parseFloat(document.getElementById('oos').value)||0.050;
+
+  TYPE_DB.forEach((t,i)=>{
+    const ec=ecPies[i],cell=document.getElementById(`pieCell${i}`);
+    if(!checkedTypes.includes(t)){ec.clear();cell.style.opacity='0.3';return;}
+    cell.style.opacity='1';
+
+    const typeRows=gScrap.filter(r=>r.MCODE===p&&r.TYPE===t);
+
+    const stageQty={ARRAY:0,CF:0,CELL:0};
+    typeRows.forEach(r=>{
+      if(STAGES.includes(r.STAGE_LABEL)) stageQty[r.STAGE_LABEL]+=(parseFloat(r.QTY)||0);
+    });
+    const total=STAGES.reduce((a,st)=>a+stageQty[st],0);
+    const pieData=STAGES.filter(st=>stageQty[st]>0).map(st=>({
+      name:st,value:stageQty[st],itemStyle:{color:STAGE_COLORS[st]}
+    }));
+
+    const denom=getDenom(p,t);
+    const ratioVal=denom>0?total/denom:null;
+    const ratioStr=ratioVal!==null?(ratioVal*100).toFixed(2)+'%':'N/A';
+    const ratioColor=ratioVal===null?'#888':ratioVal>oos?'#d32f2f':ratioVal>ooc?'#e67e00':'#1a9e5c';
+
+    // SIZE 行
+    let sizeStr='';
+    if(t==='Glass'){
+      sizeStr='SIZE: 2200×2500';
+    } else {
+      const sizeMap={};
+      typeRows.forEach(r=>{
+        const s=(r.SIZE||'').toString().trim();
+        if(!s) return;
+        sizeMap[s]=(sizeMap[s]||0)+(parseFloat(r.QTY)||0);
+      });
+      const entries=Object.entries(sizeMap).sort((a,b)=>a[0].localeCompare(b[0]));
+      if(entries.length>0) sizeStr=formatSizeLines(entries);
+    }
+    const hasSizeLine=sizeStr.length>0;
+    // subtext：總量 + SIZE（SIZE 可能多行，titleH 依行數調整）
+    const sizeLineCount=hasSizeLine?sizeStr.split('\n').length:0;
+    const subtextStr=`總量: ${total>0?total.toLocaleString():'無資料'}`+(hasSizeLine?'\n'+sizeStr:'');
+
+    // centerY：SIZE 每多一行多 +14px
+    const titleH=hasSizeLine?(42+sizeLineCount*14):42;
+    const centerY=Math.round((PIE_H-titleH-22)/2+titleH);
+    const gTop=graphicTop(centerY);
+
+    ec.setOption({
+      title:{
+        text:TYPE_LABEL[t],
+        subtext:subtextStr,
+        left:'center',top:4,
+        textStyle:{fontSize:12,fontWeight:'bold',color:'#005087'},
+        subtextStyle:{fontSize:10,color:'#667',lineHeight:16}
+      },
+      tooltip:{trigger:'item',formatter:pp=>`<b>${pp.name}</b><br/>QTY: ${pp.value.toLocaleString()}<br/>佔比: <b>${pp.percent}%</b>`},
+      legend:{
+        bottom:4,left:'center',orient:'horizontal',
+        itemWidth:10,itemHeight:10,textStyle:{fontSize:10},
+        data:STAGES.map(st=>({name:st,icon:'circle'}))
+      },
+      graphic:[{
+        type:'text',left:'center',top:gTop,z:100,
+        style:{text:ratioStr,fill:ratioColor,fontSize:PIE_FS,fontWeight:'bold',textAlign:'center',textBaseline:'top'}
+      }],
+      series:[{
+        type:'pie',radius:['32%','56%'],center:['50%',centerY],
+        data:pieData.length>0?pieData:[{name:'無資料',value:1,itemStyle:{color:'#ddd'},label:{show:false},labelLine:{show:false}}],
+        label:{show:pieData.length>0,position:'outside',formatter:pp=>`${pp.name}\n${pp.value.toLocaleString()}`,fontSize:10,lineHeight:14},
+        labelLine:{show:pieData.length>0,length:6,length2:8,smooth:true},
+        emphasis:{label:{show:true,fontSize:11,fontWeight:'bold'},itemStyle:{shadowBlur:8,shadowColor:'rgba(0,0,0,.3)'}}
+      }]
+    },true);
+  });
+}
+
+function togglePie(idx){
+  const t=TYPE_DB[idx];
+  const checkedTypes=[...document.querySelectorAll('.type-cb:checked')].map(x=>x.value);
+  if(!checkedTypes.includes(t))return;
+  if(gSelectedPies.has(idx))gSelectedPies.delete(idx);else gSelectedPies.add(idx);
+  syncPieCellUI();renderDept(gActivePeriod);updateDeptTitle();
+}
+function syncPieCellUI(){
+  TYPE_DB.forEach((_,i)=>document.getElementById(`pieCell${i}`).classList.toggle('selected',gSelectedPies.has(i)));
+}
+function updateDeptTitle(){
+  const el=document.getElementById('deptTitle');
+  const lbl=mcodeToLabel(gActivePeriod);
+  if(gSelectedPies.size===0) el.textContent=`${lbl} 金額 TOP10 部門：QTY 堆疊 + 金額折線`;
+  else el.textContent=`${lbl} TOP10（${[...gSelectedPies].map(i=>TYPE_LABEL[TYPE_DB[i]]).join('+')}）：QTY 堆疊 + 金額折線`;
+}
+
+// ══════════════════════════════════════════════════════════════
+// 左下：各月金額折線
+// ══════════════════════════════════════════════════════════════
+function buildAmtSeries(selectedName){
+  const hasSelected=!!selectedName;
+  return STAGES.map(st=>{
+    const isSel=selectedName===st,dim=hasSelected&&!isSel;
+    return{name:st,type:'line',
+      data:gPeriods.map(p=>{
+        const rows=gScrap.filter(r=>r.MCODE===p&&r.STAGE_LABEL===st);
+        return parseFloat((rows.reduce((a,r)=>a+(parseFloat(r.AMT)||0),0)/10000).toFixed(2));
+      }),
+      lineStyle:{color:STAGE_COLORS[st],width:isSel?3:2,opacity:dim?0.15:1},
+      itemStyle:{color:STAGE_COLORS[st],opacity:dim?0.15:1},
+      symbol:'circle',symbolSize:isSel?7:5,
+      areaStyle:{color:STAGE_COLORS[st],opacity:dim?0.02:0.08},
+      label:{show:isSel,position:'top',formatter:p=>p.value+' 萬',
+        fontSize:10,fontWeight:'bold',color:STAGE_COLORS[st],
+        backgroundColor:'rgba(255,255,255,0.7)',borderRadius:3,padding:[1,3]}};
+  });
+}
+function renderAmt(){
+  const xData=gPeriods.map(mcodeToLabel);
+  ecAmt.setOption({
+    tooltip:{trigger:'axis',formatter:params=>{
+      let s=`<b>${params[0].axisValue}</b><br/>`;
+      params.forEach(p=>{s+=`${p.marker}${p.seriesName}: <b>${p.value} 萬</b><br/>`;});
+      return s;
+    }},
+    legend:{top:4,textStyle:{fontSize:11}},
+    grid:{left:58,right:20,top:45,bottom:42},
+    xAxis:{type:'category',data:xData,axisLabel:{fontSize:11,rotate:30}},
+    yAxis:{type:'value',name:'萬元',nameTextStyle:{fontSize:10},axisLabel:{fontSize:10}},
+    series:buildAmtSeries(gAmtSel)
+  },true);
+  ecAmt.off('click');
+  ecAmt.on('click',params=>{gAmtSel=(gAmtSel===params.seriesName)?null:params.seriesName;renderAmt();});
+}
+
+// ══════════════════════════════════════════════════════════════
+// 右下：金額 TOP10 部門
+//   金額數字用 markPoint 顯示在折線點正上方（不疊柱子）
+//   markPoint symbolOffset [0,-22] 讓標籤浮在圓點之上
+// ══════════════════════════════════════════════════════════════
+function renderDept(p){
+  const filterTypes=gSelectedPies.size===0
+    ?[...document.querySelectorAll('.type-cb:checked')].map(x=>x.value)
+    :[...gSelectedPies].map(i=>TYPE_DB[i]);
+
+  const rows=gScrap.filter(r=>r.MCODE===p&&filterTypes.includes(r.TYPE));
+
+  const deptMap={};
+  rows.forEach(r=>{
+    const dept=r.DEPT,t=r.TYPE;
+    if(!deptMap[dept]) deptMap[dept]={stage:'ARRAY',Glass:0,Cell_Sub:0,FG:0,qtyTotal:0,amtTotal:0,stageAmt:{ARRAY:0,CF:0,CELL:0}};
+    const q=parseFloat(r.QTY)||0;
+    const a=(parseFloat(r.AMT)||0)/10000;
+    deptMap[dept][t]+=q;
+    deptMap[dept].qtyTotal+=q;
+    deptMap[dept].amtTotal+=a;
+    if(STAGES.includes(r.STAGE_LABEL)) deptMap[dept].stageAmt[r.STAGE_LABEL]+=a;
+  });
+  Object.keys(deptMap).forEach(dept=>{
+    const sa=deptMap[dept].stageAmt;
+    deptMap[dept].stage=STAGES.reduce((best,st)=>sa[st]>sa[best]?st:best,'ARRAY');
+  });
+
+  const top10=Object.entries(deptMap)
+    .sort((a,b)=>b[1].amtTotal-a[1].amtTotal)
+    .slice(0,10)
+    .map(([dept])=>dept);
+
+  const richConfig={
+    ARRAY:{color:STAGE_LABEL_COLOR.ARRAY,fontWeight:'bold',fontSize:10},
+    CF   :{color:STAGE_LABEL_COLOR.CF,   fontWeight:'bold',fontSize:10},
+    CELL :{color:STAGE_LABEL_COLOR.CELL,  fontWeight:'bold',fontSize:10},
+    DEF  :{color:'#445',fontSize:10}
+  };
+
+  const lastTypeIdx=filterTypes.length-1;
+  const barSeries=filterTypes.map((t,ti)=>({
+    name:TYPE_LABEL[t],type:'bar',stack:'qty',yAxisIndex:0,
+    barMaxWidth:38,barCategoryGap:'35%',
+    itemStyle:{
+      color:{type:'linear',x:0,y:0,x2:0,y2:1,
+        colorStops:[{offset:0,color:TYPE_COLORS[t]},{offset:1,color:TYPE_COLORS[t]+'99'}]},
+      borderRadius:ti===lastTypeIdx?[4,4,0,0]:[0,0,0,0]
+    },
+    emphasis:{itemStyle:{shadowBlur:8,shadowColor:'rgba(0,0,0,0.18)'}},
+    data:top10.map(d=>Math.round(deptMap[d]?.[t]||0))
+  }));
+
+  // 金額折線：label 關閉，改用 markPoint 在圓點正上方顯示數字
+  // symbolOffset [0,-30] 讓標籤浮在圓點之上不蓋柱子
+  const amtData=top10.map(d=>parseFloat((deptMap[d]?.amtTotal||0).toFixed(2)));
+  const markPoints=top10.map((d,idx)=>({
+    coord:[idx,amtData[idx]],
+    value:amtData[idx]>0?amtData[idx].toFixed(1)+' 萬':'',
+    symbol:'none',
+    label:{
+      show:true,
+      formatter:p=>p.data.value,
+      fontSize:11,
+      fontWeight:'bold',
+      color:'#4a0080',
+      backgroundColor:'#ffffff',
+      borderColor:'#c9a0dc',
+      borderWidth:1,
+      borderRadius:4,
+      padding:[2,5],
+      shadowBlur:3,
+      shadowColor:'rgba(108,32,160,0.15)',
+      offset:[0,-28]    // 在 coord 點上方 28px 顯示，完全脫離柱頂
+    }
+  }));
+
+  const lineSeries={
+    name:'金額(萬)',type:'line',yAxisIndex:1,
+    data:amtData,
+    lineStyle:{color:AMT_LINE_COLOR,width:2.5},
+    itemStyle:{color:AMT_LINE_COLOR},
+    symbol:'circle',symbolSize:9,
+    label:{show:false},   // ← 折線 label 關閉，改由 markPoint 負責
+    markPoint:{
+      symbol:'none',
+      data:markPoints,
+      label:{show:true}
+    }
+  };
+
+  ecDept.setOption({
+    tooltip:{
+      trigger:'axis',axisPointer:{type:'shadow'},
+      formatter:params=>{
+        const dept=params[0]?.axisValue;
+        const stage=deptMap[dept]?.stage||'';
+        const stColor=STAGE_LABEL_COLOR[stage]||'#667';
+        let s=`<b>${dept}</b> <span style="color:${stColor};font-size:10px;font-weight:bold">[${stage}]</span><br/>`;
+        let qtyTotal=0;
+        params.forEach(pp=>{
+          if(pp.seriesType==='bar'){
+            s+=`${pp.marker}${pp.seriesName}: <b>${pp.value.toLocaleString()} 片</b><br/>`;
+            qtyTotal+=parseFloat(pp.value)||0;
+          } else {
+            s+=`${pp.marker}<b style="color:#4a0080">${pp.seriesName}: ${pp.value.toFixed(2)} 萬</b><br/>`;
+          }
+        });
+        s+=`<hr style="margin:3px 0;border-color:#eee"/><b>QTY 合計: ${qtyTotal.toLocaleString()} 片</b>`;
+        return s;
+      }
+    },
+    legend:{top:4,textStyle:{fontSize:11}},
+    grid:{left:58,right:72,top:58,bottom:66},  // top 拉大給 markPoint 留空間
+    xAxis:{
+      type:'category',data:top10,
+      axisTick:{alignWithLabel:true},
+      axisLine:{lineStyle:{color:'#ddd'}},
+      axisLabel:{
+        fontSize:10,rotate:35,interval:0,
+        rich:richConfig,
+        formatter:v=>{const st=deptMap[v]?.stage||'DEF';return `{${st}|${v}}`;}
+      }
+    },
+    yAxis:[
+      {type:'value',name:'片數',nameTextStyle:{fontSize:10},axisLabel:{fontSize:10},
+        splitLine:{show:true,lineStyle:{color:'#f0f0f0',type:'dashed'}}},
+      {type:'value',name:'萬元',nameTextStyle:{fontSize:10,color:AMT_LINE_COLOR},
+        axisLabel:{fontSize:10,color:AMT_LINE_COLOR,formatter:v=>v+' 萬'},
+        axisLine:{show:true,lineStyle:{color:AMT_LINE_COLOR}},splitLine:{show:false}}
+    ],
+    series:[...barSeries,lineSeries]
+  },true);
+
+  updateDeptTitle();
+}
+
+function setStatus(msg){document.getElementById('status').textContent=msg;}
+init();
+</script>
+</body>
+</html>

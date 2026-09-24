@@ -1,0 +1,33 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>RS0342 Launcher</title>
+<HTA:APPLICATION
+  ID="RS0342Launcher"
+  APPLICATIONNAME="RS0342 Dashboard Launcher"
+  BORDER="none"
+  CAPTION="no"
+  SHOWINTASKBAR="no"
+  SINGLEINSTANCE="yes"
+  WINDOWSTATE="minimize"
+/>
+</head>
+<body>
+<script language="VBScript">
+Sub Window_OnLoad
+    Dim oShell, oFSO, sDir, sVbs
+    Set oShell = CreateObject("WScript.Shell")
+    Set oFSO   = CreateObject("Scripting.FileSystemObject")
+
+    ' 取得 HTA 所在目錄
+    sDir = oFSO.GetParentFolderName(document.location.pathname)
+    sVbs = sDir & "\start_rs0342.vbs"
+
+    ' 用 wscript 執行 VBS（不受 UNC 路徑限制）
+    oShell.Run "wscript.exe """ & sVbs & """", 1, False
+
+    window.close
+End Sub
+</script>
+</body>
+</html>

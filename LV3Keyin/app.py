@@ -1188,7 +1188,9 @@ class Handler(BaseHTTPRequestHandler):
 # 啟動
 # ═══════════════════════════════════════════════════
 
-
+# ── HTA Logger ──────────────────────────────────────
+from hta_logger import HTALogger
+_hta_logger = HTALogger("lv3keyin")
 
 _hta_orig_setup = Handler.__dict__.get('setup')
 def _hta_setup(self):
@@ -1197,14 +1199,14 @@ def _hta_setup(self):
     else:
         import socketserver
         socketserver.StreamRequestHandler.setup(self)
-    self._hta_t0 = _hta_time.time()
+    self._hta_t0 = time.time()
 Handler.setup = _hta_setup
 
 def _hta_log_request(self, code='-', size='-'):
     from http.server import BaseHTTPRequestHandler as _BHRH
     _BHRH.log_request(self, code, size)
     try:
-        _ms = int((_hta_time.time() - getattr(self, '_hta_t0', _hta_time.time())) * 1000)
+        _ms = int((time.time() - getattr(self, '_hta_t0', time.time())) * 1000)
         _code = int(str(code)) if str(code).isdigit() else 0
         _hta_logger.log_request(
             client_ip     = self.client_address[0],
@@ -1244,27 +1246,4 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         server.server_close()
         print('\n伺服器已停止。')
-
-# ── HTA Logger ──────────────────────────────────────
-from hta_logger import HTALogger
-_hta_logger = HTALogger("lv3keyin")
-
-# ── HTA Logger patch (log_request) ──────────────────────
-_orig_log_lv3keyin_Handler = Handler.log_request
-def _hta_log_lv3keyin_Handler(self, code='-', size='-'):
-    _orig_log_lv3keyin_Handler(self, code, size)
-    try:
-        import time as _t
-        _hta_logger.log(
-            method     = getattr(self, 'command', 'GET') or 'GET',
-            path       = getattr(self, 'path', '/') or '/',
-            status     = int(str(code).split()[0]) if str(code) != '-' else 0,
-            duration_ms= 0,
-            client_ip  = (self.client_address[0] if self.client_address else '-'),
-            user_agent = (self.headers.get('User-Agent', '-') if self.headers else '-'),
-        )
-    except Exception:
-        pass
-Handler.log_request = _hta_log_lv3keyin_Handler
-# ── end HTA Logger ───────────────────────────────────────
 

@@ -1,6 +1,14 @@
 """
-HTA Work Platform - Main Launcher  v2.9.3
-【本次修正 v2.9.3】
+HTA Work Platform - Main Launcher  v2.9.4
+【本次修正 v2.9.4】
+  ★ 修正 Log 監控與連線摘要不完全問題
+    - 移除 query_ms 統計（proxy 模式下無此數據，導致 NULL）
+    - 改用 request_ms 作為性能指標
+    - api_access_stats 新增 active_conns 欄位（最近 2 分鐘活躍連線數）
+    - 統一所有服務連線數計算方式（都從 DB 查最近 2 分鐘的不同 IP）
+    - proxy & 非 proxy 服務現在使用相同的連線摘要邏輯
+
+【v2.9.3】
   ★ 服務管理「連線」數與連線摘要同步
     - proxy_log 服務：改從 DB 查最近 2 分鐘活躍 IP 數（與連線摘要一致）
     - 非 proxy 服務：維持 psutil TCP 連線數（原本就準確）
@@ -475,10 +483,10 @@ def _auto_start_services():
     threading.Thread(target=_run, daemon=True, name="auto_start").start()
 
 # ══════════════════════════════════════════════════════════════
-# ★ v2.9.3 新增：proxy 服務從 DB 查活躍連線數
+# ★ v2.9.3 新增：統一查詢活躍連線數（proxy & 非 proxy 都用 DB）
 # ══════════════════════════════════════════════════════════════
-def _get_proxy_active_conns(sid):
-    """查詢最近 2 分鐘內有幾個不同 IP 存取過該服務（與連線摘要「活躍」定義一致）"""
+def _get_active_conns(sid):
+    """查詢最近 2 分鐘內有幾個不同 IP 存取過該服務（proxy & 非 proxy 統一用 DB）"""
     try:
         db = _get_db()
         if not db:
@@ -495,6 +503,10 @@ def _get_proxy_active_conns(sid):
         return count
     except Exception:
         return 0
+
+def _get_proxy_active_conns(sid):
+    """舊函數保留相容性，轉呼叫新函數"""
+    return _get_active_conns(sid)
 
 # ── Routes ───────────────────────────────────────────────────
 @app.route("/")
@@ -523,18 +535,8 @@ def api_services():
             if proc and proc.poll() is None:
                 running = True
                 cpu, mem = proc_stats(proc.pid)
-                # ★ v2.9.3：proxy 服務從 DB 查活躍 IP 數；非 proxy 用 psutil
-                if is_proxy:
-                    conns = _get_proxy_active_conns(sid)
-                else:
-                    try:
-                        _ps   = psutil.Process(proc.pid)
-                        conns = len(set(
-                            c.raddr.ip for c in _ps.connections(kind="tcp")
-                            if c.status == "ESTABLISHED" and c.raddr
-                        ))
-                    except Exception:
-                        conns = 0
+                # ★ v2.9.3+：所有服務統一從 DB 查最近 2 分鐘的活躍 IP（保持連線摘要一致性）
+                conns = _get_active_conns(sid)
         result.append({
             "id":        sid,
             "name":      svc.get("name", sid),
@@ -639,6 +641,9 @@ def api_open_when_ready():
 # ══════════════════════════════════════════════════════════════
 # Log 監控 & 連線摘要 API
 # ══════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════
+# Log 監控 & 連線摘要 API
+# ══════════════════════════════════════════════════════════════
 @app.route("/api/access_stats")
 def api_access_stats():
     db = _get_db()
@@ -646,13 +651,15 @@ def api_access_stats():
         return jsonify([])
     try:
         SVC_NAMES_MAP = _build_svc_names_map()
+        # ★ 修正：移除 query_ms 統計（proxy 模式沒有此數據），改用 request_ms
+        # 加入最近 2 分鐘的活躍連線數（與連線摘要同步）
         cur = db.execute("""
             SELECT service_id,
                    COUNT(*)                                  AS total_requests,
                    COUNT(DISTINCT client_ip)                 AS unique_ips,
                    SUM(CASE WHEN error IS NOT NULL THEN 1 ELSE 0 END) AS error_count,
-                   ROUND(AVG(CASE WHEN query_ms > 0 THEN query_ms END), 1) AS avg_query_ms,
-                   ROUND(MAX(query_ms), 1)                  AS max_query_ms
+                   ROUND(AVG(request_ms), 1)                 AS avg_request_ms,
+                   ROUND(MAX(request_ms), 1)                 AS max_request_ms
             FROM access_log
             WHERE timestamp >= datetime('now', '-7 days', 'localtime')
             GROUP BY service_id
@@ -663,14 +670,17 @@ def api_access_stats():
         result = []
         for r in rows:
             sid = r[0]
+            # 查詢最近 2 分鐘的活躍連線數
+            active_conns = _get_active_conns(sid)
             result.append({
-                "service_id":     sid,
-                "service_name":   SVC_NAMES_MAP.get(sid, sid),
-                "total_requests": r[1],
-                "unique_ips":     r[2],
-                "error_count":    r[3],
-                "avg_query_ms":   r[4],
-                "max_query_ms":   r[5],
+                "service_id":      sid,
+                "service_name":    SVC_NAMES_MAP.get(sid, sid),
+                "total_requests":  r[1],
+                "unique_ips":      r[2],
+                "error_count":     r[3],
+                "avg_request_ms":  r[4],
+                "max_request_ms":  r[5],
+                "active_conns":    active_conns,
             })
         return jsonify(result)
     except Exception as e:
@@ -840,7 +850,7 @@ def main():
     wlog("每日 07:00 自動清空排程已啟動")
 
     wlog("=" * 60)
-    wlog("HTA Work Platform Launcher v2.9.3")
+    wlog("HTA Work Platform Launcher v2.9.4")
     wlog("Management @ http://localhost:" + str(MGMT_PORT))
     wlog("=" * 60)
 
